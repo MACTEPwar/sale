@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 import { IsLoginPagePipe } from './is-login-page.pipe';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { HttpClientModule } from '@angular/common/http';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
   declarations: [AppComponent, IsLoginPagePipe],
@@ -18,8 +20,9 @@ import { HttpClientModule } from '@angular/common/http';
     BrowserAnimationsModule,
     HttpClientModule,
     CoreModule,
+    ToastModule,
   ],
-  providers: [],
+  providers: [MessageService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -1,3 +1,4 @@
+import { AuthenticationMockService } from './authentication-mock.service';
 import { AuthenticationService } from './authentication.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -5,6 +6,8 @@ import { CommonModule } from '@angular/common';
 @NgModule({
   declarations: [],
   imports: [CommonModule],
-  providers: [AuthenticationService],
+  providers: [
+    { provide: AuthenticationService, useClass: AuthenticationMockService },
+  ],
 })
 export class AuthenticationModule {}

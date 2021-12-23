@@ -15,14 +15,14 @@ export class AppComponent {
 
   ngOnInit(): void {
     this.items = [
-      { url: '/sale', label: 'Продажа' },
-      { url: '/return', label: 'Возвраты' },
-      { url: '/service', label: 'Сервис' },
+      { url: '/sale', label: 'Продаж' },
+      { url: '/return', label: 'Повернення' },
+      { url: '/service', label: 'Сервiс' },
       {
-        label: 'Отчеты',
+        label: 'Звiти',
         items: [
           { url: '/report/receipts', label: 'Чеки' },
-          { url: '/report/z-reports', label: 'Z-отчеты' },
+          { url: '/report/z-reports', label: 'Z-звiти' },
         ],
       },
     ];
