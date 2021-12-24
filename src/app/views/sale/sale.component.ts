@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Receipt, TProduct } from '@common/types';
 import { Observable } from 'rxjs';
 import { SaleService } from './../../core/BLL/sale-logic/sale.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sale',
@@ -15,7 +16,11 @@ export class SaleComponent implements OnInit {
   totalSum: Observable<number>;
 
   constructor(private saleService: SaleService) {
-    this.productList = this.saleService.productList;
+    this.productList = this.saleService.productList.pipe(
+      map((m) => {
+        return m ?? [];
+      })
+    );
     this.receiptProducts = this.saleService.receipt.products;
     this.totalSum = this.saleService.receipt.totalSum;
   }
