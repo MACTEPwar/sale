@@ -1,1 +1,88 @@
-<p>sale works!</p>
+<div class="container">
+  <div class="p-grid title p-m-0">
+    <div class="p-col">
+      <span>Продаж товару</span>
+    </div>
+  </div>
+  <div class="p-grid sale p-m-0">
+    <div class="p-col">
+      <div class="p-grid sale-search">
+        <div class="p-col">
+          <input />
+        </div>
+      </div>
+      <div class="p-grid">
+        <div class="p-col">
+          <table>
+            <thead>
+              <tr>
+                <th>Найменування</th>
+                <th>Код</th>
+                <th>Цiна</th>
+                <th></th>
+              </tr>
+              <tr>
+                <th><input /></th>
+                <th><input /></th>
+                <th><input /></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of productList | async">
+                <td>{{ product.name }}</td>
+                <td>{{ product.code }}</td>
+                <td>{{ product.price }}</td>
+                <td>
+                  <button (click)="addProductToReceipt(product)">add</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="p-col">
+      <div class="p-grid receipt">
+        <div class="p-col">
+          <div class="p-grid">
+            <div class="p-col"><span>Чек</span></div>
+          </div>
+          <hr />
+          <div
+            class="p-grid"
+            *ngFor="let receiptProduct of receiptProducts | async"
+          >
+            <div class="p-col">{{ receiptProduct.name }}</div>
+            <div class="p-col">{{ receiptProduct.amount }}</div>
+            <div class="p-col">
+              {{ receiptProduct.price * receiptProduct.amount }}
+            </div>
+            <div class="p-col">
+              <button (click)="dropProductFromReceipt(receiptProduct.id)">
+                x
+              </button>
+            </div>
+          </div>
+          <hr />
+          <div class="p-grid">
+            <div class="p-col">
+              <span>Сумма разом: {{ totalSum | async }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p-grid">
+        <div class="p-col">
+          <label>Вiдправити на email</label>
+          <input type="email" />
+        </div>
+      </div>
+      <div class="p-grid">
+        <div class="p-col"><button>Готiвка</button></div>
+        <div class="p-col"><button>Карта</button></div>
+        <div class="p-col"><button>Iнше</button></div>
+      </div>
+    </div>
+  </div>
+</div>
