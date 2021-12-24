@@ -1,0 +1,11 @@
+@mixin buttonDefault {
+  background-color: #01a9ac;
+  border-color: #01a9ac;
+  color: #fff;
+}
+
+@mixin buttonDefaultHover {
+  background-color: #01dbdf;
+  border-color: #01dbdf;
+  transition: all ease-in 0.3s;
+}

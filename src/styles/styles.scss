@@ -1,0 +1,47 @@
+/* You can add global styles to this file, and also import other style files */
+@import "./variables";
+@import "./mixins";
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100%;
+  font-family: "Roboto", Arial, Helvetica, sans-serif;
+}
+
+.p-panelmenu .p-panelmenu-header {
+  & > a {
+    background-color: transparent;
+    border: none;
+    color: #d2d2d2;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 21px;
+  }
+  &:not(.p-highlight):not(.p-disabled) > a:hover {
+    background-color: transparent;
+    border: none;
+    color: #fe8a7d;
+  }
+}
+
+.p-component.p-button {
+  background-color: #01a9ac;
+  border-color: #01a9ac;
+  color: #fff;
+  &.outline {
+    background-color: white;
+    border-color: #01a9ac;
+    color: #016d6f;
+    &:hover{
+      color: white;
+      transition: all ease-in 0.3s;
+    }
+  }
+  &:hover {
+    background-color: #01dbdf;
+    border-color: #01dbdf;
+    transition: all ease-in 0.3s;
+  }
+}

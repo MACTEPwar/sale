@@ -33,7 +33,8 @@
               "node_modules/primeng/resources/themes/nova/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
 
-              "src/styles.scss"
+              "node_modules/roboto-fontface/css/roboto-condensed/roboto-condensed-fontface.css",
+              "src/styles/styles.scss"
             ],
             "scripts": []
           },

@@ -10,6 +10,7 @@ import { PanelMenuModule } from 'primeng/panelmenu';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   declarations: [AppComponent, IsLoginPagePipe],
@@ -21,6 +22,7 @@ import { MessageService } from 'primeng/api';
     HttpClientModule,
     CoreModule,
     ToastModule,
+    ButtonModule,
   ],
   providers: [MessageService],
   bootstrap: [AppComponent],
