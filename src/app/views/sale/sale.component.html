@@ -20,7 +20,7 @@
       </div>
       <div class="p-grid">
         <div class="p-col">
-          <p-table [value]="productList | async" responsiveLayout="scroll">
+          <p-table [value]="(productList | async)!" responsiveLayout="scroll">
             <ng-template pTemplate="header">
               <tr>
                 <th>Найменування</th>

@@ -1,9 +1,9 @@
-import { TReceiptProduct } from './../../shared/types/types/t-receipt-product';
 import { Component, OnInit } from '@angular/core';
-import { Receipt, TProduct } from '@common/types';
-import { Observable } from 'rxjs';
-import { SaleService } from './../../core/BLL/sale-logic/sale.service';
+import { TProduct } from '@common/types';
+import { Observable, of, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { SaleService } from './../../core/BLL/sale-logic/sale.service';
+import { TReceiptProduct } from './../../shared/types/types/t-receipt-product';
 
 @Component({
   selector: 'app-sale',
@@ -11,7 +11,10 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./sale.component.scss'],
 })
 export class SaleComponent implements OnInit {
-  productList: Observable<Array<TProduct>>;
+  productList: Observable<Array<Product>>;
+
+  test: Array<Product> = [];
+
   receiptProducts: Observable<Array<TReceiptProduct>>;
   totalSum: Observable<number>;
 
@@ -35,4 +38,11 @@ export class SaleComponent implements OnInit {
   dropProductFromReceipt(productId: string): void {
     this.saleService.dropProductFromReceipt(productId);
   }
+}
+
+export class Product {
+  id: string = '';
+  name: string = '';
+  code: string = '';
+  price: number = 0;
 }
