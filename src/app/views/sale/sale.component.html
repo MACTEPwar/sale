@@ -44,80 +44,90 @@
                 <td class="tdCode">{{ product.code }}</td>
                 <td class="tdPrice">{{ product.price }}</td>
                 <td class="tdAddBtn">
-                  <button class="addBtn" (click)="addProductToReceipt(product)">+</button>
+                  <button class="addBtn" (click)="addProductToReceipt(product)">
+                    +
+                  </button>
                 </td>
               </tr>
             </ng-template>
           </p-table>
-          <!-- <table>
-            <thead>
-              <tr>
-                <th class="p-text-left">Найменування</th>
-                <th class="p-text-left">Код</th>
-                <th class="p-text-left">Цiна</th>
-                <th></th>
-              </tr>
-              <tr>
-                <th><input /></th>
-                <th><input /></th>
-                <th><input /></th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let product of productList | async">
-                <td>{{ product.name }}</td>
-                <td>{{ product.code }}</td>
-                <td>{{ product.price }}</td>
-                <td>
-                  <button (click)="addProductToReceipt(product)">add</button>
-                </td>
-              </tr>
-            </tbody>
-          </table> -->
         </div>
       </div>
     </div>
-    <div class="p-col">
+    <div class="p-col p-py-0">
+      <!-- [style.height]="
+          container.offsetHeight - sendEmail.offsetHeight - btns.offsetHeight
+        " -->
       <div class="p-grid receipt">
         <div class="p-col">
-          <div class="p-grid">
-            <div class="p-col"><span>Чек</span></div>
+          <div class="p-grid receiptTitle">
+            <div class="p-col p-text-center"><span>Чек</span></div>
           </div>
-          <hr />
           <div
-            class="p-grid"
-            *ngFor="let receiptProduct of receiptProducts | async"
+            class="receiptProducts"
+            [style.maxHeight]="
+              container.offsetHeight -
+              title.offsetHeight -
+              sendEmail.offsetHeight -
+              btns.offsetHeight -
+              34 -
+              34 -
+              8 +
+              'px'
+            "
+            [style.overflowX]="'auto'"
           >
-            <div class="p-col">{{ receiptProduct.name }}</div>
-            <div class="p-col">{{ receiptProduct.amount }}</div>
-            <div class="p-col">
-              {{ receiptProduct.price * receiptProduct.amount }}
-            </div>
-            <div class="p-col">
-              <button (click)="dropProductFromReceipt(receiptProduct.id)">
-                x
-              </button>
+            <div
+              class="p-grid p-m-0"
+              *ngFor="let receiptProduct of receiptProducts | async"
+            >
+              <div class="p-col">{{ receiptProduct.name }}</div>
+              <div class="p-col">{{ receiptProduct.amount }}</div>
+              <div class="p-col">
+                {{ receiptProduct.price * receiptProduct.amount }}
+              </div>
+              <div class="p-col">
+                <button (click)="dropProductFromReceipt(receiptProduct.id)">
+                  x
+                </button>
+              </div>
             </div>
           </div>
-          <hr />
-          <div class="p-grid">
+          <div class="p-grid p-mt-0 total">
             <div class="p-col">
               <span>Сумма разом: {{ totalSum | async }}</span>
             </div>
           </div>
         </div>
       </div>
-      <div class="p-grid">
-        <div class="p-col">
-          <label>Вiдправити на email</label>
-          <input type="email" />
+      <div
+        class="p-grid sendEmailBlock p-mt-0"
+        style="margin-right: -2px"
+        #sendEmail
+      >
+        <div class="p-col p-fluid p-px-0 p-py-2">
+          <input type="text" pInputText placeholder="Вiдправити на email" />
         </div>
+        <!-- <div class="p-field">
+          <label for="password">Вiдправити на email</label>
+          <input
+            id="password"
+            type="password"
+            formControlName="password"
+            pInputText
+          />
+        </div> -->
       </div>
-      <div class="p-grid">
-        <div class="p-col"><button>Готiвка</button></div>
-        <div class="p-col"><button>Карта</button></div>
-        <div class="p-col"><button>Iнше</button></div>
+      <div class="p-grid p-mt-0 btns" #btns>
+        <div class="p-col p-p-0">
+          <p-button [style]="{ width: '100%' }" label="Готiвка"></p-button>
+        </div>
+        <div class="p-col p-p-0">
+          <p-button [style]="{ width: '100%' }" label="Карта"></p-button>
+        </div>
+        <div class="p-col p-p-0">
+          <p-button [style]="{ width: '100%' }" label="Iнше"></p-button>
+        </div>
       </div>
     </div>
   </div>
