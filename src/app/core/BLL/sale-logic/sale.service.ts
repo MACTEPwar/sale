@@ -71,7 +71,7 @@ export class SaleService {
   }
 
   private getMockProducts(): Array<TProduct> {
-    return Array.from({ length: 4 }, (_, i) => i + 1).map((m) => ({
+    return Array.from({ length: 40 }, (_, i) => i + 1).map((m) => ({
       name: `Товар ${m}`,
       code: `11${m}`,
       id: `${m}`,

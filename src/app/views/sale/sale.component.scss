@@ -1,6 +1,78 @@
 @import "/src/styles/variables";
 
-.title {
-  color: $font-color;
-  font-size: 20px;
+$titleHeight: 35px;
+$saleSearchHeight: 55px;
+
+$tdNameWidth: auto;
+$tdCodeWidth: 110px;
+$tdPriceWidth: 110px;
+$tdAddBtnWidth: 70px;
+
+.container {
+  height: 100%;
+  .title {
+    color: $font-color;
+    font-size: 20px;
+    height: $titleHeight;
+  }
+  .sale {
+    height: calc(100% - #{$titleHeight});
+    .sale-search {
+      height: $saleSearchHeight;
+      .p-inputgroup-addon {
+        background-color: $control-bg-color;
+        color: $control-color;
+      }
+    }
+    .product-list {
+      max-height: calc(100% - #{$saleSearchHeight});
+      .p-col {
+        height: 100%;
+        padding: 0 0.5rem;
+        th {
+          background-color: white;
+          border-top: none;
+          border-left: none;
+          border-right: none;
+          border-bottom: #bbb  1px solid;
+        }
+        td {
+          border-left: none;
+          border-right: none;
+          border-top: none;
+          border-bottom: #e8e8e8  1px solid;
+        }
+        .tdName {
+          width: $tdNameWidth;
+          max-width: $tdNameWidth;
+          min-width: $tdNameWidth;
+        }
+        .tdCode {
+          width: $tdCodeWidth;
+          max-width: $tdCodeWidth;
+          min-width: $tdCodeWidth;
+        }
+        .tdPrice {
+          width: $tdPriceWidth;
+          max-width: $tdPriceWidth;
+          min-width: $tdPriceWidth;
+        }
+        .tdAddBtn {
+          width: $tdAddBtnWidth;
+          max-width: $tdAddBtnWidth;
+          min-width: $tdAddBtnWidth;
+          padding: 0 40px 0 0;
+          .addBtn {
+            width: 30px;
+            height: 30px;
+            border-radius: 30px;
+            border: none;
+            background-color: #89a2d0;
+            color: white;
+          }
+        }
+      }
+      // overflow-y: auto;
+    }
+  }
 }

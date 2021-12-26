@@ -1,12 +1,12 @@
-<div class="container">
-  <div class="p-grid title p-m-0">
+<div class="container" #container>
+  <div class="p-grid title p-m-0" #title>
     <div class="p-col">
       <span>Продаж товару</span>
     </div>
   </div>
   <div class="p-grid sale p-m-0">
-    <div class="p-col">
-      <div class="p-grid sale-search">
+    <div class="p-col h-100">
+      <div class="p-grid sale-search" #saleSearch>
         <div class="p-col">
           <div class="p-inputgroup">
             <input
@@ -18,24 +18,33 @@
           </div>
         </div>
       </div>
-      <div class="p-grid">
+      <div class="p-grid product-list">
         <div class="p-col">
-          <p-table [value]="(productList | async)!" responsiveLayout="scroll">
+          <p-table
+            [value]="(productList | async)!"
+            [scrollable]="true"
+            [scrollHeight]="
+              container.offsetHeight -
+              title.offsetHeight -
+              saleSearch.offsetHeight +
+              'px'
+            "
+          >
             <ng-template pTemplate="header">
               <tr>
-                <th>Найменування</th>
-                <th>Код</th>
-                <th>Цiна</th>
-                <th></th>
+                <th class="tdName">Найменування</th>
+                <th class="tdCode">Код</th>
+                <th class="tdPrice">Цiна</th>
+                <th class="tdAddBtn"></th>
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-product>
               <tr>
-                <td>{{ product.name }}</td>
-                <td>{{ product.code }}</td>
-                <td>{{ product.price }}</td>
-                <td>
-                  <button (click)="addProductToReceipt(product)">add</button>
+                <td class="tdName">{{ product.name }}</td>
+                <td class="tdCode">{{ product.code }}</td>
+                <td class="tdPrice">{{ product.price }}</td>
+                <td class="tdAddBtn">
+                  <button class="addBtn" (click)="addProductToReceipt(product)">+</button>
                 </td>
               </tr>
             </ng-template>
