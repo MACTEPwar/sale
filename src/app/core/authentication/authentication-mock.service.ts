@@ -1,4 +1,4 @@
-import { environment } from './../../../environments/environment';
+import { environment } from 'src/environments/environment';
 import { TNullable } from './../../shared/types/types/t-nullabel';
 import { TUser } from '@common/types';
 import { HttpClient, HttpHeaders } from '@angular/common/http';

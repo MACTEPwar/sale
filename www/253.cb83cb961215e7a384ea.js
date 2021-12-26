@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunksale=self.webpackChunksale||[]).push([[253],{3253:function(a,o,u){u.r(o),u.d(o,{ReturnModule:function(){return r}});var e=u(1116),t=u(4107),r=function(){function n(){}return n.\u0275fac=function(l){return new(l||n)},n.\u0275mod=t.oAB({type:n}),n.\u0275inj=t.cJS({imports:[[e.ez]]}),n}()}}]);
