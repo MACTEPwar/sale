@@ -6,8 +6,6 @@ import { CommonModule } from '@angular/common';
 @NgModule({
   declarations: [],
   imports: [CommonModule],
-  providers: [
-    { provide: AuthenticationService, useClass: AuthenticationMockService },
-  ],
+  providers: [{ provide: AuthenticationService }],
 })
 export class AuthenticationModule {}

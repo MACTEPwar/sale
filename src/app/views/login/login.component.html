@@ -1,13 +1,26 @@
 <div class="p-fluid p-col-2" [formGroup]="profileForm">
-    <div class="p-field">
-        <label for="username">Login</label>
-        <input id="username" type="text" formControlName="username" pInputText />
-    </div>
-    <div class="p-field">
-        <label for="password">Password</label>
-        <input id="password" type="password" formControlName="password" pInputText />
-    </div>
-    <div class="p-field">
-        <p-button label="Войти" (onClick)="clickBtnLogin()"></p-button>
-    </div>
+  <div class="p-field">
+    <label for="username">Login</label>
+    <input id="username" type="text" formControlName="username" pInputText />
+  </div>
+  <div class="p-field">
+    <label for="password">Password</label>
+    <input
+      id="password"
+      type="password"
+      formControlName="password"
+      pInputText
+    />
+  </div>
+  <div class="p-field">
+    <p-button label="Авторизоваться" (onClick)="clickBtnLogin()"></p-button>
+  </div>
+  <div class="p-field">
+    <p-dropdown
+      formControlName="fiscal"
+      [options]="listFiscals"
+      optionLabel="fiscalNumber"
+      (onChange)="onSelectFiscal($event)"
+    ></p-dropdown>
+  </div>
 </div>

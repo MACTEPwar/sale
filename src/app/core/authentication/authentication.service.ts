@@ -1,11 +1,11 @@
 import { environment } from 'src/environments/environment';
 import { TNullable } from './../../shared/types/types/t-nullabel';
-import { TUser } from '@common/types';
+import { TFiscal, TUser } from '@common/types';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { catchError, map, tap, mergeMap } from 'rxjs/operators';
+import { BehaviorSubject, iif, Observable, of, throwError } from 'rxjs';
+import { catchError, map, tap, mergeMap, switchMap } from 'rxjs/operators';
 
 /**
  * Сервис по управлению авторизацией пользователя
@@ -20,6 +20,10 @@ export class AuthenticationService {
   get currentUser(): TNullable<TUser> {
     return this._currentUser$?.getValue() as TNullable<TUser>;
   }
+
+  listFiscals: BehaviorSubject<Array<TFiscal>> = new BehaviorSubject<
+    Array<TFiscal>
+  >(new Array());
 
   /** Задает текущего пользователя */
   set currentUser(value: TNullable<TUser>) {
@@ -48,25 +52,27 @@ export class AuthenticationService {
   login$({
     username,
     password,
+    fiscal,
   }: {
     username: string;
     password: string;
+    fiscal?: number;
   }): Observable<any> {
     const formData: any = new FormData();
     formData.append('username', username);
     formData.append('password', password);
-    formData.append('grant_type', 'password');
+    if (fiscal != null) {
+      formData.append('fiscal', fiscal);
+    }
 
     return this.http
       .post<TUser>(`${environment.apiUrl}/api/auth/token`, formData)
       .pipe(
         mergeMap((_: TUser) =>
-          this.getUser(_.access_token ?? '').pipe(
-            map((m) => {
-              // console.log('getUser -->', m);
-              const currentUser = m.data.auth.authorizedUser;
-              _.name = currentUser.nameFull;
-              _.username = currentUser.login;
+          this.getUser(_.access_token!).pipe(
+            map((user) => {
+              _.name = user.name;
+              _.username = user.username;
               return _;
             })
           )
@@ -74,9 +80,19 @@ export class AuthenticationService {
         map((user) => {
           localStorage.setItem('currentUser', JSON.stringify(user));
 
-          return (this.currentUser = user);
-        })
+          return (this.currentUser = user as TUser);
+        }),
+        switchMap((_) =>
+          iif(() => fiscal != null, of({}), this.$getFiscalList())
+        )
+        // switchMap((_) => )
       );
+  }
+
+  $getFiscalList(): Observable<any> {
+    return this.http
+      .get(`${environment.apiUrl}/api/Ecr/list`)
+      .pipe(map((m: any) => m.data));
   }
 
   /**
@@ -110,25 +126,26 @@ export class AuthenticationService {
   }
 
   private getUser(token: string): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        Authorization: `Bearer ${token}`,
-      }),
-    };
+    // const httpOptions = {
+    //   headers: new HttpHeaders({
+    //     Authorization: `Bearer ${token}`,
+    //   }),
+    // };
 
-    const query = `query getlogin {
-                      auth {
-                        authorizedUser {
-                          id,
-                          login,
-                          nameFull
-                        }
-                      }
-                    }`;
+    // const query = `query getlogin {
+    //                   auth {
+    //                     authorizedUser {
+    //                       id,
+    //                       login,
+    //                       nameFull
+    //                     }
+    //                   }
+    //                 }`;
 
-    const data = {
-      query,
-    };
-    return this.http.post(`${environment.apiUrl}}/graphql`, data, httpOptions);
+    // const data = {
+    //   query,
+    // };
+    // return this.http.post(`${environment.apiUrl}}/graphql`, data, httpOptions);
+    return of({ name: 'admin', username: 'admin', id: '12321' });
   }
 }

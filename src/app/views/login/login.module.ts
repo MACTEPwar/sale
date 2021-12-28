@@ -5,6 +5,7 @@ import { LoginRoutingModule } from './login-router.module';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
   declarations: [LoginComponent],
@@ -15,6 +16,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ButtonModule,
     FormsModule,
     ReactiveFormsModule,
+    DropdownModule,
   ],
 })
 export class LoginModule {}
