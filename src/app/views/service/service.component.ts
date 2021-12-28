@@ -7,7 +7,6 @@ import { ServiceService } from './service.service';
   selector: 'app-service',
   templateUrl: './service.component.html',
   styleUrls: ['./service.component.scss'],
-  providers: [{ provide: ServiceService }],
 })
 export class ServiceComponent implements OnInit {
   constructor(

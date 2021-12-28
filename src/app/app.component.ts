@@ -4,11 +4,13 @@ import { AuthenticationService } from 'src/app/core/authentication/authenticatio
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
+import { ServiceService } from './views/service/service.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  providers: [ServiceService],
 })
 export class AppComponent {
   title = 'sale';

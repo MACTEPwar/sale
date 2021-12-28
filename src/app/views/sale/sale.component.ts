@@ -1,3 +1,4 @@
+import { ServiceService } from './../service/service.service';
 import { Component, OnInit } from '@angular/core';
 import { TProduct } from '@common/types';
 import { Observable, of, Subject } from 'rxjs';
@@ -18,7 +19,12 @@ export class SaleComponent implements OnInit {
   receiptProducts: Observable<Array<TReceiptProduct>>;
   totalSum: Observable<number>;
 
-  constructor(private saleService: SaleService) {
+  moneyInKassa: Observable<number>;
+
+  constructor(
+    private saleService: SaleService,
+    private serviceService: ServiceService
+  ) {
     this.productList = this.saleService.productList.pipe(
       map((m) => {
         return m ?? [];
@@ -26,6 +32,8 @@ export class SaleComponent implements OnInit {
     );
     this.receiptProducts = this.saleService.receipt.products;
     this.totalSum = this.saleService.receipt.totalSum;
+    this.serviceService.getMoneyInKassa();
+    this.moneyInKassa = this.serviceService.moneyInKassa;
   }
 
   ngOnInit(): void {}
