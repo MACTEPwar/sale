@@ -95,6 +95,22 @@ $btns: 37px;
       .receiptProducts {
         // max-height: calc(100% -34px - 34px);
         overflow-y: auto;
+        .tdReceiptProduct {
+          color: $font-color;
+          margin-top: auto;
+          margin-bottom: auto;
+          &.dropFromReceiptBtn {
+            text-align: right;
+            button {
+              width: 30px;
+              height: 30px;
+              border-radius: 30px;
+              border: none;
+              background-color: #89a2d0;
+              color: white;
+            }
+          }
+        }
       }
       .total {
         height: 34px;

@@ -81,12 +81,16 @@
               class="p-grid p-m-0"
               *ngFor="let receiptProduct of receiptProducts | async"
             >
-              <div class="p-col">{{ receiptProduct.name }}</div>
-              <div class="p-col">{{ receiptProduct.amount }}</div>
-              <div class="p-col">
+              <div class="p-col tdReceiptProduct">
+                {{ receiptProduct.name }}
+              </div>
+              <div class="p-col tdReceiptProduct">
+                {{ receiptProduct.amount }}
+              </div>
+              <div class="p-col tdReceiptProduct">
                 {{ receiptProduct.price * receiptProduct.amount }}
               </div>
-              <div class="p-col">
+              <div class="p-col tdReceiptProduct dropFromReceiptBtn">
                 <button (click)="dropProductFromReceipt(receiptProduct.id)">
                   x
                 </button>
