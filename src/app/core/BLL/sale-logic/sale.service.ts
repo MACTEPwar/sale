@@ -10,9 +10,36 @@ export class SaleService {
   receipt: Receipt = new Receipt();
   productList: BehaviorSubject<Array<TProduct>> = new BehaviorSubject<
     Array<TProduct>
-  >(this.getMockProducts());
+  >([]);
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) {
+    this.getProductList();
+  }
+
+  getProductList(name: string | null = null): void {
+    this.getPorducts$(name).subscribe((res) => {
+      this.productList.next(
+        res.map((m: any) => ({
+          id: m.id,
+          name: m.name,
+          bar: m.bar,
+          price: m.price,
+        }))
+      );
+    });
+  }
+
+  getPorducts$(name: string | null = null): Observable<any> {
+    let obj: any = {};
+    if (name) {
+      obj.name = name;
+    }
+    return this.httpClient
+      .get(`${environment.apiUrl}/api/barPrice/list`, {
+        params: obj,
+      })
+      .pipe(map((m: any) => m.data));
+  }
 
   addProductToReceipt(product: TProduct, amount: number): void {
     this.addProductToReceiptHttp(product, amount).subscribe((result) => {
@@ -73,7 +100,7 @@ export class SaleService {
   private getMockProducts(): Array<TProduct> {
     return Array.from({ length: 40 }, (_, i) => i + 1).map((m) => ({
       name: `Товар ${m}`,
-      code: `11${m}`,
+      bar: `11${m}`,
       id: `${m}`,
       price: this.randomInteger(50, 300),
     }));

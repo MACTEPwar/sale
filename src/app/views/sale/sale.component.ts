@@ -43,6 +43,6 @@ export class SaleComponent implements OnInit {
 export class Product {
   id: string = '';
   name: string = '';
-  code: string = '';
+  bar: string = '';
   price: number = 0;
 }
