@@ -1,3 +1,4 @@
+import { ServiceModule } from './views/service/service.module';
 import { CoreModule } from './core/core.module';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -12,6 +13,8 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+
 @NgModule({
   declarations: [AppComponent, IsLoginPagePipe],
   imports: [
@@ -23,6 +26,8 @@ import { ButtonModule } from 'primeng/button';
     CoreModule,
     ToastModule,
     ButtonModule,
+    OverlayPanelModule,
+    ServiceModule,
   ],
   providers: [MessageService],
   bootstrap: [AppComponent],

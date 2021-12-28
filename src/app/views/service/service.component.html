@@ -1,5 +1,32 @@
-<div class="p-d-flex">
-  <div class="p-col"><p-button label="Внос" (onClick)="doCashIn()"></p-button></div>
-  <div class="p-col"><p-button label="Вынос"></p-button></div>
-  <div class="p-col"><p-button label="z-отчет"></p-button></div>
+<div class="p-fuid">
+  <div class="p-field">
+    <p-button
+      label="Внесення"
+      (onClick)="doCashIn()"
+      [style]="{ width: '100%' }"
+    ></p-button>
+  </div>
+  <div class="p-field">
+    <p-button
+      label="Вилучення"
+      [style]="{ width: '100%' }"
+      (onClick)="doCashOut()"
+    ></p-button>
+  </div>
+  <div class="p-field">
+    <p-button
+      label="Z-звiт"
+      [style]="{ width: '100%' }"
+      (onClick)="doZReport()"
+    ></p-button>
+  </div>
+  <div class="p-field">
+    <p-button
+      title="Вийти"
+      label="Вийти"
+      [style]="{ width: '100%' }"
+      icon="pi pi-sign-out"
+      iconPos="right"
+    ></p-button>
+  </div>
 </div>

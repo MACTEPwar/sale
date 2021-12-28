@@ -2,19 +2,27 @@
 <ng-container *ngIf="!(router | isLoginPage | async); else loginBlock">
   <div class="container p-d-flex">
     <div class="left-menu">
+      <p-button
+        [title]="currentUser?.name"
+        [label]="currentUser?.name!"
+        [style]="{ width: '100%' }"
+        icon="pi pi-user"
+        iconPos="left"
+        (onClick)="op.toggle($event)"
+      ></p-button>
       <p-panelMenu
         [model]="items"
         [style]="{ width: '100%' }"
         [multiple]="false"
       ></p-panelMenu>
-      <p-button
+      <!-- <p-button
         class="logOutBtn"
         title="Вийти"
         label="Вийти"
         [style]="{ width: '100%' }"
         icon="pi pi-sign-out"
         iconPos="right"
-      ></p-button>
+      ></p-button> -->
     </div>
     <div class="content">
       <router-outlet></router-outlet>
@@ -25,3 +33,9 @@
 <ng-template #loginBlock>
   <router-outlet></router-outlet>
 </ng-template>
+
+<p-overlayPanel #op>
+  <ng-template pTemplate>
+    <app-service></app-service>
+  </ng-template>
+</p-overlayPanel>

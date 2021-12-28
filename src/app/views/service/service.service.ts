@@ -8,18 +8,23 @@ export class ServiceService {
   constructor(private httpClient: HttpClient) {}
 
   doCashIn(sum: number): Observable<any> {
-    return this.httpClient.get(
-      `${environment.apiUrl}/api/service/doCashIn/${sum}`
+    return this.httpClient.post(
+      `${environment.apiUrl}/api/service/servicein`,
+      sum
     );
   }
 
   doCashOut(sum: number): Observable<any> {
-    return this.httpClient.get(
-      `${environment.apiUrl}/api/service/doCashIn/${sum}`
+    return this.httpClient.post(
+      `${environment.apiUrl}/api/service/serviceout`,
+      sum
     );
   }
 
   doZReport(): Observable<any> {
-    return this.httpClient.get(`${environment.apiUrl}/api/service/doZReport`);
+    return this.httpClient.post(
+      `${environment.apiUrl}/api/service/doZReport`,
+      {}
+    );
   }
 }

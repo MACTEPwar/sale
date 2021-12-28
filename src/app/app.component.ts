@@ -1,3 +1,6 @@
+import { TUser } from './shared/types/types/t-user';
+import { TNullable } from './shared/types/types/t-nullabel';
+import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
@@ -10,14 +13,19 @@ import { MenuItem } from 'primeng/api';
 export class AppComponent {
   title = 'sale';
   items: MenuItem[] = [];
+  currentUser: TNullable<TUser>;
 
-  constructor(public router: Router) {}
+  constructor(
+    public router: Router,
+    private authenticationService: AuthenticationService
+  ) {
+    this.currentUser = this.authenticationService.currentUser;
+  }
 
   ngOnInit(): void {
     this.items = [
       { routerLink: '/sale', label: 'Продаж' },
       { routerLink: '/return', label: 'Повернення' },
-      { routerLink: '/service', label: 'Сервiс' },
       {
         label: 'Звiти',
         items: [

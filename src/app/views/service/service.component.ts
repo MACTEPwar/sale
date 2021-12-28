@@ -7,7 +7,7 @@ import { ServiceService } from './service.service';
   selector: 'app-service',
   templateUrl: './service.component.html',
   styleUrls: ['./service.component.scss'],
-  providers: [{ provide: ServiceService, useClass: ServiceMockService }],
+  providers: [{ provide: ServiceService }],
 })
 export class ServiceComponent implements OnInit {
   constructor(
@@ -22,11 +22,28 @@ export class ServiceComponent implements OnInit {
     if (result !== null) {
       this.serviceService.doCashIn(+result).subscribe((res) => {
         this.messageService.add({
-          severity:'info',
+          severity: 'info',
           summary: 'Iнфо',
           detail: 'Виконано внесення',
         });
       });
     }
+  }
+
+  doCashOut(): void {
+    let result: string | null = prompt('Введiть суму');
+    if (result !== null) {
+      this.serviceService.doCashOut(+result).subscribe((res) => {
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Iнфо',
+          detail: 'Виконано вилучення',
+        });
+      });
+    }
+  }
+
+  doZReport(): void {
+    this.serviceService.doZReport().subscribe((res) => {});
   }
 }

@@ -23,11 +23,6 @@ const routes: Routes = [
       import('./views/return/return.module').then((m) => m.ReturnModule),
   },
   {
-    path: 'service',
-    loadChildren: () =>
-      import('./views/service/service.module').then((m) => m.ServiceModule),
-  },
-  {
     path: 'report',
     loadChildren: () =>
       import('./views/report/report.module').then((m) => m.ReportModule),

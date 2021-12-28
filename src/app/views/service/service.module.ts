@@ -6,10 +6,7 @@ import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   declarations: [ServiceComponent],
-  imports: [
-    CommonModule,
-    ServiceRoutingModule,
-    ButtonModule
-  ],
+  imports: [CommonModule, ServiceRoutingModule, ButtonModule],
+  exports: [ServiceComponent],
 })
 export class ServiceModule {}
