@@ -8,25 +8,25 @@ export class Receipt {
   >([]);
   totalSum: BehaviorSubject<number> = new BehaviorSubject<number>(0);
 
-  addProduct(product: TProduct, amount: number): void {
-    this.products.next([
-      {
-        id: product.id,
-        amount,
-        name: product.name,
-        price: product.price,
-      },
-      ...this.products.getValue(),
-    ]);
+  // addProduct(product: TProduct, amount: number): void {
+  //   this.products.next([
+  //     {
+  //       id: product.id,
+  //       amount,
+  //       name: product.name,
+  //       price: product.price,
+  //     },
+  //     ...this.products.getValue(),
+  //   ]);
 
-    // this.refreshTotalPrice();
-  }
+  //   // this.refreshTotalPrice();
+  // }
 
-  dropProduct(id: string): void {
-    this.products.next(this.products.getValue().filter((f) => f.id !== id));
+  // dropProduct(id: string): void {
+  //   this.products.next(this.products.getValue().filter((f) => f.id !== id));
 
-    // this.refreshTotalPrice();
-  }
+  //   // this.refreshTotalPrice();
+  // }
 
   //   private refreshTotalPrice(): void {
   //     this.products.getValue().reduce((curr: any, acc: any) => {

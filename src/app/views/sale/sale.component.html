@@ -4,7 +4,8 @@
       <span>Продаж товару</span>
     </div>
     <div class="p-col">
-      {{ moneyInKassa | async }}
+      <span>Грошей у сейфi:</span>
+      {{ moneyInKassa | async }} грн.
     </div>
   </div>
   <div class="p-grid sale p-m-0">
@@ -16,6 +17,8 @@
               type="text"
               pInputText
               placeholder="Пошук по каталогу товарiв"
+              (input)="onSearch(inp.value)"
+              #inp
             />
             <span class="p-inputgroup-addon"><i class="pi pi-search"></i></span>
           </div>
@@ -94,7 +97,11 @@
                 {{ receiptProduct.price * receiptProduct.amount }}
               </div>
               <div class="p-col tdReceiptProduct dropFromReceiptBtn">
-                <button (click)="dropProductFromReceipt(receiptProduct.id)">
+                <button
+                  (click)="
+                    dropProductFromReceipt(receiptProduct.articlePosition)
+                  "
+                >
                   x
                 </button>
               </div>

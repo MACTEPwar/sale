@@ -2,7 +2,7 @@ import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take, tap } from 'rxjs/operators';
 
 @Injectable()
 export class ServiceService {
@@ -11,7 +11,10 @@ export class ServiceService {
 
   getMoneyInKassa(): void {
     this.getMoneyInKassa$()
-      .pipe(map((m) => m.data))
+      .pipe(
+        map((m) => m.data),
+        take(1)
+      )
       .subscribe((res) => {
         this.moneyInKassa.next(res);
       });
@@ -24,23 +27,32 @@ export class ServiceService {
   }
 
   doCashIn(sum: number): Observable<any> {
-    return this.httpClient.post(
-      `${environment.apiUrl}/api/service/servicein`,
-      sum
-    );
+    return this.httpClient
+      .post(`${environment.apiUrl}/api/service/servicein`, sum)
+      .pipe(
+        tap((_) => {
+          this.getMoneyInKassa();
+        })
+      );
   }
 
   doCashOut(sum: number): Observable<any> {
-    return this.httpClient.post(
-      `${environment.apiUrl}/api/service/serviceout`,
-      sum
-    );
+    return this.httpClient
+      .post(`${environment.apiUrl}/api/service/serviceout`, sum)
+      .pipe(
+        tap((_) => {
+          this.getMoneyInKassa();
+        })
+      );
   }
 
   doZReport(): Observable<any> {
-    return this.httpClient.post(
-      `${environment.apiUrl}/api/service/doZReport`,
-      {}
-    );
+    return this.httpClient
+      .post(`${environment.apiUrl}/api/service/doZReport`, {})
+      .pipe(
+        tap((_) => {
+          this.getMoneyInKassa();
+        })
+      );
   }
 }

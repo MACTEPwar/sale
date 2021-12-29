@@ -1,6 +1,8 @@
 export type TReceiptProduct = {
-    id: string;
-    name: string;
-    amount: number;
-    price: number;
-}
+  articlePosition: number;
+  name: string;
+  amount: number;
+  price: number;
+  bar: string;
+  discountSum: number;
+};

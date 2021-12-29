@@ -43,8 +43,12 @@ export class SaleComponent implements OnInit {
     this.saleService.addProductToReceipt(product, +amount);
   }
 
-  dropProductFromReceipt(productId: string): void {
-    this.saleService.dropProductFromReceipt(productId);
+  dropProductFromReceipt(articlePosition: number): void {
+    this.saleService.dropProductFromReceipt(articlePosition);
+  }
+
+  onSearch(value: string): void {
+    this.saleService.getProductList(value);
   }
 }
 

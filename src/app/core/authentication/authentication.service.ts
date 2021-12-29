@@ -126,26 +126,8 @@ export class AuthenticationService {
   }
 
   private getUser(token: string): Observable<any> {
-    // const httpOptions = {
-    //   headers: new HttpHeaders({
-    //     Authorization: `Bearer ${token}`,
-    //   }),
-    // };
-
-    // const query = `query getlogin {
-    //                   auth {
-    //                     authorizedUser {
-    //                       id,
-    //                       login,
-    //                       nameFull
-    //                     }
-    //                   }
-    //                 }`;
-
-    // const data = {
-    //   query,
-    // };
-    // return this.http.post(`${environment.apiUrl}}/graphql`, data, httpOptions);
-    return of({ name: 'admin', username: 'admin', id: '12321' });
+    return this.http
+      .post(`${environment.apiUrl}/api/Auth/info`, {})
+      .pipe(map((m: any) => m.data));
   }
 }
