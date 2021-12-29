@@ -3,8 +3,8 @@
   <div class="container p-d-flex">
     <div class="left-menu">
       <p-button
-        [title]="currentUser?.name"
-        [label]="currentUser?.name!"
+        [title]="(currentUser | async)?.name"
+        [label]="(currentUser | async)?.name!"
         [style]="{ width: '100%' }"
         icon="pi pi-user"
         iconPos="left"

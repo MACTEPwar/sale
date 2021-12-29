@@ -1,4 +1,4 @@
-<div class="p-fluid p-col-2" [formGroup]="profileForm">
+<div class="container p-fluid p-col-4" [formGroup]="profileForm">
   <div class="p-field" *ngIf="!(isAuthinticate | async)!; else loginIsAuth">
     <label for="username">Логiн</label>
     <input id="username" type="text" formControlName="username" pInputText />

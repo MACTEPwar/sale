@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { ServiceService } from './views/service/service.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -15,13 +16,13 @@ import { ServiceService } from './views/service/service.service';
 export class AppComponent {
   title = 'sale';
   items: MenuItem[] = [];
-  currentUser: TNullable<TUser>;
+  currentUser: Observable<TNullable<TUser>>;
 
   constructor(
     public router: Router,
     private authenticationService: AuthenticationService
   ) {
-    this.currentUser = this.authenticationService.currentUser;
+    this.currentUser = this.authenticationService._currentUser$;
   }
 
   ngOnInit(): void {
