@@ -87,22 +87,36 @@
               class="p-grid p-m-0"
               *ngFor="let receiptProduct of receiptProducts | async"
             >
-              <div class="p-col tdReceiptProduct">
+              <div class="p-col tdReceiptProduct name">
                 {{ receiptProduct.name }}
               </div>
-              <div class="p-col tdReceiptProduct">
-                {{ receiptProduct.amount }}
+              <div class="p-col tdReceiptProduct amount">
+                <span class="amountText">{{ receiptProduct.amount }}</span>
+                <input
+                  type="number"
+                  pInputText
+                  [(ngModel)]="receiptProduct.amount"
+                  class="amountEdit w-100"
+                />
               </div>
-              <div class="p-col tdReceiptProduct">
+              <div class="p-col tdReceiptProduct sum">
                 {{ receiptProduct.price * receiptProduct.amount }}
               </div>
               <div class="p-col tdReceiptProduct dropFromReceiptBtn">
                 <button
-                  (click)="
-                    dropProductFromReceipt(receiptProduct.articlePosition)
-                  "
+                  class="editBtn"
+                  pStyleClass="@grandparent"
+                  toggleClass="edit"
                 >
-                  x
+                  <i class="pi pi-pencil"></i>
+                </button>
+                <button
+                  class="saveBtn"
+                  pStyleClass="@grandparent"
+                  toggleClass="edit"
+                  (click)="onChangeProduct(receiptProduct)"
+                >
+                  <i class="pi pi-save"></i>
                 </button>
               </div>
             </div>
@@ -134,10 +148,18 @@
       </div>
       <div class="p-grid p-mt-0 btns" #btns>
         <div class="p-col p-p-0">
-          <p-button [style]="{ width: '100%' }" label="Готiвка"></p-button>
+          <p-button
+            [style]="{ width: '100%' }"
+            label="Готiвка"
+            (onClick)="doPayment(0)"
+          ></p-button>
         </div>
         <div class="p-col p-p-0">
-          <p-button [style]="{ width: '100%' }" label="Карта"></p-button>
+          <p-button
+            [style]="{ width: '100%' }"
+            label="Карта"
+            (onClick)="doPayment(1)"
+          ></p-button>
         </div>
         <div class="p-col p-p-0">
           <p-button [style]="{ width: '100%' }" label="Iнше"></p-button>

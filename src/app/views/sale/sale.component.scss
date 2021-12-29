@@ -95,19 +95,69 @@ $btns: 37px;
       .receiptProducts {
         // max-height: calc(100% -34px - 34px);
         overflow-y: auto;
-        .tdReceiptProduct {
-          color: $font-color;
-          margin-top: auto;
-          margin-bottom: auto;
-          &.dropFromReceiptBtn {
-            text-align: right;
-            button {
-              width: 30px;
+
+        > .p-grid {
+          &.edit {
+            .amountText {
+              display: none;
+            }
+            .amountEdit {
+              display: inline-block;
               height: 30px;
-              border-radius: 30px;
-              border: none;
-              background-color: #89a2d0;
-              color: white;
+            }
+            .dropFromReceiptBtn .editBtn {
+              display: none;
+            }
+            .dropFromReceiptBtn .saveBtn {
+              display: inline-block;
+            }
+          }
+          &:not(.edit) {
+            .amountText {
+              display: inline;
+            }
+            .amountEdit {
+              display: none;
+            }
+            .dropFromReceiptBtn .editBtn {
+              display: inline-block;
+            }
+            .dropFromReceiptBtn .saveBtn {
+              display: none;
+            }
+          }
+          .tdReceiptProduct {
+            color: $font-color;
+            margin-top: auto;
+            margin-bottom: auto;
+            &.name {
+              width: auto;
+              max-width: auto;
+              min-width: auto;
+            }
+            &.amount {
+              width: 150px;
+              max-width: 150px;
+              min-width: 150px;
+            }
+            &.sum {
+              width: 150px;
+              max-width: 150px;
+              min-width: 150px;
+            }
+            &.dropFromReceiptBtn {
+              width: 60px;
+              max-width: 60px;
+              min-width: 60px;
+              text-align: right;
+              button {
+                width: 30px;
+                height: 30px;
+                border-radius: 30px;
+                border: none;
+                background-color: #89a2d0;
+                color: white;
+              }
             }
           }
         }

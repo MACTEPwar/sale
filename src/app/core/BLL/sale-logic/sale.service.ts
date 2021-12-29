@@ -1,9 +1,10 @@
+import { TReceiptProduct } from './../../../shared/types/types/t-receipt-product';
 import { environment } from './../../../../environments/environment';
 import { BehaviorSubject, Observable, of, timer } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Receipt, TProduct } from '@common/types';
-import { map } from 'rxjs/operators';
+import { filter, map, take, tap } from 'rxjs/operators';
 
 @Injectable()
 export class SaleService {
@@ -60,27 +61,54 @@ export class SaleService {
     });
   }
 
-  dropProductFromReceipt(articlePosition: number): void {
-    // this.dropProductFromReceiptHttp(id).subscribe((result) => {
-    //   this.receipt.dropProduct(id);
-    //   this.receipt.totalSum.next(result);
-    // });
+  changeProductFromReceipt(product: TReceiptProduct): void {
+    this.changeProductFromReceiptHttp(product)
+      .pipe(take(1))
+      .subscribe((result) => {
+        this.receipt.totalSum.next(+result.sum);
+        this.receipt.products.next(
+          result.positions.map((m: any) => ({
+            articlePosition: m.articlePosition,
+            name: m.name,
+            amount: m.amount,
+            price: m.price,
+            bar: m.bar,
+            discountSum: +m.discountSum,
+          }))
+        );
+      });
   }
 
   getCurrentReceipt(): void {
-    this.getCurrentReceipt$().subscribe((result) => {
-      this.receipt.totalSum.next(+result.sum);
-      this.receipt.products.next(
-        result.positions.map((m: any) => ({
-          articlePosition: m.articlePosition,
-          name: m.name,
-          amount: m.amount,
-          price: m.price,
-          bar: m.bar,
-          discountSum: +m.discountSum,
-        }))
-      );
-    });
+    this.getCurrentReceipt$()
+      .pipe(take(1))
+      .subscribe((result) => {
+        this.receipt.totalSum.next(+result.sum);
+        this.receipt.products.next(
+          result.positions.map((m: any) => ({
+            articlePosition: m.articlePosition,
+            name: m.name,
+            amount: m.amount,
+            price: m.price,
+            bar: m.bar,
+            discountSum: +m.discountSum,
+          }))
+        );
+      });
+  }
+
+  doPayment(sum: number, paymentType: number): Observable<any> {
+    return this.doPayment$(sum, paymentType).pipe(
+      filter((f) => f === true),
+      tap((t) => {
+        this.receipt.products.next([]);
+        this.receipt.totalSum.next(0);
+      }),
+      take(1)
+    );
+    //     .subscribe((res) => {
+    //       this.getCurrentReceipt();
+    //     });
   }
 
   private addProductToReceiptHttp(
@@ -97,20 +125,30 @@ export class SaleService {
       .pipe(map((m: any) => m.data));
   }
 
-  // private dropProductFromReceiptHttp(productId: string): Observable<any> {
-  //   return this.httpClient.delete(
-  //     `${environment.apiUrl}/sale/dropProduct/${productId}`
-  //   );
-  // }
-
-  // TODO: когда бек сделает, то раскоментить предыдыщую
-  private dropProductFromReceiptHttp(articlePosition: number): Observable<any> {
-    return of({});
+  private changeProductFromReceiptHttp(
+    product: TReceiptProduct
+  ): Observable<any> {
+    return this.httpClient
+      .post(`${environment.apiUrl}/api/Receipt/fiscal/change`, {
+        bar: product.bar,
+        articlePosition: product.articlePosition,
+        discountSum: product.discountSum,
+        amount: product.amount,
+      })
+      .pipe(map((m: any) => m.data));
   }
 
   private getCurrentReceipt$(): Observable<any> {
     return this.httpClient
       .get(`${environment.apiUrl}/api/Receipt/fiscal`)
+      .pipe(map((m: any) => m.data));
+  }
+
+  private doPayment$(sum: number, paymentType: number): Observable<any> {
+    return this.httpClient
+      .post(`${environment.apiUrl}/api/Receipt/fiscal/payment`, [
+        { paymentType, amount: sum },
+      ])
       .pipe(map((m: any) => m.data));
   }
 }

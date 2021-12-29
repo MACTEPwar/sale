@@ -1,7 +1,7 @@
 import { ServiceService } from './../service/service.service';
 import { Component, OnInit } from '@angular/core';
 import { TProduct } from '@common/types';
-import { Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SaleService } from './../../core/BLL/sale-logic/sale.service';
 import { TReceiptProduct } from './../../shared/types/types/t-receipt-product';
@@ -17,7 +17,7 @@ export class SaleComponent implements OnInit {
   test: Array<Product> = [];
 
   receiptProducts: Observable<Array<TReceiptProduct>>;
-  totalSum: Observable<number>;
+  totalSum: BehaviorSubject<number>;
 
   moneyInKassa: Observable<number>;
 
@@ -43,12 +43,19 @@ export class SaleComponent implements OnInit {
     this.saleService.addProductToReceipt(product, +amount);
   }
 
-  dropProductFromReceipt(articlePosition: number): void {
-    this.saleService.dropProductFromReceipt(articlePosition);
+  onChangeProduct(product: TReceiptProduct): void {
+    this.saleService.changeProductFromReceipt(product);
   }
 
   onSearch(value: string): void {
     this.saleService.getProductList(value);
+  }
+
+  doPayment(paymentType: number): void {
+    this.saleService.doPayment(this.totalSum.getValue(), paymentType).subscribe(res => {
+      this.saleService.getCurrentReceipt();
+      this.serviceService.getMoneyInKassa();
+    });
   }
 }
 

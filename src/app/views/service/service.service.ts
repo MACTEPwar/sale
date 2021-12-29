@@ -32,7 +32,8 @@ export class ServiceService {
       .pipe(
         tap((_) => {
           this.getMoneyInKassa();
-        })
+        }),
+        take(1)
       );
   }
 
@@ -42,7 +43,8 @@ export class ServiceService {
       .pipe(
         tap((_) => {
           this.getMoneyInKassa();
-        })
+        }),
+        take(1)
       );
   }
 
@@ -52,7 +54,8 @@ export class ServiceService {
       .pipe(
         tap((_) => {
           this.getMoneyInKassa();
-        })
+        }),
+        take(1)
       );
   }
 }
