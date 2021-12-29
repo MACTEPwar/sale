@@ -71,8 +71,8 @@ export class AuthenticationService {
         mergeMap((_: TUser) =>
           this.getUser(_.access_token!).pipe(
             map((user) => {
-              _.name = user.name;
-              _.username = user.username;
+              _.name = user?.name;
+              _.username = user?.username;
               return _;
             })
           )
