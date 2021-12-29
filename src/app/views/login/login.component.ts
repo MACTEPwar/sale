@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   });
   constructor(
     private authenticationService: AuthenticationService,
-    private router: Router
+    private router: Router,
   ) {}
 
   listFiscals: Array<TFiscal> = new Array<TFiscal>();
@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit {
       this.authenticationService
         .login$(this.profileForm.getRawValue())
         .subscribe((res) => {
+          // this.saleService.getCurrentReceipt();
           this.router.navigate(['/sale']);
         });
     }

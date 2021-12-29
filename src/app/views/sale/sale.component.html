@@ -61,9 +61,6 @@
       </div>
     </div>
     <div class="p-col p-py-0">
-      <!-- [style.height]="
-          container.offsetHeight - sendEmail.offsetHeight - btns.offsetHeight
-        " -->
       <div class="p-grid receipt">
         <div class="p-col">
           <div class="p-grid receiptTitle">
@@ -136,15 +133,6 @@
         <div class="p-col p-fluid p-px-0 p-py-2">
           <input type="text" pInputText placeholder="Вiдправити на email" />
         </div>
-        <!-- <div class="p-field">
-          <label for="password">Вiдправити на email</label>
-          <input
-            id="password"
-            type="password"
-            formControlName="password"
-            pInputText
-          />
-        </div> -->
       </div>
       <div class="p-grid p-mt-0 btns" #btns>
         <div class="p-col p-p-0">
@@ -162,9 +150,40 @@
           ></p-button>
         </div>
         <div class="p-col p-p-0">
-          <p-button [style]="{ width: '100%' }" label="Iнше"></p-button>
+          <p-button
+            [style]="{ width: '100%' }"
+            label="Iнше"
+            (onClick)="visibleOtherPayment = true"
+          ></p-button>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<p-dialog header="Оберiть спосб оплати" [(visible)]="visibleOtherPayment">
+  <div
+    class="p-fluid p-grid"
+    *ngFor="let paymentType of listPaymentTypes | async"
+  >
+    <div class="p-col p-field">{{ paymentType.paymentName }}</div>
+    <div class="p-col p-field">
+      <input
+        type="number"
+        min="0"
+        pInputText
+        (input)="pay[paymentType.type] = inpPay.value"
+        #inpPay
+      />
+    </div>
+  </div>
+  <div class="p-fluid p-grid">
+    <div class="p-col p-field">
+      <p-button
+        [style]="{ width: '100%' }"
+        label="Оплата"
+        (onClick)="doPay()"
+      ></p-button>
+    </div>
+  </div>
+</p-dialog>

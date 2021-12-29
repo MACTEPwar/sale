@@ -21,10 +21,16 @@ export class SaleComponent implements OnInit {
 
   moneyInKassa: Observable<number>;
 
+  listPaymentTypes: Observable<Array<any>>;
+
+  visibleOtherPayment = false;
+  pay: any = {};
+
   constructor(
     private saleService: SaleService,
     private serviceService: ServiceService
   ) {
+    this.saleService.getPaymentsList();
     this.productList = this.saleService.productList.pipe(
       map((m) => {
         return m ?? [];
@@ -34,6 +40,7 @@ export class SaleComponent implements OnInit {
     this.totalSum = this.saleService.receipt.totalSum;
     this.serviceService.getMoneyInKassa();
     this.moneyInKassa = this.serviceService.moneyInKassa;
+    this.listPaymentTypes = this.saleService.paymentsList;
   }
 
   ngOnInit(): void {}
@@ -52,9 +59,27 @@ export class SaleComponent implements OnInit {
   }
 
   doPayment(paymentType: number): void {
-    this.saleService.doPayment(this.totalSum.getValue(), paymentType).subscribe(res => {
+    this.saleService
+      .doPayment([{ sum: this.totalSum.getValue(), paymentType: paymentType }])
+      .subscribe((res) => {
+        this.saleService.getCurrentReceipt();
+        this.serviceService.getMoneyInKassa();
+      });
+  }
+
+  doPay(): void {
+    let arr: Array<{ sum: number; paymentType: number }> = [];
+    for (let p in this.pay) {
+      arr.push({
+        sum: +this.pay[p],
+        paymentType: +p,
+      });
+    }
+
+    this.saleService.doPayment(arr).subscribe((res) => {
       this.saleService.getCurrentReceipt();
       this.serviceService.getMoneyInKassa();
+      this.visibleOtherPayment = false;
     });
   }
 }

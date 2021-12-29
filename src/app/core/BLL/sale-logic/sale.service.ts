@@ -12,6 +12,9 @@ export class SaleService {
   productList: BehaviorSubject<Array<TProduct>> = new BehaviorSubject<
     Array<TProduct>
   >([]);
+  paymentsList: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>(
+    []
+  );
 
   constructor(private httpClient: HttpClient) {
     this.getProductList();
@@ -97,8 +100,10 @@ export class SaleService {
       });
   }
 
-  doPayment(sum: number, paymentType: number): Observable<any> {
-    return this.doPayment$(sum, paymentType).pipe(
+  doPayment(
+    array: Array<{ sum: number; paymentType: number }>
+  ): Observable<any> {
+    return this.doPayment$(array).pipe(
       filter((f) => f === true),
       tap((t) => {
         this.receipt.products.next([]);
@@ -109,6 +114,14 @@ export class SaleService {
     //     .subscribe((res) => {
     //       this.getCurrentReceipt();
     //     });
+  }
+
+  getPaymentsList(): void {
+    this.getPaementsList$()
+      .pipe(take(1))
+      .subscribe((res) => {
+        this.paymentsList.next(res);
+      });
   }
 
   private addProductToReceiptHttp(
@@ -144,11 +157,20 @@ export class SaleService {
       .pipe(map((m: any) => m.data));
   }
 
-  private doPayment$(sum: number, paymentType: number): Observable<any> {
+  private doPayment$(
+    array: Array<{ sum: number; paymentType: number }>
+  ): Observable<any> {
     return this.httpClient
-      .post(`${environment.apiUrl}/api/Receipt/fiscal/payment`, [
-        { paymentType, amount: sum },
-      ])
+      .post(
+        `${environment.apiUrl}/api/Receipt/fiscal/payment`,
+        array.map((m) => ({ amount: m.sum, paymentType: m.paymentType }))
+      )
+      .pipe(map((m: any) => m.data));
+  }
+
+  private getPaementsList$(): Observable<any> {
+    return this.httpClient
+      .get(`${environment.apiUrl}/api/payments/list`)
       .pipe(map((m: any) => m.data));
   }
 }
