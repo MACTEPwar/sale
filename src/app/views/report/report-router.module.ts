@@ -1,3 +1,4 @@
+import { AuthGuard } from 'src/app/core/BLL/auth.guard';
 import { ReportComponent } from './report.component';
 import { ReceiptsComponent } from './receipts/receipts.component';
 import { NgModule } from '@angular/core';
@@ -8,9 +9,18 @@ const routes: Routes = [
   {
     path: '',
     component: ReportComponent,
+    canActivate: [AuthGuard],
     children: [
-      { path: 'receipts', component: ReceiptsComponent },
-      { path: 'z-reports', component: ZReportsComponent },
+      {
+        path: 'receipts',
+        component: ReceiptsComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'z-reports',
+        component: ZReportsComponent,
+        canActivate: [AuthGuard],
+      },
     ],
   },
 ];
