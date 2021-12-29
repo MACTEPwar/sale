@@ -1,121 +1,53 @@
+import { environment } from 'src/environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 
 @Injectable()
 export class ReceiptService {
-  status: string[] = ['OUTOFSTOCK', 'INSTOCK', 'LOWSTOCK'];
+  receipts: BehaviorSubject<Array<TReceipt>> = new BehaviorSubject<
+    Array<TReceipt>
+  >([]);
+  loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  productNames: string[] = [
-    'Bamboo Watch',
-    'Black Watch',
-    'Blue Band',
-    'Blue T-Shirt',
-    'Bracelet',
-    'Brown Purse',
-    'Chakra Bracelet',
-    'Galaxy Earrings',
-    'Game Controller',
-    'Gaming Set',
-    'Gold Phone Case',
-    'Green Earbuds',
-    'Green T-Shirt',
-    'Grey T-Shirt',
-    'Headphones',
-    'Light Green T-Shirt',
-    'Lime Band',
-    'Mini Speakers',
-    'Painted Phone Case',
-    'Pink Band',
-    'Pink Purse',
-    'Purple Band',
-    'Purple Gemstone Necklace',
-    'Purple T-Shirt',
-    'Shoes',
-    'Sneakers',
-    'Teal T-Shirt',
-    'Yellow Earbuds',
-    'Yoga Mat',
-    'Yoga Set',
-  ];
+  constructor(private httpClient: HttpClient) {}
 
-  constructor(private http: HttpClient) {}
-
-  getProductsSmall() {
-    return this.http
-      .get<any>('assets/receipts.json')
-      .toPromise()
-      .then((res: any) => <any[]>res.data)
-      .then((data: any) => {
-        return data;
+  getReceipts(filter: TReceiptFilter): void {
+    this.loading.next(true);
+    this.httpClient
+      .post(
+        `${
+          environment.apiUrl
+        }/api/documents/list?dateTime=${filter.dateTime.toISOString()}`,
+        {
+          skip: filter.skip,
+          take: filter.take,
+        }
+      )
+      .pipe(
+        map((m: any) => m.data),
+        take(1)
+      )
+      .subscribe((receipts) => {
+        this.receipts.next(receipts);
+        this.loading.next(false);
       });
-  }
-
-  getProducts() {
-    return this.http
-      .get<any>('assets/products.json')
-      .toPromise()
-      .then((res: any) => <any[]>res.data)
-      .then((data: any) => {
-        return data;
-      });
-  }
-
-  getProductsWithOrdersSmall() {
-    return this.http
-      .get<any>('assets/products-orders-small.json')
-      .toPromise()
-      .then((res: any) => <any[]>res.data)
-      .then((data: any) => {
-        return data;
-      });
-  }
-
-  generatePrduct(): any {
-    const product: any = {
-      id: this.generateId(),
-      name: this.generateName(),
-      description: 'Product Description',
-      price: this.generatePrice(),
-      quantity: this.generateQuantity(),
-      category: 'Product Category',
-      inventoryStatus: this.generateStatus(),
-      rating: this.generateRating(),
-    };
-
-    product.image =
-      product.name.toLocaleLowerCase().split(/[ ,]+/).join('-') + '.jpg';
-    return product;
-  }
-
-  generateId() {
-    let text = '';
-    let possible =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-
-    for (var i = 0; i < 5; i++) {
-      text += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-
-    return text;
-  }
-
-  generateName() {
-    return this.productNames[Math.floor(Math.random() * Math.floor(30))];
-  }
-
-  generatePrice() {
-    return Math.floor(Math.random() * Math.floor(299) + 1);
-  }
-
-  generateQuantity() {
-    return Math.floor(Math.random() * Math.floor(75) + 1);
-  }
-
-  generateStatus() {
-    return this.status[Math.floor(Math.random() * Math.floor(3))];
-  }
-
-  generateRating() {
-    return Math.floor(Math.random() * Math.floor(5) + 1);
   }
 }
+
+export type TReceipt = {
+  id: string;
+  fiscalNumber: number;
+  receiptType: string;
+  orderTaxNum: string;
+  dfsLink: string;
+  sum: number;
+  dateCreate: Date;
+};
+
+export type TReceiptFilter = {
+  dateTime: Date;
+  skip: number;
+  take: number;
+};

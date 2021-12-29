@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ReceiptService } from './receipt.service';
+import { Observable } from 'rxjs';
+import { ReceiptService, TReceipt } from './receipt.service';
 
 @Component({
   selector: 'app-receipts',
@@ -8,13 +9,26 @@ import { ReceiptService } from './receipt.service';
   providers: [ReceiptService],
 })
 export class ReceiptsComponent implements OnInit {
-  products: any[] = [];
+  receipts: Observable<Array<TReceipt>>;
+  loading: Observable<boolean>;
 
-  constructor(private receiptService: ReceiptService) {}
+  constructor(private receiptService: ReceiptService) {
+    this.receipts = this.receiptService.receipts;
+    this.loading = this.receiptService.loading;
+    this.receiptService.getReceipts({
+      dateTime: new Date(),
+      skip: 0,
+      take: 20,
+    });
+  }
 
-  ngOnInit() {
-    this.receiptService
-      .getProductsSmall()
-      .then((data: any) => (this.products = data));
+  ngOnInit() {}
+
+  loadReceipts(event: any): void {
+    this.receiptService.getReceipts({
+      dateTime: new Date(),
+      skip: event.first,
+      take: event.rows,
+    });
   }
 }
