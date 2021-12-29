@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TFiscal } from '@common/types';
+import { Observable } from 'rxjs';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 
 @Component({
@@ -15,10 +16,14 @@ export class LoginComponent implements OnInit {
     password: new FormControl('', Validators.required),
     fiscal: new FormControl(null),
   });
+
+  isAuthinticate: Observable<boolean>;
   constructor(
     private authenticationService: AuthenticationService,
-    private router: Router,
-  ) {}
+    private router: Router
+  ) {
+    this.isAuthinticate = this.authenticationService.isAuthinticate;
+  }
 
   listFiscals: Array<TFiscal> = new Array<TFiscal>();
 
@@ -37,9 +42,11 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  onSelectFiscal(event: any): void {
+  signIn(): void {
     let result = confirm(
-      `Вы хотите залогинется под номером ${event.value.fiscalNumber}`
+      `Вы хотите залогинется под номером ${
+        this.profileForm.get('fiscal')?.value
+      }`
     );
 
     if (result) {

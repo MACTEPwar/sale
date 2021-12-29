@@ -12,6 +12,13 @@ import { catchError, map, tap, mergeMap, switchMap } from 'rxjs/operators';
  */
 @Injectable()
 export class AuthenticationService {
+  isAuthinticate: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
+    false
+  );
+  currentFiscalNumber: BehaviorSubject<number | null> = new BehaviorSubject<
+    number | null
+  >(null);
+
   public _currentUser$: BehaviorSubject<TNullable<TUser>> = new BehaviorSubject<
     TNullable<TUser>
   >(null);
@@ -82,6 +89,13 @@ export class AuthenticationService {
 
           return (this.currentUser = user as TUser);
         }),
+        tap((_) => {
+          if (fiscal != null) {
+            this.currentFiscalNumber.next(fiscal);
+          } else {
+            this.isAuthinticate.next(true);
+          }
+        }),
         switchMap((_) =>
           iif(() => fiscal != null, of({}), this.$getFiscalList())
         )
@@ -101,6 +115,8 @@ export class AuthenticationService {
   logout(): void {
     localStorage.removeItem('currentUser');
     this.currentUser = null;
+    this.isAuthinticate.next(false);
+    this.currentFiscalNumber.next(null);
     this.route.navigate(['/login']);
   }
 
