@@ -1,5 +1,6 @@
+import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { MessageService } from 'primeng/api';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ServiceMockService } from './service.-mock.service';
 import { ServiceService } from './service.service';
 
@@ -9,9 +10,11 @@ import { ServiceService } from './service.service';
   styleUrls: ['./service.component.scss'],
 })
 export class ServiceComponent implements OnInit {
+  @Input() panel: any;
   constructor(
     private serviceService: ServiceService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private authService: AuthenticationService
   ) {}
 
   ngOnInit(): void {}
@@ -44,5 +47,10 @@ export class ServiceComponent implements OnInit {
 
   doZReport(): void {
     this.serviceService.doZReport().subscribe((res) => {});
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.panel.hide()
   }
 }
