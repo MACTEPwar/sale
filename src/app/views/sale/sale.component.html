@@ -172,7 +172,7 @@
         type="number"
         min="0"
         pInputText
-        (input)="pay[paymentType.type] = inpPay.value"
+        [(ngModel)]="pay[paymentType.type]"
         #inpPay
       />
     </div>

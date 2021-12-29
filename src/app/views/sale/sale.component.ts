@@ -80,6 +80,10 @@ export class SaleComponent implements OnInit {
       this.saleService.getCurrentReceipt();
       this.serviceService.getMoneyInKassa();
       this.visibleOtherPayment = false;
+
+      for (let p in this.pay) {
+        this.pay[p] = null;
+      }
     });
   }
 }

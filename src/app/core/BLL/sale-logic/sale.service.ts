@@ -1,3 +1,4 @@
+import { MessageService } from 'primeng/api';
 import { TReceiptProduct } from './../../../shared/types/types/t-receipt-product';
 import { environment } from './../../../../environments/environment';
 import { BehaviorSubject, Observable, of, timer } from 'rxjs';
@@ -16,7 +17,10 @@ export class SaleService {
     []
   );
 
-  constructor(private httpClient: HttpClient) {
+  constructor(
+    private httpClient: HttpClient,
+    private messageService: MessageService
+  ) {
     this.getProductList();
     this.getCurrentReceipt();
   }
@@ -165,7 +169,19 @@ export class SaleService {
         `${environment.apiUrl}/api/Receipt/fiscal/payment`,
         array.map((m) => ({ amount: m.sum, paymentType: m.paymentType }))
       )
-      .pipe(map((m: any) => m.data));
+      .pipe(
+        tap(
+          (_: any) => {},
+          (error: any) => {
+            this.messageService.add({
+              severity: 'warn',
+              summary: 'Помилка',
+              detail: error.error.message,
+            });
+          }
+        ),
+        map((m: any) => m.data)
+      );
   }
 
   private getPaementsList$(): Observable<any> {
