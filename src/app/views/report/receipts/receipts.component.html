@@ -7,10 +7,22 @@
     dataKey="id"
     [paginator]="true"
     [rows]="20"
-    [totalRecords]="1000"
+    [totalRecords]="(count | async)!"
     [loading]="(loading | async)!"
-    [scrollable]="true" scrollHeight="flex"
+    [scrollable]="true"
+    scrollHeight="flex"
   >
+    <ng-template pTemplate="caption">
+      <div class="title">Чеки</div>
+      <div class="rightCaption">
+        <p-calendar
+          [ngModel]="date"
+          [yearRange]="'2021:2040'"
+          [appendTo]="'body'"
+          (ngModelChange)="onDateChange($event)"
+        ></p-calendar>
+      </div>
+    </ng-template>
     <ng-template pTemplate="header">
       <tr>
         <th>Фiск. номер</th>
@@ -28,20 +40,30 @@
         <td>{{ receipt.sum }}</td>
         <td>{{ receipt.dateCreate }}</td>
         <td>
-          <p-button
-            [style]="{ width: '100%' }"
-            icon="pi-link"
+          <a
+            [attr.href]="receipt.dfsLink"
             title="Посилання на сайт"
-          ></p-button>
+            target="_blank"
+            ><i class="pi pi-link"></i
+          ></a>
         </td>
         <td>
           <p-button
             [style]="{ width: '100%' }"
-            icon="pi-print"
-            title="Посилання на сайт"
+            icon="pi pi-print"
+            title="Перегля чеку"
+            (onClick)="onSelectReceipt(receipt.orderTaxNum)"
           ></p-button>
         </td>
       </tr>
     </ng-template>
   </p-table>
 </div>
+
+<p-dialog
+  header="Чек"
+  [(visible)]="visibleReceipt"
+  [style]="{ width: '600px' }"
+>
+  <app-receipt [fiscalNumber]="fiscalNumber" showMode="print"></app-receipt>
+</p-dialog>

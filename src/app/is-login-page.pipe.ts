@@ -11,7 +11,7 @@ export class IsLoginPagePipe implements PipeTransform {
     return router.events.pipe(
       filter((event) => event instanceof NavigationEnd),
       switchMap((_: any) => {
-        if (_.url === '/' || _.url === '/login') {
+        if (_.url === '/' || _.url === '/login' || _.url === '/test') {
           return of(true);
         } else {
           return of(false);

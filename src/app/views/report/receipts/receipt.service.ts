@@ -5,10 +5,11 @@ import { BehaviorSubject } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
 @Injectable()
-export class ReceiptService {
+export class ReceiptsService {
   receipts: BehaviorSubject<Array<TReceipt>> = new BehaviorSubject<
     Array<TReceipt>
   >([]);
+  count: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   constructor(private httpClient: HttpClient) {}
@@ -29,8 +30,9 @@ export class ReceiptService {
         map((m: any) => m.data),
         take(1)
       )
-      .subscribe((receipts) => {
-        this.receipts.next(receipts);
+      .subscribe((data) => {
+        this.receipts.next(data.Value);
+        this.count.next(data.Key);
         this.loading.next(false);
       });
   }
