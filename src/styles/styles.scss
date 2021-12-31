@@ -18,21 +18,69 @@ body {
   font-family: "Roboto", Arial, Helvetica, sans-serif;
 }
 
+.p-panelmenu .p-panelmenu-header > a .p-panelmenu-icon {
+  margin-right: 0;
+}
+.pi-chevron-right:before {
+  content: "\e901";
+  position: absolute;
+  right: 10px;
+  font-size: 12px;
+  top: 20px;
+}
+.pi-chevron-down:before {
+  content: "\e902";
+  position: absolute;
+  right: 10px;
+  font-size: 12px;
+  top: 20px;
+}
+.p-panelmenu .p-panelmenu-panel {
+  margin-bottom: 0;
+  border-bottom: 1px solid #2d3749;
+}
+.p-panelmenu .p-panelmenu-content {
+  border-radius: 0px;
+  border: none;
+  margin: 0;
+}
+.p-panelmenu .p-panelmenu-header.p-highlight > a {
+  background: #89a2d0;
+  font-weight: 500;
+  border-color: #89a2d0;
+  color: #ffffff;
+  border-radius: 0;
+}
+
+.p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link {
+  background: #607292;
+  &:not(.p-disabled):hover {
+    background-color: #45546d;
+    .p-menuitem-text {
+      color: #fff;
+    }
+  }
+  .p-menuitem-text {
+    color: #fff;
+  }
+}
+
 .p-panelmenu .p-panelmenu-header {
   &.p-highlight:not(.p-disabled) > a:hover {
-    background-color: transparent;
-    color: #fe8a7d;
+    background-color: #89a2d0;
+    color: #ffffff;
   }
   & > a {
-    background-color: transparent;
     border: none;
-    color: #d2d2d2;
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 21px;
+    color: #ffffff;
+    font-size: 13px;
+    text-transform: uppercase;
+    font-weight: 400;
     position: relative;
+    background: #607292;
+    min-height: 50px;
     &:active {
-      background-color: #657da5;
+      background-color: #45546d;
     }
     &:focus {
       border: none;
@@ -42,12 +90,13 @@ body {
     &.p-menuitem-link-active {
       background-color: transparent;
       border-color: none;
-      color: #fe8a7d;
+      font-weight: 500;
+      color: #ffffff;
       &::after {
         content: "";
         display: block;
         width: 5px;
-        background: #fe8a7d;
+        background: #89a2d0;
         height: 100%;
         position: absolute;
         left: 0;
@@ -56,14 +105,14 @@ body {
       &:hover {
         background-color: transparent;
         border-color: none;
-        color: #fe8a7d;
+        color: #fff;
       }
     }
   }
   &:not(.p-highlight):not(.p-disabled) > a:hover {
     background-color: transparent;
     border: none;
-    color: #fe8a7d;
+    color: #fff;
   }
 }
 
@@ -97,4 +146,33 @@ body {
     box-shadow: none;
     border: 1px solid #a6a6a6;
   }
+}
+
+.p-button:enabled:hover {
+  background: #016d6f;
+  color: #ffffff;
+  border-color: #016d6f;
+  outline: none;
+  box-shadow: none;
+}
+
+.userbtn button {
+  text-align: left;
+  height: 50px;
+  font-family: "Roboto";
+  font-size: 14px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: block;
+}
+.logOutBtn button {
+  text-align: left;
+  height: 37px;
+  font-family: "Roboto";
+  font-size: 14px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: block;
 }
