@@ -1,0 +1,10 @@
+{
+  "cordova-plugin-printer": {
+    "source": {
+      "type": "registry",
+      "id": "https://github.com/katzer/cordova-plugin-printer.git"
+    },
+    "is_top_level": true,
+    "variables": {}
+  }
+}

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+declare var cordova: any;
+
 @Component({
   selector: 'app-test',
   templateUrl: './test.component.html',
@@ -11,6 +13,8 @@ export class TestComponent implements OnInit {
   ngOnInit(): void {}
 
   print(printContent: any): void {
+    cordova.plugins.printer.print('<h1>Hello World!</h1>');
+
     const WindowPrt = window.open(
       '',
       '',
