@@ -5,6 +5,54 @@
 }
 
 .container {
-//   display: flex;
+  //   display: flex;
   margin: auto;
+}
+
+.loginbody {
+  background-color: #89a2d0;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.loginpage {
+  border: 1px solid #fff;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 10px rgb(84 96 150);
+  background-color: #fffffff0;
+  position: relative;
+  z-index: 2;
+}
+
+.logotype_log {
+  width: 150px;
+  height: 20px;
+  display: block;
+  background-image: url("../../../images/logo.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+@media (min-width: 500px) and (min-height: 500px) {
+  .loginpage {
+    &::after {
+      content: "";
+      width: 451px;
+      height: 448px;
+      background-image: url("../../../images/log_bg.png");
+      display: block;
+      z-index: -1;
+      position: absolute;
+      top: -35%;
+      background-size: cover;
+      right: -30%;
+    }
+  }
 }

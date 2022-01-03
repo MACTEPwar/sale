@@ -1,6 +1,6 @@
 @import "/src/styles/variables";
 
-$titleHeight: 35px;
+$titleHeight: 51px;
 $saleSearchHeight: 55px;
 
 $tdNameWidth: auto;
@@ -14,9 +14,14 @@ $btns: 37px;
 .container {
   height: 100%;
   .title {
-    color: $font-color;
-    font-size: 20px;
     height: $titleHeight;
+    border-bottom: 2px solid #01a9ac;
+    color: #000000;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    font-weight: 400;
+    padding: 0 20px;
   }
   .sale {
     height: calc(100% - #{$titleHeight});

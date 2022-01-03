@@ -9,20 +9,22 @@
         icon="pi pi-user"
         iconPos="left"
         (onClick)="op.toggle($event)"
+        class="userbtn"
       ></p-button>
       <p-panelMenu
         [model]="items"
         [style]="{ width: '100%' }"
         [multiple]="false"
       ></p-panelMenu>
-      <!-- <p-button
+      <p-button
         class="logOutBtn"
         title="Вийти"
         label="Вийти"
         [style]="{ width: '100%' }"
         icon="pi pi-sign-out"
-        iconPos="right"
-      ></p-button> -->
+        iconPos="left"
+        (onClick)="logout()"
+      ></p-button>
     </div>
     <div class="content">
       <router-outlet></router-outlet>

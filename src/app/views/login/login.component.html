@@ -1,40 +1,48 @@
-<div class="container p-fluid p-col-4" [formGroup]="profileForm">
-  <div class="p-field" *ngIf="!(isAuthinticate | async)!; else loginIsAuth">
-    <label for="username">Логiн</label>
-    <input id="username" type="text" formControlName="username" pInputText />
-  </div>
-  <ng-template #loginIsAuth>
-    <div class="p-fields">
-      Ви аторизовнi за логiном {{ profileForm.get("username")?.value }}
+<div class="loginbody">
+  <div class="container p-fluid loginpage" [formGroup]="profileForm">
+    <div class="p-field" *ngIf="!(isAuthinticate | async)!; else loginIsAuth">
+      <label for="username">Логiн</label>
+      <input id="username" type="text" formControlName="username" pInputText />
     </div>
-  </ng-template>
-  <div class="p-field" *ngIf="!(isAuthinticate | async)!; else pathIsAuth">
-    <label for="password">Пароль</label>
-    <input
-      id="password"
-      type="password"
-      formControlName="password"
-      pInputText
-    />
-  </div>
-  <ng-template #pathIsAuth>
-    <div class="p-field">
-      <label for="password">Оберiть ПРРО</label>
-      <p-dropdown
-        optionValue="fiscalNumber"
-        formControlName="fiscal"
-        [options]="listFiscals"
-        optionLabel="fiscalNumber"
-      ></p-dropdown>
+    <ng-template #loginIsAuth>
+      <div class="p-fields">
+        Ви аторизовнi за логiном {{ profileForm.get("username")?.value }}
+      </div>
+    </ng-template>
+    <div class="p-field" *ngIf="!(isAuthinticate | async)!; else pathIsAuth">
+      <label for="password">Пароль</label>
+      <input
+        id="password"
+        type="password"
+        formControlName="password"
+        pInputText
+      />
     </div>
-  </ng-template>
-  <div class="p-field" *ngIf="!(isAuthinticate | async)!; else btnIsAuth">
-    <p-button label="Авторизуватись" (onClick)="clickBtnLogin()"></p-button>
-  </div>
-  <ng-template #btnIsAuth>
-    <div class="p-field">
-      <p-button label="Увiйти" (onClick)="signIn()"></p-button>
+    <ng-template #pathIsAuth>
+      <div class="p-field">
+        <label for="password">Оберiть ПРРО</label>
+        <p-dropdown
+          optionValue="fiscalNumber"
+          formControlName="fiscal"
+          [options]="listFiscals"
+          optionLabel="fiscalNumber"
+        ></p-dropdown>
+      </div>
+    </ng-template>
+    <div class="p-field" *ngIf="!(isAuthinticate | async)!; else btnIsAuth">
+      <p-button label="Авторизуватись" (onClick)="clickBtnLogin()"></p-button>
     </div>
-  </ng-template>
-  <div class="p-field" *ngIf="isAuthinticate | async"></div>
+    <ng-template #btnIsAuth>
+      <div class="p-field">
+        <!-- <p-button label="Увiйти" (onClick)="signIn()"></p-button> -->
+        <p-button label="Увiйти" (click)="confirm()"></p-button>
+      </div>
+    </ng-template>
+    <div class="p-field" *ngIf="isAuthinticate | async"></div>
+  </div>
+  <div class="logotype_log"></div>
 </div>
+
+
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" >
+</p-confirmDialog>

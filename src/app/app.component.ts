@@ -38,4 +38,8 @@ export class AppComponent {
       },
     ];
   }
+
+  logout(): void {
+    this.authenticationService.logout();
+  }
 }
