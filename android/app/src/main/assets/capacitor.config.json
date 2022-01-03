@@ -1,6 +1,6 @@
 {
-	"appId": "com.example.app",
+	"appId": "com.sale.app",
 	"appName": "sale",
-	"webDir": "www",
+	"webDir": "dist",
 	"bundledWebRuntime": false
 }

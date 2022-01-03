@@ -19,27 +19,20 @@
     "@angular/platform-browser": "~12.2.0",
     "@angular/platform-browser-dynamic": "~12.2.0",
     "@angular/router": "~12.2.0",
-    "@awesome-cordova-plugins/core": "^5.37.3",
-    "@awesome-cordova-plugins/printer": "^5.37.3",
     "@capacitor/android": "^3.3.3",
-    "@capacitor/app": "1.0.7",
-    "@capacitor/core": "3.3.3",
-    "jetifier": "^2.0.0",
-    "ngx-print": "^1.2.1",
+    "@capacitor/core": "^3.3.3",
     "roboto-fontface": "^0.10.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
-    "@capacitor/cli": "3.3.3",
     "@angular-devkit/build-angular": "~12.2.9",
     "@angular/cli": "~12.2.9",
     "@angular/compiler-cli": "~12.2.0",
+    "@capacitor/cli": "^3.3.3",
     "@types/jasmine": "~3.8.0",
     "@types/node": "^12.11.1",
-    "cordova-android": "^10.1.1",
-    "cordova-plugin-ionic-webview": "^4.2.1",
     "jasmine-core": "~3.8.0",
     "karma": "~6.3.0",
     "karma-chrome-launcher": "~3.1.0",
@@ -50,13 +43,5 @@
     "primeicons": "^4.1.0",
     "primeng": "^12.2.0-rc.1",
     "typescript": "~4.3.5"
-  },
-  "cordova": {
-    "platforms": [
-      "android"
-    ],
-    "plugins": {
-      "cordova-plugin-printer": {}
-    }
   }
 }

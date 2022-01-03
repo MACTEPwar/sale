@@ -14,7 +14,6 @@ import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 
 import { OverlayPanelModule } from 'primeng/overlaypanel';
-import { NgxPrintModule } from 'ngx-print';
 import { TestComponent } from './views/test/test.component';
 
 @NgModule({
@@ -30,7 +29,6 @@ import { TestComponent } from './views/test/test.component';
     ButtonModule,
     OverlayPanelModule,
     ServiceModule,
-    NgxPrintModule,
   ],
   providers: [MessageService],
   bootstrap: [AppComponent],
