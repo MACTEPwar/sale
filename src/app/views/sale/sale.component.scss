@@ -25,6 +25,7 @@ $btns: 37px;
   }
   .sale {
     height: calc(100% - #{$titleHeight});
+    // min-height: 400px;
     .sale-search {
       height: $saleSearchHeight;
       .p-inputgroup-addon {
@@ -51,27 +52,33 @@ $btns: 37px;
           border-top: none;
           border-bottom: #e8e8e8 1px solid;
           color: $font-color;
+          padding: 5px;
         }
         .tdName {
-          width: $tdNameWidth;
-          max-width: $tdNameWidth;
-          min-width: $tdNameWidth;
+          flex: 4;
+          // width: $tdNameWidth;
+          // max-width: $tdNameWidth;
+          // min-width: $tdNameWidth;
         }
         .tdCode {
-          width: $tdCodeWidth;
-          max-width: $tdCodeWidth;
-          min-width: $tdCodeWidth;
+          flex: 1;
+          // width: $tdCodeWidth;
+          // max-width: $tdCodeWidth;
+          // min-width: $tdCodeWidth;
         }
         .tdPrice {
-          width: $tdPriceWidth;
-          max-width: $tdPriceWidth;
-          min-width: $tdPriceWidth;
+          flex: 2;
+          // width: $tdPriceWidth;
+          // max-width: $tdPriceWidth;
+          // min-width: $tdPriceWidth;
         }
         .tdAddBtn {
-          width: $tdAddBtnWidth;
-          max-width: $tdAddBtnWidth;
-          min-width: $tdAddBtnWidth;
+          flex: 1;
+          // width: $tdAddBtnWidth;
+          // max-width: $tdAddBtnWidth;
+          // min-width: $tdAddBtnWidth;
           // padding: 0 #{$tdAddBtnWidth} - 30 0 0;
+
           .addBtn {
             width: 30px;
             height: 30px;
@@ -85,11 +92,12 @@ $btns: 37px;
       // overflow-y: auto;
     }
     .receipt {
-      height: calc(100% - #{$sendEmailBlock} - #{$btns} - 0.5rem);
+      // height: calc(100% - #{$sendEmailBlock} - #{$btns} - 0.5rem);
       background: #f4f4f4;
       border-radius: 6px;
       margin-right: -2px;
       margin-top: 0.5rem;
+      border: 2px dashed #89a2d0;
       .receiptTitle {
         height: 34px;
         border-bottom: #bbb 1px solid;
@@ -180,6 +188,101 @@ $btns: 37px;
     }
     .btns {
       height: 37px;
+    }
+  }
+}
+
+.receiptProducts {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  // max-height: calc(100vh - 230px);
+  .receiptProducts_line {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    div {
+      padding: 3px;
+    }
+    &.edit {
+      .receiptProducts_amount {
+        flex: 2;
+        max-width: 20%;
+        overflow: hidden;
+        .amountText {
+          display: none;
+        }
+        .amountEdit {
+          display: inline-flex;
+          padding: 3px;
+        }
+      }
+      .receiptProducts_dropFromReceiptBtn {
+        flex: 1;
+        max-width: 15%;
+        overflow: hidden;
+        .editBtn {
+          display: none;
+        }
+        .saveBtn {
+          display: inline-flex;
+        }
+      }
+    }
+    &:not(.edit) {
+      .receiptProducts_amount {
+        flex: 2;
+        max-width: 20%;
+        overflow: hidden;
+        .amountText {
+          display: inline-flex;
+        }
+        .amountEdit {
+          display: none;
+        }
+      }
+
+      .receiptProducts_dropFromReceiptBtn {
+        flex: 1;
+        max-width: 15%;
+        overflow: hidden;
+        .editBtn {
+          display: inline-flex;
+        }
+        .saveBtn {
+          display: none;
+        }
+      }
+    }
+
+    .receiptProducts_dropFromReceiptBtn {
+      justify-content: end;
+      display: flex;
+      button {
+        border: none;
+        height: 32px;
+        width: 32px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        color: #fff;
+        background-color: #89a2d0;
+      }
+    }
+
+    .receiptProducts_name {
+      flex: 4;
+      max-width: 40%;
+      word-break: break-all;
+      text-overflow: ellipsis;
+    }
+
+    .receiptProducts_sum {
+      flex: 2;
+      max-width: 25%;
+      overflow: hidden;
     }
   }
 }

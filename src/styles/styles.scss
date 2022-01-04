@@ -176,3 +176,20 @@ body {
   overflow: hidden;
   display: block;
 }
+
+@media screen and (max-height: 400px) {
+  .loginpage {
+    padding: 10px 20px;
+    font-size: 12px;
+    .p-inputtext {
+      padding: 4px;
+      font-size: 12px;
+    }
+    .p-field {
+      margin-bottom: 10px !important;
+    }
+    .pi-chevron-down:before {
+      top: 5px;
+    }
+  }
+}
