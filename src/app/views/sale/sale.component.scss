@@ -56,15 +56,18 @@ $btns: 37px;
         }
         .tdName {
           flex: 4;
+          min-width: 200px;
         }
         .tdCode {
           flex: 2;
+          min-width: 130px;
         }
         .tdPrice {
           flex: 2;
         }
         .tdAddBtn {
           flex: 1;
+          min-width: 50px;
           .addBtn {
             width: 30px;
             height: 30px;
@@ -185,12 +188,18 @@ $btns: 37px;
   display: flex;
   flex-direction: column;
   width: 100%;
+  font-size: 14px;
   // max-height: calc(100vh - 230px);
   .receiptProducts_line {
     display: inline-flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.2);
+    padding: 5px 0;
+    &:last-child {
+      border-bottom: none;
+    }
     div {
       padding: 3px;
     }
@@ -199,6 +208,7 @@ $btns: 37px;
         flex: 2;
         max-width: 20%;
         overflow: hidden;
+        text-align: right;
         .amountText {
           display: none;
         }
@@ -224,6 +234,7 @@ $btns: 37px;
         flex: 2;
         max-width: 20%;
         overflow: hidden;
+        text-align: right;
         .amountText {
           display: inline-flex;
         }
@@ -272,6 +283,7 @@ $btns: 37px;
       flex: 2;
       max-width: 25%;
       overflow: hidden;
+      text-align: right;
     }
   }
 }
