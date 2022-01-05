@@ -1,4 +1,20 @@
 <div class="container">
+<div class="receiptTitleLine">
+  <div class="title">Чеки</div>
+  <div class="calendar">
+    <i class="pi pi-calendar"></i>
+     <span>Дата:</span>
+    <p-calendar
+      [ngModel]="date"
+      [yearRange]="'2021:2040'"
+      [appendTo]="'body'"
+      (ngModelChange)="onDateChange($event)"
+      [readonlyInput]="true"
+    ></p-calendar>
+  </div>
+</div>
+
+
   <p-table
     [value]="(receipts | async)!"
     [lazy]="true"
@@ -6,54 +22,44 @@
     responsiveLayout="scroll"
     dataKey="id"
     [paginator]="true"
-    [rows]="20"
     [totalRecords]="(count | async)!"
     [loading]="(loading | async)!"
     [scrollable]="true"
-    scrollHeight="flex"
+    tableStyleClass="receiptsTable"
+
   >
-    <ng-template pTemplate="caption">
-      <div class="title">Чеки</div>
-      <div class="rightCaption">
-        <p-calendar
-          [ngModel]="date"
-          [yearRange]="'2021:2040'"
-          [appendTo]="'body'"
-          (ngModelChange)="onDateChange($event)"
-        ></p-calendar>
-      </div>
-    </ng-template>
+
     <ng-template pTemplate="header">
-      <tr>
-        <th>Фiск. номер</th>
-        <th>Тип</th>
-        <th>Сума</th>
-        <th>Дата створення</th>
-        <th></th>
-        <th></th>
+      <tr class="recieptTHead">
+        <th style="min-width:180px">Фiск. номер</th>
+        <th style="min-width:180px">Тип</th>
+        <th style="min-width:100px">Сума</th>
+        <th style="min-width:200px">Дата створення</th>
+        <th style="min-width:50px"></th>
+        <th style="min-width:50px"></th>
       </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-receipt>
-      <tr>
-        <td>{{ receipt.orderTaxNum }}</td>
-        <td>{{ receipt.receiptType }}</td>
-        <td>{{ receipt.sum }}</td>
-        <td>{{ receipt.dateCreate }}</td>
-        <td>
+    <ng-template pTemplate="body" let-receipt >
+      <tr class="recieptTBody">
+        <td style="min-width:180px">{{ receipt.orderTaxNum }}</td>
+        <td style="min-width:180px">{{ receipt.receiptType }}</td>
+        <td style="min-width:100px">{{ receipt.sum }}</td>
+        <td style="min-width:200px">{{ receipt.dateCreate | date: "dd.MM.YYYY" }}</td>
+        <td style="min-width:50px">
           <a
+          class="receiptBtn"
             [attr.href]="receipt.dfsLink"
             title="Посилання на сайт"
             target="_blank"
             ><i class="pi pi-link"></i
-          ></a>
+          >Сайт</a>
         </td>
-        <td>
-          <p-button
-            [style]="{ width: '100%' }"
-            icon="pi pi-print"
-            title="Перегля чеку"
+        <td style="min-width:50px">
+          <button
+            class="receiptBtn"
+            title="Перегляд чеку"
             (onClick)="onSelectReceipt(receipt.orderTaxNum)"
-          ></p-button>
+          > <i class="pi pi-eye"></i> Чек</button>
         </td>
       </tr>
     </ng-template>
