@@ -1,1 +1,6 @@
-[]
+[
+	{
+		"pkg": "capacitor-plugin-bluetooth-print",
+		"classpath": "com.raulsalitrero.plugins.btprint.BTPrinter"
+	}
+]

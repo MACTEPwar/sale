@@ -6,10 +6,11 @@ import { AuthenticationService } from './authentication/authentication.service';
 import { SaleLogicModule } from './BLL/sale-logic/sale-logic.module';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { JwtInterceptor } from './interceptors/jwt.iterceptor';
+import { PrinterModule } from './printer/printer.module';
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule, AuthenticationModule, SaleLogicModule],
+  imports: [CommonModule, AuthenticationModule, SaleLogicModule, PrinterModule],
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
@@ -25,6 +26,6 @@ import { JwtInterceptor } from './interceptors/jwt.iterceptor';
       useClass: ErrorInterceptor,
     },
   ],
-  exports: [AuthenticationModule, SaleLogicModule],
+  exports: [AuthenticationModule, SaleLogicModule, PrinterModule],
 })
 export class CoreModule {}

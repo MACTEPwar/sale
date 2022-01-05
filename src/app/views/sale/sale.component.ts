@@ -1,3 +1,4 @@
+import { PrinterService } from '@common/core';
 import { ServiceService } from './../service/service.service';
 import { Component, OnInit } from '@angular/core';
 import { TProduct } from '@common/types';
@@ -27,9 +28,13 @@ export class SaleComponent implements OnInit {
   pay: any = {};
   visibleAddProd = false;
 
+  visiblePaymantProcess = false;
+  payInProgress = false;
+
   constructor(
     private saleService: SaleService,
-    private serviceService: ServiceService
+    private serviceService: ServiceService,
+    private printerService: PrinterService
   ) {
     this.saleService.getPaymentsList();
     this.productList = this.saleService.productList.pipe(
@@ -44,7 +49,12 @@ export class SaleComponent implements OnInit {
     this.listPaymentTypes = this.saleService.paymentsList;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.printerService.print('test').subscribe(
+      (s) => alert(JSON.stringify(s, null, 4)),
+      (e) => alert(JSON.stringify(e, null, 4))
+    );
+  }
 
   addProductToReceipt(product: TProduct): void {
     this.saleService.addProductToReceipt(product, 1);
@@ -64,15 +74,20 @@ export class SaleComponent implements OnInit {
   }
 
   doPayment(paymentType: number): void {
+    this.payInProgress = true;
+    this.visiblePaymantProcess = true;
     this.saleService
       .doPayment([{ sum: this.totalSum.getValue(), paymentType: paymentType }])
       .subscribe((res) => {
         this.saleService.getCurrentReceipt();
         this.serviceService.getMoneyInKassa();
+        this.payInProgress = false;
       });
   }
 
   doPay(): void {
+    this.payInProgress = true;
+    this.visiblePaymantProcess = true;
     let arr: Array<{ sum: number; paymentType: number }> = [];
     for (let p in this.pay) {
       arr.push({
@@ -85,6 +100,7 @@ export class SaleComponent implements OnInit {
       this.saleService.getCurrentReceipt();
       this.serviceService.getMoneyInKassa();
       this.visibleOtherPayment = false;
+      this.payInProgress = true;
 
       for (let p in this.pay) {
         this.pay[p] = null;

@@ -15,6 +15,9 @@ import { ButtonModule } from 'primeng/button';
 
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { TestComponent } from './views/test/test.component';
+import { Printer } from '@awesome-cordova-plugins/printer/ngx';
+import { HTTP } from '@awesome-cordova-plugins/http/ngx';
+import { QRCodeModule } from 'angularx-qrcode';
 
 @NgModule({
   declarations: [AppComponent, IsLoginPagePipe, TestComponent],
@@ -29,8 +32,9 @@ import { TestComponent } from './views/test/test.component';
     ButtonModule,
     OverlayPanelModule,
     ServiceModule,
+    QRCodeModule,
   ],
-  providers: [MessageService],
+  providers: [MessageService, Printer, HTTP],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

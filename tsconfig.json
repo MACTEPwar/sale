@@ -18,7 +18,8 @@
     "module": "es2020",
     "lib": ["es2018", "dom"],
     "paths": {
-      "@common/types": ["src/app/shared/types/index.ts"]
+      "@common/types": ["src/app/shared/types/index.ts"],
+      "@common/core": ["src/app/core/index.ts"]
     }
   },
   "angularCompilerOptions": {
