@@ -33,7 +33,7 @@ body {
   position: absolute;
   right: 10px;
   font-size: 12px;
-  top: 20px;
+  top: 13px;
 }
 .p-panelmenu .p-panelmenu-panel {
   margin-bottom: 0;
@@ -175,4 +175,49 @@ body {
   text-overflow: ellipsis;
   overflow: hidden;
   display: block;
+}
+
+@media screen and (max-height: 400px) {
+  .loginpage {
+    padding: 10px 20px;
+    font-size: 12px;
+    .p-inputtext {
+      padding: 4px;
+      font-size: 12px;
+    }
+    .p-field {
+      margin-bottom: 10px !important;
+    }
+    .pi-chevron-down:before {
+      top: 5px;
+    }
+  }
+}
+
+.toMail {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  input {
+    width: calc(100% - 124px);
+  }
+  button {
+    width: 120px;
+    height: 37px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-weight: 500;
+    font-size: 12px;
+    background-color: #89a2d0;
+    border: none;
+    outline: none;
+    border-radius: 3px;
+    i {
+      margin-right: 5px;
+    }
+  }
 }

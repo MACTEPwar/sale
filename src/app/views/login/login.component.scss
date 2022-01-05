@@ -22,7 +22,7 @@
 }
 .loginpage {
   border: 1px solid #fff;
-  padding: 20px;
+  padding: 10px 20px;
   margin: 20px;
   border-radius: 10px;
   box-shadow: 0 5px 10px rgb(84 96 150);
@@ -42,6 +42,7 @@
 }
 @media (min-width: 500px) and (min-height: 500px) {
   .loginpage {
+    padding: 20px;
     &::after {
       content: "";
       width: 451px;

@@ -9,7 +9,7 @@
     </div>
   </div>
   <div class="p-grid sale p-m-0">
-    <div class="p-col h-100">
+    <div class="p-col-6 h-100">
       <div class="p-grid sale-search" #saleSearch>
         <div class="p-col">
           <div class="p-inputgroup">
@@ -60,34 +60,26 @@
         </div>
       </div>
     </div>
-    <div class="p-col p-py-0">
+    <div class="p-col-6 p-py-0">
       <div class="p-grid receipt">
         <div class="p-col">
           <div class="p-grid receiptTitle">
             <div class="p-col p-text-center"><span>Чек</span></div>
           </div>
-          <div
-            class="receiptProducts"
-            [style.maxHeight]="
-              container.offsetHeight -
-              title.offsetHeight -
-              sendEmail.offsetHeight -
-              btns.offsetHeight -
-              34 -
-              34 -
-              8 +
-              'px'
-            "
-            [style.overflowX]="'auto'"
-          >
+          <!-- [style.maxHeight]="container.offsetHeight - title.offsetHeight - sendEmail.offsetHeight - btns.offsetHeight - 34 - 34 - 8 + 'px' "
+            [style.overflowX]="'auto'" -->
+
+
+
+          <div  class="receiptProducts" >
             <div
-              class="p-grid p-m-0"
+              class="receiptProducts_line"
               *ngFor="let receiptProduct of receiptProducts | async"
             >
-              <div class="p-col tdReceiptProduct name">
+              <div class="receiptProducts_name">
                 {{ receiptProduct.name }}
               </div>
-              <div class="p-col tdReceiptProduct amount">
+              <div class="receiptProducts_amount">
                 <span class="amountText">{{ receiptProduct.amount }}</span>
                 <input
                   type="number"
@@ -96,10 +88,10 @@
                   class="amountEdit w-100"
                 />
               </div>
-              <div class="p-col tdReceiptProduct sum">
+              <div class="receiptProducts_sum">
                 {{ receiptProduct.price * receiptProduct.amount }}
               </div>
-              <div class="p-col tdReceiptProduct dropFromReceiptBtn">
+              <div class="receiptProducts_dropFromReceiptBtn">
                 <button
                   class="editBtn"
                   pStyleClass="@grandparent"
@@ -118,6 +110,11 @@
               </div>
             </div>
           </div>
+
+
+
+
+
           <div class="p-grid p-mt-0 total">
             <div class="p-col">
               <span>Сума разом: {{ totalSum | async }}</span>
@@ -130,8 +127,11 @@
         style="margin-right: -2px"
         #sendEmail
       >
-        <div class="p-col p-fluid p-px-0 p-py-2">
+        <div class="p-col-12 p-px-0 p-py-2 toMail">
           <input type="text" pInputText placeholder="Вiдправити на email" />
+
+          <button
+                ><i class="pi pi-send"></i> Вiдправити</button>
         </div>
       </div>
       <div class="p-grid p-mt-0 btns" #btns>
