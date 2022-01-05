@@ -59,9 +59,9 @@ export class AuthenticationService {
     private route: Router,
     private http: HTTP
   ) {
-    this.currentUser = JSON.parse(
-      localStorage.getItem('currentUser') as string
-    );
+    // this.currentUser = JSON.parse(
+    //   localStorage.getItem('currentUser') as string
+    // );
   }
 
   /**
@@ -103,7 +103,7 @@ export class AuthenticationService {
         )
       ),
       map((user) => {
-        localStorage.setItem('currentUser', JSON.stringify(user));
+        // localStorage.setItem('currentUser', JSON.stringify(user));
 
         return (this.currentUser = user as TUser);
       }),
@@ -123,7 +123,7 @@ export class AuthenticationService {
       switchMap((_) =>
         iif(
           () => Capacitor.getPlatform() === 'android',
-          getFiscalList_ANDROID$(this.http),
+          getFiscalList_ANDROID$(this.http, this.currentUser?.access_token!),
           getFiscalList_WEB$(this.httpClient)
         )
       )
@@ -134,7 +134,7 @@ export class AuthenticationService {
    * Вылогин
    */
   logout(): void {
-    localStorage.removeItem('currentUser');
+    // localStorage.removeItem('currentUser');
     this.currentUser = null;
     this.isAuthinticate.next(false);
     this.currentFiscalNumber.next(null);
@@ -159,7 +159,7 @@ export class AuthenticationService {
       ),
       tap((user) => {
         this.currentUser = user;
-        localStorage.setItem('currentUser', JSON.stringify(user));
+        // localStorage.setItem('currentUser', JSON.stringify(user));
       }),
       catchError((error) => {
         return throwError(error);
@@ -168,9 +168,16 @@ export class AuthenticationService {
   }
 
   private getUser(token: string): Observable<any> {
-    return this.httpClient
-      .post(`${environment.apiUrl}/api/Auth/info`, {})
-      .pipe(map((m: any) => m.data));
+    return of({}).pipe(
+      switchMap((_) =>
+        iif(
+          () => Capacitor.getPlatform() === 'android',
+          getUser_ANDROID$(this.http),
+          getUser_WEB$(this.httpClient)
+        )
+      ),
+      map((m: any) => m.data)
+    );
   }
 }
 
@@ -205,8 +212,19 @@ export function getFiscalList_WEB$(http: HttpClient): Observable<any> {
     .pipe(map((m: any) => m.data));
 }
 
-export function getFiscalList_ANDROID$(http: HTTP): Observable<any> {
-  return from(http.get(`${environment.apiUrl}/api/Ecr/list`, {}, {})).pipe(
+export function getFiscalList_ANDROID$(
+  http: HTTP,
+  auth: string
+): Observable<any> {
+  return from(
+    http.get(
+      `${environment.apiUrl}/api/Ecr/list`,
+      {},
+      {
+        Authorization: `Bearer ${auth}`,
+      }
+    )
+  ).pipe(
     map((m: any) => JSON.parse(m.data).data),
     take(1)
   );
@@ -238,4 +256,15 @@ export function getRefresh_WEB$(
   return http
     .post<TUser>(`${environment.apiUrl}/api/auth/refresh`, formData)
     .pipe(take(1));
+}
+
+export function getUser_ANDROID$(http: HTTP): Observable<any> {
+  return from(http.post(`${environment.apiUrl}/api/Auth/info`, {}, {})).pipe(
+    map((m) => JSON.parse(m.data)),
+    take(1)
+  );
+}
+
+export function getUser_WEB$(http: HttpClient): Observable<any> {
+  return http.post(`${environment.apiUrl}/api/Auth/info`, {}).pipe(take(1));
 }

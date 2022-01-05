@@ -38,15 +38,12 @@ export class LoginComponent implements OnInit {
         .login$(this.profileForm.getRawValue())
         .subscribe(
           (res) => {
-            alert(JSON.stringify(res, null, 4));
             this.listFiscals = res.map((m: any) => ({
               id: m.id,
               fiscalNumber: m.fiscalNumber,
             }));
           },
-          (err) => {
-            alert(JSON.stringify(err, null, 4));
-          }
+          (err) => {}
         );
     }
   }
@@ -77,6 +74,7 @@ export class LoginComponent implements OnInit {
       rejectLabel: 'Нi',
       header: 'Авторизацiя',
       accept: () => {
+        alert(JSON.stringify(this.profileForm.getRawValue(), null, 4));
         this.authenticationService
           .login$(this.profileForm.getRawValue())
           .subscribe((res) => {

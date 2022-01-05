@@ -35,7 +35,7 @@ export class SaleComponent implements OnInit {
     private serviceService: ServiceService,
     private printerService: PrinterService
   ) {
-    this.saleService.getPaymentsList();
+    // this.saleService.getPaymentsList();
     this.productList = this.saleService.productList.pipe(
       map((m) => {
         return m ?? [];
@@ -43,7 +43,7 @@ export class SaleComponent implements OnInit {
     );
     this.receiptProducts = this.saleService.receipt.products;
     this.totalSum = this.saleService.receipt.totalSum;
-    this.serviceService.getMoneyInKassa();
+    // this.serviceService.getMoneyInKassa();
     this.moneyInKassa = this.serviceService.moneyInKassa;
     this.listPaymentTypes = this.saleService.paymentsList;
   }
