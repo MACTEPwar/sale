@@ -1,11 +1,13 @@
 import { MessageService } from 'primeng/api';
 import { TReceiptProduct } from './../../../shared/types/types/t-receipt-product';
 import { environment } from './../../../../environments/environment';
-import { BehaviorSubject, Observable, of, timer } from 'rxjs';
+import { BehaviorSubject, from, iif, Observable, of, timer } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Receipt, TProduct } from '@common/types';
-import { filter, map, take, tap } from 'rxjs/operators';
+import { filter, map, switchMap, take, tap } from 'rxjs/operators';
+import { HTTP } from '@awesome-cordova-plugins/http/ngx';
+import { Capacitor } from '@capacitor/core';
 
 @Injectable()
 export class SaleService {
@@ -19,6 +21,7 @@ export class SaleService {
 
   constructor(
     private httpClient: HttpClient,
+    private http: HTTP,
     private messageService: MessageService
   ) {
     this.getProductList();
@@ -39,15 +42,20 @@ export class SaleService {
   }
 
   getPorducts$(name: string | null = null): Observable<any> {
-    let obj: any = {};
-    if (name) {
-      obj.name = name;
-    }
-    return this.httpClient
-      .get(`${environment.apiUrl}/api/barPrice/list`, {
-        params: obj,
-      })
-      .pipe(map((m: any) => m.data));
+    return of({}).pipe(
+      switchMap((_) =>
+        iif(
+          () => Capacitor.getPlatform() === 'android',
+          getProducts_ANDROID$(this.http, name),
+          getProducts_WEB$(this.httpClient, name)
+        )
+      )
+    );
+    // return this.httpClient
+    //   .get(`${environment.apiUrl}/api/barPrice/list`, {
+    //     params: obj,
+    //   })
+    //   .pipe(map((m: any) => m.data));
   }
 
   addProductToReceipt(product: TProduct, amount: number): void {
@@ -189,4 +197,44 @@ export class SaleService {
       .get(`${environment.apiUrl}/api/payments/list`)
       .pipe(map((m: any) => m.data));
   }
+}
+
+export function getProducts_ANDROID$(
+  http: HTTP,
+  name: string | null = null
+): Observable<any> {
+  let obj: any = {};
+  if (name) {
+    obj.name = name;
+  }
+
+  http.setDataSerializer('json');
+
+  return from(
+    http.get(`${environment.apiUrl}/api/barPrice/list`, obj, {
+      'Content-Type': 'application/json',
+    })
+  ).pipe(
+    map((m: any) => JSON.parse(m.data).data),
+    take(1)
+  );
+}
+
+export function getProducts_WEB$(
+  http: HttpClient,
+  name: string | null = null
+): Observable<any> {
+  let obj: any = {};
+  if (name) {
+    obj.name = name;
+  }
+
+  return http
+    .get(`${environment.apiUrl}/api/barPrice/list`, {
+      params: obj,
+    })
+    .pipe(
+      map((m: any) => m.data),
+      take(1)
+    );
 }
