@@ -69,9 +69,7 @@
           <!-- [style.maxHeight]="container.offsetHeight - title.offsetHeight - sendEmail.offsetHeight - btns.offsetHeight - 34 - 34 - 8 + 'px' "
             [style.overflowX]="'auto'" -->
 
-
-
-          <div  class="receiptProducts" >
+          <div class="receiptProducts">
             <div
               class="receiptProducts_line"
               *ngFor="let receiptProduct of receiptProducts | async"
@@ -111,10 +109,6 @@
             </div>
           </div>
 
-
-
-
-
           <div class="p-grid p-mt-0 total">
             <div class="p-col">
               <span>Сума разом: {{ totalSum | async }}</span>
@@ -130,8 +124,7 @@
         <div class="p-col-12 p-px-0 p-py-2 toMail">
           <input type="text" pInputText placeholder="Вiдправити на email" />
 
-          <button
-                ><i class="pi pi-send"></i> Вiдправити</button>
+          <button><i class="pi pi-send"></i> Вiдправити</button>
         </div>
       </div>
       <div class="p-grid p-mt-0 btns" #btns>
@@ -161,7 +154,7 @@
   </div>
 </div>
 
-<p-dialog header="Оберiть спосб оплати" [(visible)]="visibleOtherPayment">
+<p-dialog header="Оберiть спосiб оплати" [(visible)]="visibleOtherPayment">
   <div
     class="p-fluid p-grid"
     *ngFor="let paymentType of listPaymentTypes | async"
@@ -186,4 +179,41 @@
       ></p-button>
     </div>
   </div>
+</p-dialog>
+
+<p-dialog
+  [header]="payInProgress === false ? 'Друкувати чек?' : 'Оплата'"
+  [modal]="true"
+  [(visible)]="visiblePaymantProcess"
+  [style]="{ width: '50%' }"
+  [closeOnEscape]="false"
+  [closable]="false"
+  [draggable]="false"
+>
+  <ng-container *ngIf="payInProgress; else payFinished">
+    <p-progressBar
+      mode="indeterminate"
+      [style]="{ height: '6px' }"
+    ></p-progressBar>
+  </ng-container>
+  <ng-template #payFinished>
+    <div
+      class="p-grid sendEmailBlock p-mt-0"
+      style="margin-right: -2px"
+      #sendEmail
+    >
+      <div class="p-col-12 p-px-0 p-py-2 toMail">
+        <input type="text" pInputText placeholder="Вiдправити на email" />
+        <button><i class="pi pi-send"></i></button>
+      </div>
+    </div>
+    <div class="p-grid p-mt-0" style="margin-right: -2px">
+      <div class="p-col-6 p-px-0">
+        <button>Так</button>
+      </div>
+      <div class="p-col-6 p-px-0">
+        <button>Нi</button>
+      </div>
+    </div>
+  </ng-template>
 </p-dialog>

@@ -26,6 +26,9 @@ export class SaleComponent implements OnInit {
   visibleOtherPayment = false;
   pay: any = {};
 
+  visiblePaymantProcess = false;
+  payInProgress = false;
+
   constructor(
     private saleService: SaleService,
     private serviceService: ServiceService
@@ -59,15 +62,20 @@ export class SaleComponent implements OnInit {
   }
 
   doPayment(paymentType: number): void {
+    this.payInProgress = true;
+    this.visiblePaymantProcess = true;
     this.saleService
       .doPayment([{ sum: this.totalSum.getValue(), paymentType: paymentType }])
       .subscribe((res) => {
         this.saleService.getCurrentReceipt();
         this.serviceService.getMoneyInKassa();
+        this.payInProgress = false;
       });
   }
 
   doPay(): void {
+    this.payInProgress = true;
+    this.visiblePaymantProcess = true;
     let arr: Array<{ sum: number; paymentType: number }> = [];
     for (let p in this.pay) {
       arr.push({
@@ -80,6 +88,7 @@ export class SaleComponent implements OnInit {
       this.saleService.getCurrentReceipt();
       this.serviceService.getMoneyInKassa();
       this.visibleOtherPayment = false;
+      this.payInProgress = true;
 
       for (let p in this.pay) {
         this.pay[p] = null;
