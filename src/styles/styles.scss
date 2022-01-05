@@ -221,3 +221,50 @@ body {
     }
   }
 }
+
+.receiptsTable > tbody {
+  max-height: calc(100vh - 130px);
+  .recieptTBody {
+    td {
+      border-width: 0;
+      border-bottom: 1px solid #d2d7e1;
+      padding: 5px 10px;
+    }
+  }
+}
+.receiptTitleLine {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 50px;
+  background: #d2d7e1;
+  color: #444;
+  padding: 10px;
+
+  .calendar > i {
+    color: #322;
+    font-size: 15px;
+  }
+
+  .calendar > span {
+    padding: 0 7px;
+    font-size: 15px;
+    color: #322;
+  }
+}
+
+.receiptBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 32px;
+  padding: 0 10px;
+  background: #89a2d0;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  i {
+    margin-right: 5px;
+  }
+}
