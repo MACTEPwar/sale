@@ -19,6 +19,7 @@
     "@angular/platform-browser": "~12.2.0",
     "@angular/platform-browser-dynamic": "~12.2.0",
     "@angular/router": "~12.2.0",
+    "@awesome-cordova-plugins/core": "^5.37.3",
     "@awesome-cordova-plugins/http": "^5.37.3",
     "@awesome-cordova-plugins/printer": "^5.37.3",
     "@capacitor/android": "^3.3.3",

@@ -36,12 +36,18 @@ export class LoginComponent implements OnInit {
     if (this.profileForm.valid) {
       this.authenticationService
         .login$(this.profileForm.getRawValue())
-        .subscribe((res) => {
-          this.listFiscals = res.map((m: any) => ({
-            id: m.id,
-            fiscalNumber: m.fiscalNumber,
-          }));
-        });
+        .subscribe(
+          (res) => {
+            alert(JSON.stringify(res, null, 4));
+            this.listFiscals = res.map((m: any) => ({
+              id: m.id,
+              fiscalNumber: m.fiscalNumber,
+            }));
+          },
+          (err) => {
+            alert(JSON.stringify(err, null, 4));
+          }
+        );
     }
   }
 

@@ -1,3 +1,4 @@
+import { PrinterService } from '@common/core';
 import { ServiceService } from './../service/service.service';
 import { Component, OnInit } from '@angular/core';
 import { TProduct } from '@common/types';
@@ -31,7 +32,8 @@ export class SaleComponent implements OnInit {
 
   constructor(
     private saleService: SaleService,
-    private serviceService: ServiceService
+    private serviceService: ServiceService,
+    private printerService: PrinterService
   ) {
     this.saleService.getPaymentsList();
     this.productList = this.saleService.productList.pipe(
@@ -46,7 +48,12 @@ export class SaleComponent implements OnInit {
     this.listPaymentTypes = this.saleService.paymentsList;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.printerService.print('test').subscribe(
+      (s) => alert(JSON.stringify(s, null, 4)),
+      (e) => alert(JSON.stringify(e, null, 4))
+    );
+  }
 
   addProductToReceipt(product: TProduct): void {
     let amount = prompt('Введiть кiлькiсть:') ?? 0;
