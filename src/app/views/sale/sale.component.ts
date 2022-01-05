@@ -26,6 +26,7 @@ export class SaleComponent implements OnInit {
 
   visibleOtherPayment = false;
   pay: any = {};
+  visibleAddProd = false;
 
   visiblePaymantProcess = false;
   payInProgress = false;
@@ -56,9 +57,13 @@ export class SaleComponent implements OnInit {
   }
 
   addProductToReceipt(product: TProduct): void {
-    let amount = prompt('Введiть кiлькiсть:') ?? 0;
-    this.saleService.addProductToReceipt(product, +amount);
+    this.saleService.addProductToReceipt(product, 1);
   }
+
+  // addProductToReceipt(product: TProduct): void {
+  //   let amount = prompt('Введiть кiлькiсть:') ?? 0;
+  //   this.saleService.addProductToReceipt(product, +amount);
+  // }
 
   onChangeProduct(product: TReceiptProduct): void {
     this.saleService.changeProductFromReceipt(product);

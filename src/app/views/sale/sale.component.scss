@@ -21,8 +21,28 @@ $btns: 37px;
     display: flex;
     align-items: center;
     font-weight: 400;
-    padding: 0 20px;
   }
+
+  .saleTitle {
+    display: inline-block;
+    height: 51px;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    & > div {
+      width: 50%;
+      height: 51px;
+      padding: 0 20px;
+      display: inline-flex;
+      align-items: center;
+      background-color: #e0e6f1;
+      &:last-child {
+        background-color: #607292;
+        color: #fff;
+      }
+    }
+  }
+
   .sale {
     height: calc(100% - #{$titleHeight});
     // min-height: 400px;
@@ -60,10 +80,11 @@ $btns: 37px;
         }
         .tdCode {
           flex: 2;
-          min-width: 130px;
+          min-width: 105px;
         }
         .tdPrice {
           flex: 2;
+          justify-content: center;
         }
         .tdAddBtn {
           flex: 1;
@@ -82,17 +103,25 @@ $btns: 37px;
     }
     .receipt {
       // height: calc(100% - #{$sendEmailBlock} - #{$btns} - 0.5rem);
-      background: #f4f4f4;
+      background: linear-gradient(
+        90deg,
+        #e0e6f170,
+        #fff 20%,
+        #fff 80%,
+        #e0e6f182
+      );
       border-radius: 6px;
       margin-right: -2px;
       margin-top: 10px;
       margin-bottom: 10px;
-      border: 2px dashed #89a2d0;
+      border: 2px dashed #bcc3ce;
       height: auto;
       min-height: calc(100% - 56px);
       .receiptTitle {
         height: 34px;
-        border-bottom: #bbb 1px solid;
+        border-bottom: #b0bfdb 1px solid;
+        font-size: 15px;
+        background: #e0e6f1;
         span {
           color: $font-color;
         }
