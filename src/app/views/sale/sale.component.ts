@@ -25,6 +25,7 @@ export class SaleComponent implements OnInit {
 
   visibleOtherPayment = false;
   pay: any = {};
+  visibleAddProd = false;
 
   constructor(
     private saleService: SaleService,
@@ -46,9 +47,13 @@ export class SaleComponent implements OnInit {
   ngOnInit(): void {}
 
   addProductToReceipt(product: TProduct): void {
-    let amount = prompt('Введiть кiлькiсть:') ?? 0;
-    this.saleService.addProductToReceipt(product, +amount);
+    this.saleService.addProductToReceipt(product, 1);
   }
+
+  // addProductToReceipt(product: TProduct): void {
+  //   let amount = prompt('Введiть кiлькiсть:') ?? 0;
+  //   this.saleService.addProductToReceipt(product, +amount);
+  // }
 
   onChangeProduct(product: TReceiptProduct): void {
     this.saleService.changeProductFromReceipt(product);

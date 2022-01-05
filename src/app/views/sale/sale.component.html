@@ -1,13 +1,15 @@
 <div class="container" #container>
   <div class="p-grid title p-m-0" #title>
-    <div class="p-col">
-      <span>Продаж товару</span>
-    </div>
-    <div class="p-col">
-      <span>Грошей у сейфi:</span>
-      {{ moneyInKassa | async }} грн.
+
+    <div class="saleTitle">
+
+      <div>Продаж товару</div>
+
+      <div>Грошей у сейфi: {{ moneyInKassa | async }} грн. </div>
+
     </div>
   </div>
+
   <div class="p-grid sale p-m-0">
     <div class="p-col-6 h-100">
       <div class="p-grid sale-search" #saleSearch>
@@ -118,7 +120,10 @@
 
           <div class="p-grid p-mt-0 total">
             <div class="p-col">
-              <span>Сума разом: {{ totalSum | async }}</span>
+              <span style="font-size: 16px;
+              font-weight: 600;
+              color: #222;
+              float: right;">Сума разом: {{ totalSum | async }}</span>
             </div>
           </div>
         </div>
@@ -136,14 +141,14 @@
         </div>
       </div> -->
       <div class="p-grid p-mt-0 btns" #btns>
-        <div class="p-col p-p-0">
+        <div class="p-col p-p-0" style="border-right: 1px solid #fff">
           <p-button
             [style]="{ width: '100%' }"
             label="Готiвка"
             (onClick)="doPayment(0)"
           ></p-button>
         </div>
-        <div class="p-col p-p-0">
+        <div class="p-col p-p-0" style="border-right: 1px solid #fff">
           <p-button
             [style]="{ width: '100%' }"
             label="Карта"
@@ -188,3 +193,16 @@
     </div>
   </div>
 </p-dialog>
+
+
+
+<!-- <p-dialog header="Введiть кiлькiсть" [(visible)]="visibleAddProd">
+
+<div class="p-grid">
+  <div class="p-col">
+    <button pButton type="button" icon="pi pi-check" iconPos="left"></button>
+    <button pButton type="button" icon="pi pi-check" iconPos="left"></button>
+  </div>
+</div>
+
+</p-dialog> -->
