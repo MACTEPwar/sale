@@ -194,6 +194,11 @@ body {
   }
 }
 
+.saletable td,
+.saletable th {
+  font-size: 14px;
+}
+
 .toMail {
   display: flex;
   justify-content: space-between;
@@ -222,6 +227,10 @@ body {
   }
 }
 
+.receiptsTable td,
+.receiptsTable th {
+  font-size: 14px;
+}
 .receiptsTable > tbody {
   max-height: calc(100vh - 130px);
   .recieptTBody {
