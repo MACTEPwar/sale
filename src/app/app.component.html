@@ -45,11 +45,11 @@
 <p-dialog
   header="Введiть суму"
   [(visible)]="visibleConfirmDialog"
-  [style]="{ width: '400px' }"
+  [style]="{ width: '300px' }"
 >
   <div class="p-grid">
-    <div class="p-col">
-      <input type="number" pInputText [(ngModel)]="confirmText" />
+    <div class="p-col confirm_input">
+      <input min="0" type="number" pInputText [(ngModel)]="confirmText" />
     </div>
   </div>
   <div class="p-grid">
