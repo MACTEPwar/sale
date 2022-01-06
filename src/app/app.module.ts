@@ -19,6 +19,9 @@ import { Printer } from '@awesome-cordova-plugins/printer/ngx';
 import { HTTP } from '@awesome-cordova-plugins/http/ngx';
 import { QRCodeModule } from 'angularx-qrcode';
 import { Capacitor } from '@capacitor/core';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { FormsModule } from '@angular/forms';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   declarations: [AppComponent, IsLoginPagePipe, TestComponent],
@@ -34,6 +37,9 @@ import { Capacitor } from '@capacitor/core';
     OverlayPanelModule,
     ServiceModule,
     QRCodeModule,
+    ConfirmDialogModule,
+    FormsModule,
+    DialogModule
   ],
   providers: [MessageService, Printer, HTTP],
   bootstrap: [AppComponent],

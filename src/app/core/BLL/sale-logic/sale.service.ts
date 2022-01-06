@@ -51,7 +51,9 @@ export class SaleService {
           }))
         );
       },
-      (e) => {}
+      (e) => {
+        alert(JSON.stringify(e, null, 4));
+      }
     );
   }
 

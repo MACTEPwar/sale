@@ -16,7 +16,7 @@
         [multiple]="false"
       ></p-panelMenu>
 
-    <p-button
+      <p-button
         class="logOutBtn"
         title="Вийти"
         label="Вийти"
@@ -41,3 +41,31 @@
     <app-service [panel]="op"></app-service>
   </ng-template>
 </p-overlayPanel>
+
+<p-dialog
+  header="Введiть суму"
+  [(visible)]="visibleConfirmDialog"
+  [style]="{ width: '400px' }"
+>
+  <div class="p-grid">
+    <div class="p-col">
+      <input type="number" pInputText [(ngModel)]="confirmText" />
+    </div>
+  </div>
+  <div class="p-grid">
+    <div class="p-col p-text-center confirm_buttons">
+      <p-button
+        icon="pi pi-check"
+        label="Так"
+        class="p-button-lg"
+        (onClick)="confirm(true)"
+      ></p-button>
+      <p-button
+        icon="pi pi-times"
+        label="Нi"
+        class="p-button-lg p-button-warning"
+        (onClick)="confirm(false)"
+      ></p-button>
+    </div>
+  </div>
+</p-dialog>
