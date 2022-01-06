@@ -277,3 +277,18 @@ body {
     margin-right: 5px;
   }
 }
+
+.confirm_buttons {
+  padding: 20px 0 0;
+  button {
+    margin: 0 20px;
+    min-width: 100px;
+    border-radius: 5px;
+  }
+}
+.p-button-warning {
+  .p-component.p-button {
+    background-color: $warning-color;
+    border-color: $warning-color;
+  }
+}

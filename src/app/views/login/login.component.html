@@ -6,7 +6,7 @@
     </div>
     <ng-template #loginIsAuth>
       <div class="p-fields">
-        Ви аторизовнi за логiном {{ profileForm.get("username")?.value }}
+        Ви авторизовнi за логiном {{ profileForm.get("username")?.value }}
       </div>
     </ng-template>
     <div class="p-field" *ngIf="!(isAuthinticate | async)!; else pathIsAuth">
