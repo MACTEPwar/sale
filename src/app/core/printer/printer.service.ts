@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Printer, PrintOptions } from '@awesome-cordova-plugins/printer/ngx';
-import { from, Observable } from 'rxjs';
+import { Capacitor } from '@capacitor/core';
+import { from, iif, Observable, throwError } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
 
 @Injectable()
@@ -25,7 +26,15 @@ export class PrinterService {
   constructor(private printer: Printer) {}
 
   print(content: string | HTMLElement): Observable<any> {
-    return this._isAvailable$();
+    return this._isAvailable$().pipe(
+      switchMap((_) =>
+        iif(
+          () => _ === true && Capacitor.getPlatform() === 'android',
+          this._print$(content, this.options),
+          throwError('printer not available or this not android')
+        )
+      )
+    );
     // return from();
     // this.printer
     //   .isAvailable()

@@ -50,14 +50,14 @@ export class SaleComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.printerService.print('test').subscribe(
-      (s) => {
-        // alert(JSON.stringify(s, null, 4));
-      },
-      (e) => {
-        // alert(JSON.stringify(e, null, 4));
-      }
-    );
+    // this.printerService.print('test').subscribe(
+    //   (s) => {
+    //     alert(JSON.stringify(s, null, 4));
+    //   },
+    //   (e) => {
+    //     alert(JSON.stringify(e, null, 4));
+    //   }
+    // );
   }
 
   addProductToReceipt(product: TProduct): void {
