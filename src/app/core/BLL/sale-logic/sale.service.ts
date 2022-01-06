@@ -105,9 +105,9 @@ export class SaleService {
   }
 
   getCurrentReceipt(): void {
-    this.getCurrentReceipt$()
-      .pipe(take(1))
-      .subscribe((result) => {
+    this.getCurrentReceipt$().subscribe(
+      (result) => {
+        // alert(JSON.stringify(result, null, 4));
         this.receipt.totalSum.next(+result.sum);
         this.receipt.products.next(
           result.positions.map((m: any) => ({
@@ -119,7 +119,11 @@ export class SaleService {
             discountSum: +m.discountSum,
           }))
         );
-      });
+      },
+      (err) => {
+        // alert(JSON.stringify(err, null, 4));
+      }
+    );
   }
 
   doPayment(
@@ -412,7 +416,7 @@ export function doPayment_ANDROID$(
   return from(
     http.post(
       `${environment.apiUrl}/api/Receipt/fiscal/payment`,
-      array.map((m) => ({ amount: m.sum, paymentType: m.paymentType })).map,
+      array.map((m) => ({ amount: m.sum, paymentType: m.paymentType })),
       {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${auth}`,
@@ -446,7 +450,7 @@ export function getPaementsList_ANDROID$(
         Authorization: `Bearer ${auth}`,
       }
     )
-  );
+  ).pipe(map((m) => JSON.parse(m.data)));
 }
 
 export function getPaementsList_WEB$(http: HttpClient): Observable<any> {

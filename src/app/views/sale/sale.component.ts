@@ -111,6 +111,10 @@ export class SaleComponent implements OnInit {
       }
     });
   }
+
+  finishPay(printReceipt: boolean): void {
+    this.visiblePaymantProcess = false;
+  }
 }
 
 export class Product {
