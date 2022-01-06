@@ -1,12 +1,9 @@
 <div class="container" #container>
   <div class="p-grid title p-m-0" #title>
-
     <div class="saleTitle">
-
       <div>Продаж товару</div>
 
-      <div>Грошей у сейфi: {{ moneyInKassa | async }} грн. </div>
-
+      <div>Грошей у сейфi: {{ moneyInKassa | async }} грн.</div>
     </div>
   </div>
 
@@ -29,7 +26,7 @@
       <div class="p-grid product-list">
         <div class="p-col">
           <p-table
-          class="saletable"
+            class="saletable"
             [value]="(productList | async)!"
             [scrollable]="true"
             [scrollHeight]="
@@ -54,7 +51,7 @@
                 <td class="tdPrice">{{ product.price }}</td>
                 <td class="tdAddBtn">
                   <button class="addBtn" (click)="addProductToReceipt(product)">
-                    <i class="pi pi-plus"></i>
+                    <i class="pi pi-shopping-cart"></i>
                   </button>
                 </td>
               </tr>
@@ -80,19 +77,33 @@
               <div class="receiptProducts_name">
                 {{ receiptProduct.name }}
               </div>
+
               <div class="receiptProducts_amount">
-                <span class="amountText">{{ receiptProduct.amount }}</span>
+                <!-- <span class="amountText">{{ receiptProduct.amount }}</span> -->
+                <p-button
+                  icon="pi pi-minus"
+                  (click)="this.amountMinus(receiptProduct)"
+                ></p-button>
                 <input
                   type="number"
                   pInputText
+                  min="0"
                   [(ngModel)]="receiptProduct.amount"
                   class="amountEdit w-100"
                 />
+                <p-button
+                  icon="pi pi-plus"
+                  (click)="this.amountPlus(receiptProduct)"
+                ></p-button>
               </div>
+
               <div class="receiptProducts_sum">
-                {{ receiptProduct.sum }}
+                <ng-template *ngIf="receiptProduct.sum"
+                  >{{ receiptProduct.sum }} грн</ng-template
+                >
               </div>
-              <div class="receiptProducts_dropFromReceiptBtn">
+
+              <!-- <div class="receiptProducts_dropFromReceiptBtn">
                 <button
                   class="editBtn"
                   pStyleClass="@grandparent"
@@ -108,16 +119,21 @@
                 >
                   <i class="pi pi-save"></i>
                 </button>
-              </div>
+              </div> -->
             </div>
           </div>
 
           <div class="p-grid p-mt-0 total">
             <div class="p-col">
-              <span style="font-size: 16px;
-              font-weight: 600;
-              color: #222;
-              float: right;">Сума разом: {{ totalSum | async }}</span>
+              <span
+                style="
+                  font-size: 16px;
+                  font-weight: 600;
+                  color: #222;
+                  float: right;
+                "
+                >Сума разом: {{ totalSum | async }} грн</span
+              >
             </div>
           </div>
         </div>
@@ -188,10 +204,10 @@
 </p-dialog>
 
 <p-dialog
-  [header]="payInProgress === false ? 'Чек проведено. Друкувати чек?' : 'Оплата'"
+  [header]="payInProgress === false ? 'Чек проведено!' : 'Оплата'"
   [modal]="true"
   [(visible)]="visiblePaymantProcess"
-  [style]="{ width: '50%' }"
+  [style]="{ width: '400px' }"
   [closeOnEscape]="false"
   [closable]="false"
   [draggable]="false"
@@ -203,22 +219,41 @@
     ></p-progressBar>
   </ng-container>
   <ng-template #payFinished>
-    <div
-      class="p-grid sendEmailBlock p-mt-0"
-      style="margin-right: -2px"
-      #sendEmail
-    >
-      <div class="p-col-12 p-px-0 p-py-2 toMail">
-        <input type="text" pInputText placeholder="Вiдправити на email" />
-        <button><i class="pi pi-send"></i></button>
+    <div class="p-grid">
+      <div class="p-col p-text-center">Бажаєте роздрукувати чек?</div>
+    </div>
+    <div class="p-grid">
+      <div class="p-col p-text-center confirm_buttons">
+        <p-button
+          icon="pi pi-check"
+          label="Так"
+          class="p-button-lg"
+          (onClick)="finishPay(true)"
+        ></p-button>
+        <p-button
+          icon="pi pi-times"
+          label="Нi"
+          class="p-button-lg p-button-warning"
+          (onClick)="finishPay(false)"
+        ></p-button>
+        <!-- <p-button > <i class="pi pi-check"></i> Так</p-button>
+        <p-button ><i class="pi pi-check"></i> Нi</p-button> -->
       </div>
     </div>
-    <div class="p-grid p-mt-0" style="margin-right: -2px">
-      <div class="p-col-6 p-px-0">
-        <button (click)="finishPay(true)">Так</button>
-      </div>
-      <div class="p-col-6 p-px-0">
-        <button (click)="finishPay(true)">Нi</button>
+
+    <div
+      class="p-grid"
+      style="border-top: 1px solid #ddd; margin-top: 25px; padding: 10px"
+    >
+      <div class="p-col p-text-center">Вiдправити копiю чека на email?</div>
+    </div>
+
+    <div class="p-grid sendEmailBlock" #sendEmail>
+      <div class="p-col p-text-center">
+        <div class="p-col-12 p-px-0 p-py-2 toMail">
+          <input type="text" pInputText placeholder="Вiдправити на email" />
+          <button><i class="pi pi-send"></i></button>
+        </div>
       </div>
     </div>
   </ng-template>

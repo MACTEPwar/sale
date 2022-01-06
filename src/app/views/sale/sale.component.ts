@@ -115,6 +115,14 @@ export class SaleComponent implements OnInit {
   finishPay(printReceipt: boolean): void {
     this.visiblePaymantProcess = false;
   }
+  amountPlus(product: any): void {
+    product.amount = product.amount + 1;
+  }
+  amountMinus(product: any): void {
+    if (product.amount !== 0) {
+      product.amount = product.amount - 1;
+    }
+  }
 }
 
 export class Product {

@@ -3,9 +3,10 @@ import { TNullable } from './shared/types/types/t-nullabel';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuItem } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { ServiceService } from './views/service/service.service';
 import { Observable } from 'rxjs';
+import { ServiceComponent } from './views/service/service.component';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,9 @@ export class AppComponent {
 
   constructor(
     public router: Router,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private serviceComponent: ServiceService,
+    private messageService: MessageService
   ) {
     this.currentUser = this.authenticationService._currentUser$;
   }
@@ -36,7 +39,51 @@ export class AppComponent {
           { routerLink: '/report/z-reports', label: 'Z-звiти' },
         ],
       },
+      {
+        label: 'Сервiси',
+        items: [
+          {
+            label: 'Внесення',
+            command: () => this.doCashIn(),
+          },
+          {
+            label: 'Вилучення',
+            command: () => this.doCashOut(),
+          },
+          { label: 'Z-звiт', command: () => this.doZReport() },
+        ],
+      },
     ];
+  }
+
+  doCashIn(): void {
+    let result: string | null = prompt('Введiть суму');
+    if (result !== null) {
+      this.serviceComponent.doCashIn(+result).subscribe((res) => {
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Iнфо',
+          detail: 'Виконано внесення',
+        });
+      });
+    }
+  }
+
+  doCashOut(): void {
+    let result: string | null = prompt('Введiть суму');
+    if (result !== null) {
+      this.serviceComponent.doCashOut(+result).subscribe((res) => {
+        this.messageService.add({
+          severity: 'info',
+          summary: 'Iнфо',
+          detail: 'Виконано вилучення',
+        });
+      });
+    }
+  }
+
+  doZReport(): void {
+    this.serviceComponent.doZReport().subscribe((res) => {});
   }
 
   logout(): void {
