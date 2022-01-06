@@ -5,4 +5,5 @@ export type TReceiptProduct = {
   price: number;
   bar: string;
   discountSum: number;
+  sum: number;
 };
