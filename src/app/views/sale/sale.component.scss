@@ -218,7 +218,7 @@ $btns: 37px;
   flex-direction: column;
   width: 100%;
   font-size: 14px;
-  // max-height: calc(100vh - 230px);
+
   .receiptProducts_line {
     display: inline-flex;
     flex-direction: row;
@@ -226,63 +226,31 @@ $btns: 37px;
     justify-content: space-between;
     border-bottom: 1px dashed rgba(0, 0, 0, 0.2);
     padding: 5px 0;
+
     &:last-child {
       border-bottom: none;
     }
     div {
       padding: 3px;
     }
-    &.edit {
-      .receiptProducts_amount {
-        flex: 2;
-        max-width: 20%;
-        overflow: hidden;
-        text-align: right;
-        .amountText {
-          display: none;
-        }
-        .amountEdit {
-          display: inline-flex;
-          padding: 3px;
-        }
-      }
-      .receiptProducts_dropFromReceiptBtn {
-        flex: 1;
-        max-width: 15%;
-        overflow: hidden;
-        .editBtn {
-          display: none;
-        }
-        .saveBtn {
-          display: inline-flex;
-        }
+
+    .receiptProducts_amount {
+      flex: 2;
+      flex-direction: row;
+      white-space: nowrap;
+      overflow: hidden;
+      text-align: right;
+      min-width: 140px;
+      input {
+        padding: 4px;
+        width: 50px;
       }
     }
-    &:not(.edit) {
-      .receiptProducts_amount {
-        flex: 2;
-        max-width: 20%;
-        overflow: hidden;
-        text-align: right;
-        .amountText {
-          display: inline-flex;
-        }
-        .amountEdit {
-          display: none;
-        }
-      }
 
-      .receiptProducts_dropFromReceiptBtn {
-        flex: 1;
-        max-width: 15%;
-        overflow: hidden;
-        .editBtn {
-          display: inline-flex;
-        }
-        .saveBtn {
-          display: none;
-        }
-      }
+    .receiptProducts_dropFromReceiptBtn {
+      flex: 1;
+      max-width: 15%;
+      overflow: hidden;
     }
 
     .receiptProducts_dropFromReceiptBtn {
@@ -303,7 +271,7 @@ $btns: 37px;
 
     .receiptProducts_name {
       flex: 4;
-      max-width: 40%;
+      // max-width: 40%;
       word-break: break-all;
       text-overflow: ellipsis;
     }

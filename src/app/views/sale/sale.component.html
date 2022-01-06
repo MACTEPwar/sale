@@ -54,7 +54,7 @@
                 <td class="tdPrice">{{ product.price }}</td>
                 <td class="tdAddBtn">
                   <button class="addBtn" (click)="addProductToReceipt(product)">
-                    <i class="pi pi-plus"></i>
+                    <i class="pi pi-shopping-cart"></i>
                   </button>
                 </td>
               </tr>
@@ -80,19 +80,28 @@
               <div class="receiptProducts_name">
                 {{ receiptProduct.name }}
               </div>
+
+
               <div class="receiptProducts_amount">
-                <span class="amountText">{{ receiptProduct.amount }}</span>
+                <!-- <span class="amountText">{{ receiptProduct.amount }}</span> -->
+                <p-button icon="pi pi-minus" (click)="this.amountMinus(receiptProduct)"></p-button>
                 <input
                   type="number"
                   pInputText
+                  min="0"
                   [(ngModel)]="receiptProduct.amount"
                   class="amountEdit w-100"
                 />
+                <p-button icon="pi pi-plus" (click)="this.amountPlus(receiptProduct)"></p-button>
               </div>
+
+
               <div class="receiptProducts_sum">
-                {{ receiptProduct.sum }}
+              <ng-template *ngIf=" receiptProduct.sum">{{ receiptProduct.sum }} грн</ng-template>
+
               </div>
-              <div class="receiptProducts_dropFromReceiptBtn">
+
+              <!-- <div class="receiptProducts_dropFromReceiptBtn">
                 <button
                   class="editBtn"
                   pStyleClass="@grandparent"
@@ -108,7 +117,7 @@
                 >
                   <i class="pi pi-save"></i>
                 </button>
-              </div>
+              </div> -->
             </div>
           </div>
 
@@ -117,7 +126,7 @@
               <span style="font-size: 16px;
               font-weight: 600;
               color: #222;
-              float: right;">Сума разом: {{ totalSum | async }}</span>
+              float: right;">Сума разом: {{ totalSum | async }} грн</span>
             </div>
           </div>
         </div>
