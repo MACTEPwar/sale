@@ -54,7 +54,8 @@ $btns: 37px;
       }
     }
     .product-list {
-      max-height: calc(100% - #{$saleSearchHeight});
+      // max-height: calc(100% - #{$saleSearchHeight});
+      height: calc(100% - #{$saleSearchHeight});
       .p-col {
         height: 100%;
         padding: 0 0.5rem;
@@ -282,5 +283,13 @@ $btns: 37px;
       overflow: hidden;
       text-align: right;
     }
+  }
+}
+
+#pData {
+  display: none;
+  #printData {
+    font-family: "Droid Sans Mono", Arial, Helvetica, sans-serif;
+    width: 32pt;
   }
 }

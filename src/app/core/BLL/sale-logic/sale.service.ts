@@ -5,13 +5,16 @@ import { environment } from './../../../../environments/environment';
 import { BehaviorSubject, from, iif, Observable, of, timer } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, Pipe } from '@angular/core';
-import { Receipt, TProduct } from '@common/types';
+import { Receipt, TNullable, TProduct } from '@common/types';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { HTTP } from '@awesome-cordova-plugins/http/ngx';
 import { Capacitor } from '@capacitor/core';
 
 @Injectable()
 export class SaleService {
+  lastReceiptNumber: BehaviorSubject<number | null> = new BehaviorSubject<
+    number | null
+  >(null);
   receipt: Receipt = new Receipt();
   productList: BehaviorSubject<Array<TProduct>> = new BehaviorSubject<
     Array<TProduct>
@@ -19,6 +22,11 @@ export class SaleService {
   paymentsList: BehaviorSubject<Array<any>> = new BehaviorSubject<Array<any>>(
     []
   );
+
+  contentForPrint: BehaviorSubject<Array<string>> = new BehaviorSubject<
+    Array<string>
+  >([]);
+  link: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
   constructor(
     private httpClient: HttpClient,
@@ -135,6 +143,7 @@ export class SaleService {
     return this.doPayment$(array).pipe(
       filter((f) => f === true),
       tap((t) => {
+        console.log('TEST', t);
         this.receipt.products.next([]);
         this.receipt.totalSum.next(0);
       }),
@@ -151,6 +160,36 @@ export class SaleService {
       .subscribe((res) => {
         this.paymentsList.next(res);
       });
+  }
+
+  getContentForPrint(fiscalNumber: TNullable<number> = null): void {
+    this.getContentForPrint$(fiscalNumber)
+      .pipe(
+        map((m: any) => m.data),
+        take(1)
+      )
+      .subscribe((res) => {
+        this.contentForPrint.next(res.data);
+        this.link.next(res.link);
+      });
+  }
+
+  private getContentForPrint$(
+    fiscalNumber: TNullable<number> = null
+  ): Observable<any> {
+    return of({}).pipe(
+      switchMap((_) =>
+        iif(
+          () => Capacitor.getPlatform() === 'android',
+          getContentForPrint_ANDROID$(
+            this.http,
+            this.authService.currentUser?.access_token!,
+            fiscalNumber
+          ),
+          getContentForPrint_WEB$(this.httpClient, fiscalNumber)
+        )
+      )
+    );
   }
 
   private addProductToReceiptHttp(
@@ -222,7 +261,9 @@ export class SaleService {
         )
       ),
       tap(
-        (_: any) => {},
+        (_: any) => {
+          this.lastReceiptNumber.next(_.orderTaxNum);
+        },
         (error: any) => {
           this.messageService.add({
             severity: 'warn',
@@ -458,4 +499,31 @@ export function getPaementsList_ANDROID$(
 
 export function getPaementsList_WEB$(http: HttpClient): Observable<any> {
   return http.get(`${environment.apiUrl}/api/payments/list`).pipe(take(1));
+}
+
+export function getContentForPrint_ANDROID$(
+  http: HTTP,
+  auth: string,
+  fiscalNumber: TNullable<number> = null
+): Observable<any> {
+  return from(
+    http.get(
+      `${environment.apiUrl}/api/service/receipt/${fiscalNumber}`,
+      {},
+      {
+        Authorization: `Bearer ${auth}`,
+      }
+    )
+  ).pipe(
+    map((m) => JSON.parse(m.data)),
+    take(1)
+  );
+}
+export function getContentForPrint_WEB$(
+  http: HttpClient,
+  fiscalNumber: TNullable<number> = null
+): Observable<any> {
+  return http
+    .get(`${environment.apiUrl}/api/service/receipt/${fiscalNumber}`)
+    .pipe(take(1));
 }

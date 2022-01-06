@@ -117,10 +117,14 @@ export function doCashIn_ANDROID$(
   http.setDataSerializer('json');
 
   return from(
-    http.post(`${environment.apiUrl}/api/service/servicein`, sum, {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${auth}`,
-    })
+    http.post(
+      `${environment.apiUrl}/api/service/servicein`,
+      { sum },
+      {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${auth}`,
+      }
+    )
   ).pipe(map((m) => JSON.parse(m.data), take(1)));
 }
 
@@ -138,10 +142,14 @@ export function doCashOut_ANDROID$(
   http.setDataSerializer('json');
 
   return from(
-    http.post(`${environment.apiUrl}/api/service/serviceout`, sum, {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${auth}`,
-    })
+    http.post(
+      `${environment.apiUrl}/api/service/serviceout`,
+      { sum },
+      {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${auth}`,
+      }
+    )
   ).pipe(map((m) => JSON.parse(m.data), take(1)));
 }
 

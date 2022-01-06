@@ -280,6 +280,9 @@ body {
 
 .confirm_buttons {
   padding: 20px 0 0;
+  .p-component.p-button {
+    border-radius: 5px;
+  }
   button {
     margin: 0 20px;
     min-width: 100px;

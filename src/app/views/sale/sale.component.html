@@ -231,7 +231,7 @@
           icon="pi pi-check"
           label="Так"
           class="p-button-lg"
-          (onClick)="finishPay(true)"
+          (onClick)="finishPay(true, printData.innerHTML)"
         ></p-button>
         <p-button
           icon="pi pi-times"
@@ -250,12 +250,40 @@
     >
       <div class="p-col p-text-center">Вiдправити копiю чека на email?</div>
     </div>
-
     <div class="p-grid sendEmailBlock" #sendEmail>
       <div class="p-col p-text-center">
         <div class="p-col-12 p-px-0 p-py-2 toMail">
           <input type="text" pInputText placeholder="Вiдправити на email" />
           <button><i class="pi pi-send"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="p-grid" id="pData">
+      <div class="p-col">
+        <div id="printData" #printData>
+          <style>
+            @page {
+              padding: 0px;
+              margin: 0px;
+            }
+            @media print {
+              html,
+              body {
+                padding: 0px;
+                margin: 0px;
+              }
+            }
+          </style>
+          <p *ngFor="let str of dataForPrint | async">
+            {{ str | pt }}
+          </p>
+          <qrcode
+            *ngIf="link | async"
+            [elementType]="'url'"
+            [qrdata]="(link | async)!"
+            [width]="32"
+            [errorCorrectionLevel]="'M'"
+          ></qrcode>
         </div>
       </div>
     </div>

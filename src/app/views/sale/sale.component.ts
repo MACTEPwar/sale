@@ -3,7 +3,7 @@ import { ServiceService } from './../service/service.service';
 import { Component, OnInit } from '@angular/core';
 import { TProduct } from '@common/types';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, throwIfEmpty } from 'rxjs/operators';
 import { SaleService } from './../../core/BLL/sale-logic/sale.service';
 import { TReceiptProduct } from './../../shared/types/types/t-receipt-product';
 
@@ -23,6 +23,9 @@ export class SaleComponent implements OnInit {
   moneyInKassa: Observable<number>;
 
   listPaymentTypes: Observable<Array<any>>;
+
+  dataForPrint: Observable<Array<string>>;
+  link: Observable<string>;
 
   visibleOtherPayment = false;
   pay: any = {};
@@ -47,6 +50,8 @@ export class SaleComponent implements OnInit {
     this.serviceService.getMoneyInKassa();
     this.moneyInKassa = this.serviceService.moneyInKassa;
     this.listPaymentTypes = this.saleService.paymentsList;
+    this.dataForPrint = this.saleService.contentForPrint;
+    this.link = this.saleService.link;
   }
 
   ngOnInit(): void {
@@ -86,6 +91,9 @@ export class SaleComponent implements OnInit {
         this.saleService.getCurrentReceipt();
         this.serviceService.getMoneyInKassa();
         this.payInProgress = false;
+        this.saleService.getContentForPrint(
+          this.saleService.lastReceiptNumber.getValue()
+        );
       });
   }
 
@@ -112,8 +120,18 @@ export class SaleComponent implements OnInit {
     });
   }
 
-  finishPay(printReceipt: boolean): void {
-    this.visiblePaymantProcess = false;
+  finishPay(
+    printReceipt: boolean,
+    content: HTMLElement | null | string = null
+  ): void {
+    // this.visiblePaymantProcess = false;
+    if (printReceipt === true) {
+      this.printerService.print(content!).subscribe((res) => {
+        this.visiblePaymantProcess = false;
+      });
+    } else {
+      this.visiblePaymantProcess = false;
+    }
   }
   amountPlus(product: any): void {
     product.amount = product.amount + 1;
