@@ -65,33 +65,11 @@ export class AppComponent {
   doCashIn(): void {
     this.confirmOperation = 'cashIn';
     this.visibleConfirmDialog = true;
-    // this.confirmationService.confirm({
-    //   header: 'Введiть суму',
-    //   accept: () => {
-    //     if (this.confirmText != null) {
-    //       this.serviceComponent.doCashIn(+this.confirmText).subscribe((res) => {
-    //         this.messageService.add({
-    //           severity: 'info',
-    //           summary: 'Iнфо',
-    //           detail: 'Виконано внесення',
-    //         });
-    //       });
-    //     }
-    //   },
-    // });
   }
 
   doCashOut(): void {
-    let result: string | null = prompt('Введiть суму');
-    if (result !== null) {
-      this.serviceComponent.doCashOut(+result).subscribe((res) => {
-        this.messageService.add({
-          severity: 'info',
-          summary: 'Iнфо',
-          detail: 'Виконано вилучення',
-        });
-      });
-    }
+    this.confirmOperation = 'cashOut';
+    this.visibleConfirmDialog = true;
   }
 
   doZReport(): void {
@@ -105,28 +83,37 @@ export class AppComponent {
   confirm(state: boolean): void {
     switch (this.confirmOperation) {
       case 'cashIn': {
-        if (state === true) {
-          if (this.confirmText != null) {
-            this.serviceComponent
-              .doCashIn(+this.confirmText)
-              .subscribe((res) => {
-                this.serviceComponent.getMoneyInKassa();
-                this.visibleConfirmDialog = false;
-                this.messageService.add({
-                  severity: 'info',
-                  summary: 'Iнфо',
-                  detail: 'Виконано внесення',
-                });
-              });
-          } else {
+        if (state === true && this.confirmText != null) {
+          this.serviceComponent.doCashIn(+this.confirmText).subscribe((res) => {
+            this.serviceComponent.getMoneyInKassa();
             this.visibleConfirmDialog = false;
-          }
+            this.confirmText = null;
+            this.messageService.add({
+              severity: 'info',
+              summary: 'Iнфо',
+              detail: 'Виконано внесення',
+            });
+          });
         } else {
           this.visibleConfirmDialog = false;
         }
         break;
       }
       case 'cashOut': {
+        if (state === true && this.confirmText != null) {
+          this.serviceComponent
+            .doCashOut(+this.confirmText)
+            .subscribe((res) => {
+              this.serviceComponent.getMoneyInKassa();
+              this.confirmText = null;
+              this.visibleConfirmDialog = false;
+              this.messageService.add({
+                severity: 'info',
+                summary: 'Iнфо',
+                detail: 'Виконано вилучення',
+              });
+            });
+        }
         break;
       }
     }

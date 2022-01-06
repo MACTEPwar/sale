@@ -130,7 +130,7 @@ export function doCashIn_ANDROID$(
 
 export function doCashIn_WEB$(http: HttpClient, sum: number): Observable<any> {
   return http
-    .post(`${environment.apiUrl}/api/service/servicein`, sum)
+    .post(`${environment.apiUrl}/api/service/servicein`, {sum})
     .pipe(take(1));
 }
 
@@ -155,7 +155,7 @@ export function doCashOut_ANDROID$(
 
 export function doCashOut_WEB$(http: HttpClient, sum: number): Observable<any> {
   return http
-    .post(`${environment.apiUrl}/api/service/serviceout`, sum)
+    .post(`${environment.apiUrl}/api/service/serviceout`, {sum})
     .pipe(take(1));
 }
 
