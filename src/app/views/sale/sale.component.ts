@@ -117,10 +117,12 @@ export class SaleComponent implements OnInit {
   }
   amountPlus(product: any): void {
     product.amount = product.amount + 1;
+    this.saleService.changeProductFromReceipt(product);
   }
   amountMinus(product: any): void {
     if (product.amount !== 0) {
       product.amount = product.amount - 1;
+      this.saleService.changeProductFromReceipt(product);
     }
   }
 }

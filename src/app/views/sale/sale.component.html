@@ -97,10 +97,13 @@
                 ></p-button>
               </div>
 
+              <div class="receiptProducts_discountSum">
+                {{ receiptProduct.discountSum }}
+              </div>
+
               <div class="receiptProducts_sum">
-                <ng-template *ngIf="receiptProduct.sum"
-                  >{{ receiptProduct.sum }} грн</ng-template
-                >
+                {{ receiptProduct.sum }}
+                <ng-container *ngIf="receiptProduct.sum"> грн</ng-container>
               </div>
 
               <!-- <div class="receiptProducts_dropFromReceiptBtn">

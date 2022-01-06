@@ -79,6 +79,7 @@ export class SaleService {
           price: m.price,
           bar: m.bar,
           discountSum: +m.discountSum,
+          sum: +m.sum,
         }))
       );
       // this.receipt.addProduct(product, amount);
@@ -99,6 +100,7 @@ export class SaleService {
             price: m.price,
             bar: m.bar,
             discountSum: +m.discountSum,
+            sum: +m.sum,
           }))
         );
       });
@@ -117,6 +119,7 @@ export class SaleService {
             price: m.price,
             bar: m.bar,
             discountSum: +m.discountSum,
+            sum: +m.sum,
           }))
         );
       },
