@@ -27,13 +27,13 @@ export class SaleService {
     private authService: AuthenticationService
   ) {
     this.getProductList();
-    // this.getCurrentReceipt();
+    this.getCurrentReceipt();
   }
 
   getProductList(name: string | null = null): void {
     this.getPorducts$(name).subscribe(
       (res) => {
-        alert(JSON.stringify(res, null, 4));
+        // alert(JSON.stringify(res, null, 4));
         this.productList.next(
           res.map((m: any) => ({
             id: m.id,
@@ -43,7 +43,7 @@ export class SaleService {
           }))
         );
       },
-      (e) => alert(JSON.stringify(e, null, 4))
+      (e) => {}
     );
   }
 

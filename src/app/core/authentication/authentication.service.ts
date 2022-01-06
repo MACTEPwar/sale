@@ -59,9 +59,11 @@ export class AuthenticationService {
     private route: Router,
     private http: HTTP
   ) {
-    // this.currentUser = JSON.parse(
-    //   localStorage.getItem('currentUser') as string
-    // );
+    if (Capacitor.getPlatform() === 'web') {
+      this.currentUser = JSON.parse(
+        localStorage.getItem('currentUser') as string
+      );
+    }
   }
 
   /**
@@ -103,8 +105,9 @@ export class AuthenticationService {
         )
       ),
       map((user) => {
-        // localStorage.setItem('currentUser', JSON.stringify(user));
-
+        if (Capacitor.getPlatform() === 'web') {
+          localStorage.setItem('currentUser', JSON.stringify(user));
+        }
         return (this.currentUser = user as TUser);
       }),
       tap((_) => {
@@ -134,7 +137,9 @@ export class AuthenticationService {
    * Вылогин
    */
   logout(): void {
-    // localStorage.removeItem('currentUser');
+    if (Capacitor.getPlatform() === 'web') {
+      localStorage.removeItem('currentUser');
+    }
     this.currentUser = null;
     this.isAuthinticate.next(false);
     this.currentFiscalNumber.next(null);
@@ -159,7 +164,9 @@ export class AuthenticationService {
       ),
       tap((user) => {
         this.currentUser = user;
-        // localStorage.setItem('currentUser', JSON.stringify(user));
+        if (Capacitor.getPlatform() === 'web') {
+          localStorage.setItem('currentUser', JSON.stringify(user));
+        }
       }),
       catchError((error) => {
         return throwError(error);
@@ -172,7 +179,7 @@ export class AuthenticationService {
       switchMap((_) =>
         iif(
           () => Capacitor.getPlatform() === 'android',
-          getUser_ANDROID$(this.http),
+          getUser_ANDROID$(this.http, this.currentUser?.access_token!),
           getUser_WEB$(this.httpClient)
         )
       ),
@@ -258,8 +265,16 @@ export function getRefresh_WEB$(
     .pipe(take(1));
 }
 
-export function getUser_ANDROID$(http: HTTP): Observable<any> {
-  return from(http.post(`${environment.apiUrl}/api/Auth/info`, {}, {})).pipe(
+export function getUser_ANDROID$(http: HTTP, auth: string): Observable<any> {
+  return from(
+    http.post(
+      `${environment.apiUrl}/api/Auth/info`,
+      {},
+      {
+        Authorization: `Bearer ${auth}`,
+      }
+    )
+  ).pipe(
     map((m) => JSON.parse(m.data)),
     take(1)
   );

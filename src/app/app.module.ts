@@ -18,6 +18,7 @@ import { TestComponent } from './views/test/test.component';
 import { Printer } from '@awesome-cordova-plugins/printer/ngx';
 import { HTTP } from '@awesome-cordova-plugins/http/ngx';
 import { QRCodeModule } from 'angularx-qrcode';
+import { Capacitor } from '@capacitor/core';
 
 @NgModule({
   declarations: [AppComponent, IsLoginPagePipe, TestComponent],
