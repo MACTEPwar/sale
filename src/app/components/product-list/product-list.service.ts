@@ -12,7 +12,7 @@ export class ProductListService {
   >([]);
   constructor(private queryService: QueryService) {}
 
-  getPorducts(name: string | null = null): void {
+  getPorducts(name: number | null = null): void {
     let obj: any = {};
     if (name) {
       obj.name = name;
@@ -29,6 +29,7 @@ export class ProductListService {
               name: m.name,
               bar: m.bar,
               price: m.price,
+              article: m.article,
             }))
           );
         },

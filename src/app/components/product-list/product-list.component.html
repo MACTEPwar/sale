@@ -1,7 +1,8 @@
-<p-autoComplete
+<!-- <p-autoComplete
   [(ngModel)]="text"
   [suggestions]="(productList$ | async)!"
   (completeMethod)="search($event)"
+  (onKeyUp)="keyup($event)"
   type="number"
 >
   <ng-template let-product pTemplate="item">
@@ -11,4 +12,14 @@
       <div class="p-col">{{ product.price }}</div>
     </div>
   </ng-template></p-autoComplete
->
+> -->
+
+<input type="text" inputmode="numeric" (input)="onInput(inp)" #inp />
+
+<div *ngFor="let product of productList$ | async">
+  <div class="p-grid">
+    <div class="p-col">{{ product.article }}</div>
+    <div class="p-col">{{ product.name }}</div>
+    <div class="p-col">{{ product.price }}</div>
+  </div>
+</div>

@@ -36,6 +36,7 @@ export class AppComponent {
 
   ngOnInit(): void {
     this.items = [
+      { routerLink: '/test', label: 'Test' },
       { routerLink: '/sale', label: 'Продаж' },
       { routerLink: '/return', label: 'Повернення' },
       {

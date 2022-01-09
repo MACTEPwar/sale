@@ -1,6 +1,7 @@
 export type TProduct = {
-    id: string;
-    name: string;
-    bar: string;
-    price: number;
-}
+  id: string;
+  name: string;
+  bar: string;
+  price: number;
+  article: number;
+};
