@@ -1,4 +1,4 @@
 export type TFiscal = {
   id: string;
-  fiscalNumber: number;
+  fiscalNumber: string;
 };

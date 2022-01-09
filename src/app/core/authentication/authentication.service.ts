@@ -1,3 +1,4 @@
+import { QueryService } from '@common/core';
 import { environment } from 'src/environments/environment';
 import { TNullable } from './../../shared/types/types/t-nullabel';
 import { TFiscal, TUser } from '@common/types';
@@ -57,7 +58,8 @@ export class AuthenticationService {
   constructor(
     private httpClient: HttpClient,
     private route: Router,
-    private http: HTTP
+    private http: HTTP,
+    private queryService: QueryService
   ) {
     if (Capacitor.getPlatform() === 'web') {
       this.currentUser = JSON.parse(
@@ -80,57 +82,52 @@ export class AuthenticationService {
     password: string;
     fiscal?: number;
   }): Observable<any> {
-    const formData: any = new FormData();
-    formData.append('username', username);
-    formData.append('password', password);
+    let obj: any = { username, password };
+
     if (fiscal != null) {
-      formData.append('fiscal', fiscal);
+      obj.fiscal = String(fiscal);
     }
 
-    return of({}).pipe(
-      switchMap((s) =>
-        iif(
-          () => Capacitor.getPlatform() === 'android',
-          login_ANDROID$(this.http, formData),
-          login_WEB$(this.httpClient, formData)
-        )
-      ),
-      mergeMap((_: TUser) =>
-        this.getUser(_.access_token!).pipe(
+    return (
+      this.queryService
+        .post<TUser>(`${environment.apiUrl}/api/auth/tokenBody`, obj, {})
+        .pipe(
+          map((m: any) => m.data),
+          mergeMap((_: TUser) =>
+            this.getUser$(_.access_token!).pipe(
+              map((user) => {
+                _.name = user?.name;
+                _.username = user?.username;
+                return _;
+              })
+            )
+          ),
           map((user) => {
-            _.name = user?.name;
-            _.username = user?.username;
-            return _;
-          })
+            if (Capacitor.getPlatform() === 'web') {
+              localStorage.setItem('currentUser', JSON.stringify(user));
+            }
+            return (this.currentUser = user as TUser);
+          }),
+          tap((_) => {
+            if (fiscal != null) {
+              this.currentFiscalNumber.next(fiscal);
+            } else {
+              this.isAuthinticate.next(true);
+            }
+          }),
+          switchMap((_) =>
+            iif(() => fiscal != null, of({}), this.$getFiscalList())
+          )
         )
-      ),
-      map((user) => {
-        if (Capacitor.getPlatform() === 'web') {
-          localStorage.setItem('currentUser', JSON.stringify(user));
-        }
-        return (this.currentUser = user as TUser);
-      }),
-      tap((_) => {
-        if (fiscal != null) {
-          this.currentFiscalNumber.next(fiscal);
-        } else {
-          this.isAuthinticate.next(true);
-        }
-      }),
-      switchMap((_) => iif(() => fiscal != null, of({}), this.$getFiscalList()))
     );
   }
 
   $getFiscalList(): Observable<any> {
-    return of({}).pipe(
-      switchMap((_) =>
-        iif(
-          () => Capacitor.getPlatform() === 'android',
-          getFiscalList_ANDROID$(this.http, this.currentUser?.access_token!),
-          getFiscalList_WEB$(this.httpClient)
-        )
-      )
-    );
+    return this.queryService
+      .get(`${environment.apiUrl}/api/Ecr/list`, {
+        Authorization: `Bearer ${this.currentUser?.access_token}`,
+      })
+      .pipe(map((m: any) => m.data));
   }
 
   /**
@@ -174,67 +171,17 @@ export class AuthenticationService {
     );
   }
 
-  private getUser(token: string): Observable<any> {
-    return of({}).pipe(
-      switchMap((_) =>
-        iif(
-          () => Capacitor.getPlatform() === 'android',
-          getUser_ANDROID$(this.http, this.currentUser?.access_token!),
-          getUser_WEB$(this.httpClient)
-        )
-      ),
-      map((m: any) => m.data)
-    );
+  private getUser$(token: string): Observable<any> {
+    return this.queryService
+      .post(
+        `${environment.apiUrl}/api/Auth/info`,
+        {},
+        {
+          Authorization: `Bearer ${this.currentUser?.access_token}`,
+        }
+      )
+      .pipe(map((m: any) => m.data));
   }
-}
-
-export function login_ANDROID$(
-  http: HTTP,
-  formData: FormData
-): Observable<TUser> {
-  http.setDataSerializer('json');
-
-  var object: any = {};
-  formData.forEach((value, key) => (object[key] = value));
-
-  return from(
-    http.post(`${environment.apiUrl}/api/auth/tokenBody`, object, {
-      'Content-Type': 'application/json',
-    })
-  ).pipe(
-    map((m) => JSON.parse(m.data) as TUser),
-    take(1)
-  );
-}
-
-export function login_WEB$(http: HttpClient, formData: any): Observable<TUser> {
-  return http
-    .post<TUser>(`${environment.apiUrl}/api/auth/token`, formData)
-    .pipe(take(1));
-}
-
-export function getFiscalList_WEB$(http: HttpClient): Observable<any> {
-  return http
-    .get(`${environment.apiUrl}/api/Ecr/list`)
-    .pipe(map((m: any) => m.data));
-}
-
-export function getFiscalList_ANDROID$(
-  http: HTTP,
-  auth: string
-): Observable<any> {
-  return from(
-    http.get(
-      `${environment.apiUrl}/api/Ecr/list`,
-      {},
-      {
-        Authorization: `Bearer ${auth}`,
-      }
-    )
-  ).pipe(
-    map((m: any) => JSON.parse(m.data).data),
-    take(1)
-  );
 }
 
 export function getRefresh_ANDROID$(
@@ -263,23 +210,4 @@ export function getRefresh_WEB$(
   return http
     .post<TUser>(`${environment.apiUrl}/api/auth/refresh`, formData)
     .pipe(take(1));
-}
-
-export function getUser_ANDROID$(http: HTTP, auth: string): Observable<any> {
-  return from(
-    http.post(
-      `${environment.apiUrl}/api/Auth/info`,
-      {},
-      {
-        Authorization: `Bearer ${auth}`,
-      }
-    )
-  ).pipe(
-    map((m) => JSON.parse(m.data)),
-    take(1)
-  );
-}
-
-export function getUser_WEB$(http: HttpClient): Observable<any> {
-  return http.post(`${environment.apiUrl}/api/Auth/info`, {}).pipe(take(1));
 }

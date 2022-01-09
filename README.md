@@ -1,5 +1,6 @@
 # apk
 
 ng build --aot
+npx cap run android
 
-cordova build android
+npx cap run android --external --source-map -l

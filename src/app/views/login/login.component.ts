@@ -14,8 +14,10 @@ import { AuthenticationService } from 'src/app/core/authentication/authenticatio
 })
 export class LoginComponent implements OnInit {
   profileForm: FormGroup = new FormGroup({
-    username: new FormControl('', Validators.required),
-    password: new FormControl('', Validators.required),
+    username: new FormControl('admin', Validators.required),
+    password: new FormControl('flvbyrf2020!@', Validators.required),
+    // username: new FormControl('', Validators.required),
+    // password: new FormControl('', Validators.required),
     fiscal: new FormControl(null),
   });
 
