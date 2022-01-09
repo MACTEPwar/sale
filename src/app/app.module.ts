@@ -22,6 +22,7 @@ import { Capacitor } from '@capacitor/core';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
+import { ProductListModule } from './components/product-list/product-list.module';
 
 @NgModule({
   declarations: [AppComponent, IsLoginPagePipe, TestComponent],
@@ -39,9 +40,12 @@ import { DialogModule } from 'primeng/dialog';
     QRCodeModule,
     ConfirmDialogModule,
     FormsModule,
-    DialogModule
+    DialogModule,
+    ProductListModule,
   ],
   providers: [MessageService, Printer, HTTP],
   bootstrap: [AppComponent],
+  // Удалить с impots после теста
+  // ProductListModule
 })
 export class AppModule {}

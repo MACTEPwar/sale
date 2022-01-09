@@ -123,9 +123,13 @@ export class AuthenticationService {
 
   $getFiscalList(): Observable<any> {
     return this.queryService
-      .get(`${environment.apiUrl}/api/Ecr/list`, {
-        Authorization: `Bearer ${this.currentUser?.access_token}`,
-      })
+      .get(
+        `${environment.apiUrl}/api/Ecr/list`,
+        {},
+        {
+          Authorization: `Bearer ${this.currentUser?.access_token}`,
+        }
+      )
       .pipe(map((m: any) => m.data));
   }
 

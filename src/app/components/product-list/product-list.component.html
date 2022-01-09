@@ -1,0 +1,14 @@
+<p-autoComplete
+  [(ngModel)]="text"
+  [suggestions]="(productList$ | async)!"
+  (completeMethod)="search($event)"
+  type="number"
+>
+  <ng-template let-product pTemplate="item">
+    <div class="p-grid">
+      <div class="p-col">{{ product.article }}</div>
+      <div class="p-col">{{ product.name }}</div>
+      <div class="p-col">{{ product.price }}</div>
+    </div>
+  </ng-template></p-autoComplete
+>

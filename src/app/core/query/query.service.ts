@@ -18,14 +18,18 @@ export class QueryService {
     private messageService: MessageService
   ) {}
 
-  get<T = any>(url: string, headers: RequestHeaders): Observable<T> {
-    return this.sendRequest<T>(EQueryMethod.GET, url, {}, headers);
+  get<T = any>(
+    url: string,
+    params: any,
+    headers: RequestHeaders = {}
+  ): Observable<T> {
+    return this.sendRequest<T>(EQueryMethod.GET, url, params, headers);
   }
 
   post<T = any>(
     url: string,
     body: any,
-    headers: RequestHeaders
+    headers: RequestHeaders = {}
   ): Observable<T> {
     return this.sendRequest<T>(EQueryMethod.POST, url, body, headers);
   }
@@ -41,7 +45,13 @@ export class QueryService {
         iif(
           () => Capacitor.getPlatform() === 'android',
           this.sendRequestAndroid(method, url, body, headers),
-          this.sendRequestWeb(method, url, body, headers)
+          this.sendRequestWeb(
+            method,
+            url,
+            method === EQueryMethod.GET ? {} : body,
+            method === EQueryMethod.POST ? {} : body,
+            headers
+          )
         )
       ),
       tap(
@@ -97,11 +107,13 @@ export class QueryService {
     method: EQueryMethod,
     url: string,
     body: any,
+    params: any,
     headers: RequestHeaders
   ): Observable<any> {
     return this.httpClient.request<T>(method, url, {
       body,
       headers,
+      params,
     });
   }
 }
