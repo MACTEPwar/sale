@@ -88,38 +88,37 @@ export class AuthenticationService {
       obj.fiscal = String(fiscal);
     }
 
-    return (
-      this.queryService
-        .post<TUser>(`${environment.apiUrl}/api/auth/tokenBody`, obj, {})
-        .pipe(
-          map((m: any) => m.data),
-          mergeMap((_: TUser) =>
-            this.getUser$(_.access_token!).pipe(
-              map((user) => {
-                _.name = user?.name;
-                _.username = user?.username;
-                return _;
-              })
-            )
-          ),
-          map((user) => {
-            if (Capacitor.getPlatform() === 'web') {
-              localStorage.setItem('currentUser', JSON.stringify(user));
-            }
-            return (this.currentUser = user as TUser);
-          }),
-          tap((_) => {
-            if (fiscal != null) {
-              this.currentFiscalNumber.next(fiscal);
-            } else {
-              this.isAuthinticate.next(true);
-            }
-          }),
-          switchMap((_) =>
-            iif(() => fiscal != null, of({}), this.$getFiscalList())
+    return this.queryService
+      .post<TUser>(`${environment.apiUrl}/api/auth/tokenBody`, obj, {})
+      .pipe(
+        map((m: any) => m.data),
+        mergeMap((_: TUser) =>
+          this.getUser$(_.access_token!).pipe(
+            map((user) => {
+              _.name = user?.name;
+              _.username = user?.username;
+              return _;
+            })
           )
+        ),
+        map((user) => {
+          if (Capacitor.getPlatform() === 'web') {
+            localStorage.setItem('currentUser', JSON.stringify(user));
+          }
+          this.queryService.authToken = user.access_token!;
+          return (this.currentUser = user as TUser);
+        }),
+        tap((_) => {
+          if (fiscal != null) {
+            this.currentFiscalNumber.next(fiscal);
+          } else {
+            this.isAuthinticate.next(true);
+          }
+        }),
+        switchMap((_) =>
+          iif(() => fiscal != null, of({}), this.$getFiscalList())
         )
-    );
+      );
   }
 
   $getFiscalList(): Observable<any> {
@@ -137,6 +136,7 @@ export class AuthenticationService {
     if (Capacitor.getPlatform() === 'web') {
       localStorage.removeItem('currentUser');
     }
+    this.queryService.authToken = null;
     this.currentUser = null;
     this.isAuthinticate.next(false);
     this.currentFiscalNumber.next(null);

@@ -1,3 +1,4 @@
+import { TNullable } from '@common/types';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HTTP } from '@awesome-cordova-plugins/http/ngx';
@@ -8,6 +9,9 @@ import { map, switchMap, take, tap, catchError } from 'rxjs/operators';
 
 @Injectable()
 export class QueryService {
+  // храню токен для android, т к интерсептор не перехватывает
+  authToken: TNullable<string> = null;
+
   constructor(
     private http: HTTP,
     private httpClient: HttpClient,
@@ -63,12 +67,17 @@ export class QueryService {
     body: any,
     headers: RequestHeaders
   ): Observable<any> {
+    let httpHeaders: RequestHeaders = headers;
+    if (this.authToken != null) {
+      httpHeaders.Authorization = `Bearer ${this.authToken}`;
+    }
+
     return from(
       this.http.sendRequest(url, {
         method,
         serializer: 'json',
         data: body,
-        headers,
+        headers: httpHeaders,
       })
     ).pipe(
       map((m: any) => {
