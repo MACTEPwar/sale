@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { SaleService } from './sale.service';
+import { SaleNewService } from './sale-new.service';
 
 @NgModule({
   declarations: [],
   imports: [CommonModule],
-  providers: [SaleService],
+  providers: [SaleNewService],
 })
 export class SaleLogicModule {}

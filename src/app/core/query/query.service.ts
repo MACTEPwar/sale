@@ -20,7 +20,7 @@ export class QueryService {
 
   get<T = any>(
     url: string,
-    params: any,
+    params: any = {},
     headers: RequestHeaders = {}
   ): Observable<T> {
     return this.sendRequest<T>(EQueryMethod.GET, url, params, headers);

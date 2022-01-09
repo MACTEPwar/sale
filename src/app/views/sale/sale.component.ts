@@ -1,9 +1,10 @@
+import { SaleNewService } from './../../core/BLL/sale-logic/sale-new.service';
 import { PrinterService } from '@common/core';
 import { ServiceService } from './../service/service.service';
 import { Component, OnInit } from '@angular/core';
-import { TProduct } from '@common/types';
+import { TProduct, TNullable } from '@common/types';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { map, throwIfEmpty } from 'rxjs/operators';
+import { debounceTime, map, take, throwIfEmpty } from 'rxjs/operators';
 import { SaleService } from './../../core/BLL/sale-logic/sale.service';
 import { TReceiptProduct } from './../../shared/types/types/t-receipt-product';
 
@@ -13,73 +14,122 @@ import { TReceiptProduct } from './../../shared/types/types/t-receipt-product';
   styleUrls: ['./sale.component.scss'],
 })
 export class SaleComponent implements OnInit {
-  productList: Observable<Array<Product>>;
-
-  test: Array<Product> = [];
-
+  /**
+   * Товары в чеке
+   */
   receiptProducts: Observable<Array<TReceiptProduct>>;
+
+  /** Общаа сумма чека */
   totalSum: BehaviorSubject<number>;
 
+  /** Денег в кассе */
   moneyInKassa: Observable<number>;
 
+  /** Список типов оплат */
   listPaymentTypes: Observable<Array<any>>;
-
+  /** Форма печати для чека */
   dataForPrint: Observable<Array<string>>;
+  /** Смылка (QR-код) */
   link: Observable<string>;
 
+  /** Признак видимости расширенного окна оплаты */
   visibleOtherPayment = false;
+  /** Сумма по каждой оплате */
   pay: any = {};
-  visibleAddProd = false;
 
+  /** Признак видимости окна оплаты */
   visiblePaymantProcess = false;
+  /** Признак выполнения запроса на оплату */
   payInProgress = false;
 
+  /** Изменение кол-ва товара в чеке (принимает новый объект товара, инициирует запрос) */
+  changeProductInReceipt: BehaviorSubject<TNullable<TReceiptProduct>> =
+    new BehaviorSubject<TNullable<TReceiptProduct>>(null);
+  /** Сохраняет предыдущее значение количества товара в чеке */
+  prevAmount: TNullable<number> = null;
+
   constructor(
-    private saleService: SaleService,
+    private saleService: SaleNewService,
     private serviceService: ServiceService,
     private printerService: PrinterService
   ) {
-    this.saleService.getPaymentsList();
-    this.productList = this.saleService.productList.pipe(
-      map((m) => {
-        return m ?? [];
-      })
-    );
+    /** Подписка на товары в чеке */
     this.receiptProducts = this.saleService.receipt.products;
+    /** Подписка на сумму в чеке */
     this.totalSum = this.saleService.receipt.totalSum;
-    this.serviceService.getMoneyInKassa();
+    /** Подписка на сумму денег в кассе */
     this.moneyInKassa = this.serviceService.moneyInKassa;
+    /** Подписка на типы оплат */
     this.listPaymentTypes = this.saleService.paymentsList;
+    /** Подписка на данные для печати */
     this.dataForPrint = this.saleService.contentForPrint;
+    /** Подписка на ссылку для QR-кода */
     this.link = this.saleService.link;
+
+    /** Выполняется при изменении кол-ва в чеке */
+    this.changeProductInReceipt
+      .pipe(debounceTime(300))
+      .subscribe((product: TNullable<TReceiptProduct>) => {
+        this.saleService.changeProductFromReceipt(product as TReceiptProduct);
+      });
   }
 
   ngOnInit(): void {
-    // this.printerService.print('test').subscribe(
-    //   (s) => {
-    //     alert(JSON.stringify(s, null, 4));
-    //   },
-    //   (e) => {
-    //     alert(JSON.stringify(e, null, 4));
-    //   }
-    // );
+    /** Получаю текущий чек */
+    this.saleService.getCurrentReceipt();
+    /** Получаю сумму денег в кассе */
+    this.serviceService.getMoneyInKassa();
   }
 
+  /**
+   * Добавляет товар в чек
+   * @param product Товар
+   */
   addProductToReceipt(product: TProduct): void {
     this.saleService.addProductToReceipt(product, 1);
   }
 
-  // addProductToReceipt(product: TProduct): void {
-  //   let amount = prompt('Введiть кiлькiсть:') ?? 0;
-  //   this.saleService.addProductToReceipt(product, +amount);
-  // }
-
-  onChangeProduct(product: TReceiptProduct): void {
-    this.saleService.changeProductFromReceipt(product);
+  /**
+   * При фокусе количества - оно запоминается
+   * @param amountInp Input
+   */
+  onFocusAmount(amountInp: any): void {
+    this.prevAmount = amountInp.value;
   }
 
-  onSearch(value: string): void {
-    this.saleService.getProductList(value);
+  /**
+   * При вводе количества
+   * @param amountInp Input
+   * @param product Товар
+   */
+  onInputAmount(amountInp: any, product: TReceiptProduct): void {
+    if (amountInp.value == +amountInp.value && amountInp.value > 0) {
+      this.prevAmount = amountInp.value;
+      product.amount = +amountInp.value;
+      this.changeProductInReceipt.next(product);
+    } else {
+      amountInp.value = this.prevAmount;
+    }
+  }
+
+  /**
+   * При нажатии на кнопку "+1 товар"
+   * @param product Товар
+   */
+  amountPlus(product: any): void {
+    product.amount = product.amount + 1;
+    this.changeProductInReceipt.next(product);
+  }
+
+  /**
+   * При нажатии на кнопку "-1 товар"
+   * @param product Товар
+   */
+  amountMinus(product: any): void {
+    if (product.amount > 1) {
+      product.amount = product.amount - 1;
+      this.changeProductInReceipt.next(product);
+    }
   }
 
   doPayment(paymentType: number): void {
@@ -131,16 +181,6 @@ export class SaleComponent implements OnInit {
       });
     } else {
       this.visiblePaymantProcess = false;
-    }
-  }
-  amountPlus(product: any): void {
-    product.amount = product.amount + 1;
-    this.saleService.changeProductFromReceipt(product);
-  }
-  amountMinus(product: any): void {
-    if (product.amount !== 0) {
-      product.amount = product.amount - 1;
-      this.saleService.changeProductFromReceipt(product);
     }
   }
 }

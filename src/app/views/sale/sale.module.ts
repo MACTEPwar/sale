@@ -1,3 +1,4 @@
+import { ProductListModule } from './../../components/product-list/product-list.module';
 import { QRCodeModule } from 'angularx-qrcode';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -25,6 +26,7 @@ import { PtPipe } from './pt.pipe';
     DialogModule,
     ProgressBarModule,
     QRCodeModule,
+    ProductListModule,
   ],
 })
 export class SaleModule {}

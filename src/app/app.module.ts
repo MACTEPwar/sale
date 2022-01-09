@@ -1,28 +1,26 @@
-import { ServiceModule } from './views/service/service.module';
-import { CoreModule } from './core/core.module';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { IsLoginPagePipe } from './is-login-page.pipe';
-import { PanelMenuModule } from 'primeng/panelmenu';
-import { HttpClientModule } from '@angular/common/http';
-import { ToastModule } from 'primeng/toast';
+import { HTTP } from '@awesome-cordova-plugins/http/ngx';
+import { Printer } from '@awesome-cordova-plugins/printer/ngx';
+import { QRCodeModule } from 'angularx-qrcode';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-
-import { OverlayPanelModule } from 'primeng/overlaypanel';
-import { TestComponent } from './views/test/test.component';
-import { Printer } from '@awesome-cordova-plugins/printer/ngx';
-import { HTTP } from '@awesome-cordova-plugins/http/ngx';
-import { QRCodeModule } from 'angularx-qrcode';
-import { Capacitor } from '@capacitor/core';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
-import { ProductListModule } from './components/product-list/product-list.module';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { PanelMenuModule } from 'primeng/panelmenu';
+import { ToastModule } from 'primeng/toast';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { CoreModule } from './core/core.module';
+import { IsLoginPagePipe } from './is-login-page.pipe';
+import { ServiceModule } from './views/service/service.module';
+import { TestComponent } from './views/test/test.component';
+
+
 
 @NgModule({
   declarations: [AppComponent, IsLoginPagePipe, TestComponent],
@@ -41,11 +39,8 @@ import { ProductListModule } from './components/product-list/product-list.module
     ConfirmDialogModule,
     FormsModule,
     DialogModule,
-    ProductListModule,
   ],
   providers: [MessageService, Printer, HTTP],
   bootstrap: [AppComponent],
-  // Удалить с impots после теста
-  // ProductListModule
 })
 export class AppModule {}

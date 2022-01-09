@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { TProduct, TNullable } from '@common/types';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
@@ -11,6 +11,8 @@ import { ProductListService } from './product-list.service';
   providers: [ProductListService],
 })
 export class ProductListComponent implements OnInit {
+  @Output() add: EventEmitter<TProduct> = new EventEmitter<TProduct>();
+
   serachStr$: BehaviorSubject<TNullable<number>> = new BehaviorSubject<
     TNullable<number>
   >(null);
@@ -35,5 +37,9 @@ export class ProductListComponent implements OnInit {
     } else {
       inp.value = this.prevText;
     }
+  }
+
+  addProductToReceipt(product: TProduct): void {
+    this.add.emit(product);
   }
 }

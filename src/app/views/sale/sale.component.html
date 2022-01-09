@@ -9,7 +9,12 @@
 
   <div class="p-grid sale p-m-0">
     <div class="p-col-6 h-100">
-      <div class="p-grid sale-search" #saleSearch>
+      <div class="p-grid">
+        <app-product-list
+          (add)="addProductToReceipt($event)"
+        ></app-product-list>
+      </div>
+      <!-- <div class="p-grid sale-search" #saleSearch>
         <div class="p-col">
           <div class="p-inputgroup">
             <input
@@ -58,7 +63,7 @@
             </ng-template>
           </p-table>
         </div>
-      </div>
+      </div> -->
     </div>
     <div class="p-col-6 p-py-0">
       <div class="p-grid receipt">
@@ -85,12 +90,17 @@
                   (click)="this.amountMinus(receiptProduct)"
                 ></p-button>
                 <input
-                  type="number"
+                  type="text"
+                  inputmode="decimal"
                   pInputText
                   min="0"
-                  [(ngModel)]="receiptProduct.amount"
                   class="amountEdit w-100"
+                  (focus)="onFocusAmount(amountInp)"
+                  (input)="onInputAmount(amountInp, receiptProduct)"
+                  [ngModel]="receiptProduct.amount"
+                  #amountInp
                 />
+                <!-- [(ngModel)]="receiptProduct.amount" -->
                 <p-button
                   icon="pi pi-plus"
                   (click)="this.amountPlus(receiptProduct)"

@@ -28,8 +28,7 @@ export class AppComponent {
     private authenticationService: AuthenticationService,
     private serviceComponent: ServiceService,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService,
-    private saleService: SaleService
+    private confirmationService: ConfirmationService
   ) {
     this.currentUser = this.authenticationService._currentUser$;
   }
