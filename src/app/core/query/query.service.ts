@@ -68,6 +68,7 @@ export class QueryService {
     headers: RequestHeaders
   ): Observable<any> {
     let httpHeaders: RequestHeaders = headers;
+    httpHeaders['Content-Type'] = 'application/json';
     if (this.authToken != null) {
       httpHeaders.Authorization = `Bearer ${this.authToken}`;
     }
