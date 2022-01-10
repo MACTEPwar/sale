@@ -125,10 +125,8 @@ export class SaleComponent implements OnInit {
    * @param product Товар
    */
   amountMinus(product: any): void {
-    if (product.amount > 1) {
-      product.amount = product.amount - 1;
-      this.changeProductInReceipt.next(product);
-    }
+    product.amount = product.amount - 1 > 0 ? product.amount - 1 : 0;
+    this.changeProductInReceipt.next(product);
   }
 
   /**
