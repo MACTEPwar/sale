@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PrinterService } from '@common/core';
 import { TNullable, TProduct } from '@common/types';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, filter } from 'rxjs/operators';
 import { SaleNewService } from './../../core/BLL/sale-logic/sale-new.service';
 import { TReceiptProduct } from './../../shared/types/types/t-receipt-product';
 import { ServiceService } from './../service/service.service';
@@ -67,7 +67,10 @@ export class SaleComponent implements OnInit {
 
     /** Выполняется при изменении кол-ва в чеке */
     this.changeProductInReceipt
-      .pipe(debounceTime(300))
+      .pipe(
+        debounceTime(300),
+        filter((f) => f !== null)
+      )
       .subscribe((product: TNullable<TReceiptProduct>) => {
         this.saleService.changeProductFromReceipt(product as TReceiptProduct);
       });
@@ -154,6 +157,9 @@ export class SaleComponent implements OnInit {
       this.serviceService.getMoneyInKassa();
       this.visibleOtherPayment = false;
       this.payInProgress = false;
+      this.saleService.getContentForPrint(
+        this.saleService.lastReceiptNumber.getValue()
+      );
 
       for (let p in this.pay) {
         this.pay[p] = null;
@@ -172,7 +178,7 @@ export class SaleComponent implements OnInit {
   ): void {
     if (printReceipt === true) {
       this.printerService.print(content!).subscribe((res) => {
-        // this.visiblePaymantProcess = false;
+        this.visiblePaymantProcess = false;
       });
     } else {
       this.visiblePaymantProcess = false;
