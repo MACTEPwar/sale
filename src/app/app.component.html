@@ -1,5 +1,65 @@
 <p-toast></p-toast>
 <ng-container *ngIf="!(router | isLoginPage | async); else loginBlock">
+  <div class="p-d-flex">
+    <div class="header">
+      <div class="topmenu">
+        <button
+          #btn
+          type="button"
+          pButton
+          icon="pi pi-bars"
+          label="Меню"
+          (click)="menu.toggle($event)"
+        ></button>
+        <p-slideMenu
+          #menu
+          [model]="items"
+          [popup]="true"
+          [viewportHeight]="400"
+          backLabel="Назад"
+        ></p-slideMenu>
+      </div>
+
+      <div class="topcenter">
+        <div class="toptitle">Заголовок страницы</div>
+
+        <div class="topinfo">Грошей у сейфi: 78932,00грн</div>
+
+        <div class="topicons">
+          <ng-container *ngIf="online | async; else offline"
+            >{{ this.online }}<span id="online_icon"></span
+          ></ng-container>
+          <ng-template #offline><span id="offline_icon"></span></ng-template>
+
+          <ng-container *ngIf="opencashbox | async; else closecashbox"
+            ><span id="opencashbox_icon"></span
+          ></ng-container>
+          <ng-template #closecashbox
+            ><span id="closecashbox_icon"></span
+          ></ng-template>
+        </div>
+      </div>
+      <div class="topusermenu">
+        <button
+          #btn
+          type="button"
+          pButton
+          icon="pi pi-user"
+          [label]="(currentUser | async)?.name!"
+          [title]="(currentUser | async)?.name!"
+          (click)="menu2.toggle($event)"
+        ></button>
+        <p-slideMenu #menu2 [model]="items2" [popup]="true"></p-slideMenu>
+      </div>
+    </div>
+  </div>
+  <div class="p-d-flex">
+    <div class="maincontent">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+  <!--
   <div class="container p-d-flex">
     <div class="left-menu">
       <p-button
@@ -10,6 +70,7 @@
         iconPos="left"
         class="userbtn"
       ></p-button>
+
       <p-panelMenu
         [model]="items"
         [style]="{ width: '100%' }"
@@ -29,7 +90,7 @@
     <div class="content">
       <router-outlet></router-outlet>
     </div>
-  </div>
+  </div> -->
 </ng-container>
 
 <ng-template #loginBlock>

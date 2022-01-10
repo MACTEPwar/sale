@@ -3,9 +3,14 @@ import { TNullable } from './shared/types/types/t-nullabel';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
+import {
+  ConfirmationService,
+  MenuItem,
+  MessageService,
+  PrimeNGConfig,
+} from 'primeng/api';
 import { ServiceService } from './views/service/service.service';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable, of } from 'rxjs';
 import { ServiceComponent } from './views/service/service.component';
 import { SaleService } from './core/BLL/sale-logic/sale.service';
 
@@ -16,8 +21,12 @@ import { SaleService } from './core/BLL/sale-logic/sale.service';
   providers: [ServiceService, ConfirmationService],
 })
 export class AppComponent {
+  online: Observable<boolean> = of(false);
+  opencashbox: Observable<boolean> = of(false);
+
   title = 'sale';
   items: MenuItem[] = [];
+  items2: MenuItem[] = [];
   currentUser: Observable<TNullable<TUser>>;
   confirmText: number | null = null;
   visibleConfirmDialog = false;
@@ -28,12 +37,15 @@ export class AppComponent {
     private authenticationService: AuthenticationService,
     private serviceComponent: ServiceService,
     private messageService: MessageService,
+    private primengConfig: PrimeNGConfig,
     private confirmationService: ConfirmationService
   ) {
     this.currentUser = this.authenticationService._currentUser$;
   }
 
   ngOnInit(): void {
+    this.primengConfig.ripple = true;
+
     this.items = [
       { routerLink: '/test', label: 'Test' },
       { routerLink: '/sale', label: 'Продаж' },
@@ -60,6 +72,8 @@ export class AppComponent {
         ],
       },
     ];
+
+    this.items2 = [{ label: 'Вийти', command: () => this.logout() }];
   }
 
   doCashIn(): void {

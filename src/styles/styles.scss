@@ -305,3 +305,131 @@ body {
   width: 100%;
   padding: 8px;
 }
+
+/*--------------........................ ------------*/
+
+.header {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  background-color: $maincolor;
+  justify-content: space-between;
+  .topmenu {
+    .p-element.p-button {
+      height: 50px;
+      width: 100px;
+      border: none;
+      background-color: $color1;
+    }
+    .p-slidemenu {
+      padding: 0;
+      border: none;
+      box-shadow: 0 5px 10px rgb(0 0 0 / 20%);
+      border-radius: 0;
+    }
+    .p-slidemenu-wrapper {
+      width: 100% !important;
+      ul.p-slidemenu-rootlist,
+      .p-submenu-list {
+        width: 100% !important;
+        li.p-element.p-menuitem {
+          border-bottom: 1px solid $color4;
+        }
+      }
+    }
+    a.p-slidemenu-backward {
+      background-color: $color4;
+    }
+  }
+  .topusermenu {
+    .p-slidemenu {
+      padding: 0;
+      border: none;
+      box-shadow: 0 5px 10px rgb(0 0 0 / 20%);
+      border-radius: 0;
+      width: 150px;
+    }
+    .p-element.p-button {
+      height: 50px;
+      width: 150px;
+      border: none;
+      background-color: $color1;
+      span {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        text-align: left;
+      }
+    }
+    .p-slidemenu-wrapper {
+      width: 150px !important;
+      ul.p-slidemenu-rootlist,
+      .p-submenu-list {
+        width: 100% !important;
+        li.p-element.p-menuitem {
+          border-bottom: 1px solid $color4;
+        }
+      }
+    }
+  }
+  .topcenter {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .toptitle {
+    flex: 1;
+    display: flex;
+    font-size: 16px;
+    color: #fff;
+    align-items: center;
+    padding: 0 20px;
+  }
+  .topinfo {
+    padding: 0 20px;
+    flex: 1;
+    display: flex;
+    color: #fff;
+    font-size: 16px;
+    height: 100%;
+    align-items: center;
+    background-color: $secondcolor;
+  }
+  .topicons {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    width: 100px;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: $secondcolor;
+    #online_icon,
+    #offline_icon,
+    #opencashbox_icon,
+    #closecashbox_icon {
+      display: block;
+      background-image: url("../images/sprite_icons.png");
+      background-repeat: no-repeat;
+      width: 25px;
+      height: 25px;
+    }
+    #online_icon {
+      background-position: -14px -48px;
+    }
+    #offline_icon {
+      background-position: -14px -12px;
+    }
+    #opencashbox_icon {
+      background-position: -51px -48px;
+    }
+    #closecashbox_icon {
+      background-position: -49px -12px;
+    }
+  }
+}
+.maincontent {
+  width: 100vw;
+  height: calc(100vh - 50px);
+  overflow: auto;
+}
