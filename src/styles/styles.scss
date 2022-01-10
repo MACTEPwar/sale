@@ -385,6 +385,7 @@ body {
     color: #fff;
     align-items: center;
     padding: 0 20px;
+    font-weight: bold;
   }
   .topinfo {
     padding: 0 20px;
@@ -432,4 +433,61 @@ body {
   width: 100vw;
   height: calc(100vh - 50px);
   overflow: auto;
+}
+
+.topSearch {
+  position: relative;
+  .searchline {
+    position: relative;
+  }
+  .datasearch {
+    position: absolute;
+    top: 49px;
+    background-color: white;
+    max-height: 200px;
+    display: block;
+    width: 100%;
+    z-index: 10;
+    box-shadow: 0 12px 9px rgb(0 0 0 / 20%);
+    border-radius: 0 0 10px 10px;
+    overflow: auto;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    .datasearch_tr {
+      display: flex;
+      flex-wrap: wrap;
+      border-top: 1px solid $color4;
+      min-height: 50px;
+      align-items: center;
+      button.p-component.p-button {
+        border-radius: 5px;
+      }
+    }
+  }
+  span.searchIcon {
+    display: block;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    left: 0;
+    background-image: url("../images/sprite_icons.png");
+    background-position: -143px -2px;
+    background-repeat: no-repeat;
+    z-index: 1;
+  }
+  input {
+    width: 100%;
+    height: 50px;
+    background: #ffffff;
+    font-size: 20px;
+    border: none;
+    padding: 0 0 0 60px;
+    position: relative;
+    border-bottom: 1px solid;
+
+    &:focus {
+      box-shadow: none;
+      outline: none;
+    }
+  }
 }

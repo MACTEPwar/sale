@@ -58,39 +58,6 @@
       <router-outlet></router-outlet>
     </div>
   </div>
-
-  <!--
-  <div class="container p-d-flex">
-    <div class="left-menu">
-      <p-button
-        [title]="(currentUser | async)?.name"
-        [label]="(currentUser | async)?.name!"
-        [style]="{ width: '100%' }"
-        icon="pi pi-user"
-        iconPos="left"
-        class="userbtn"
-      ></p-button>
-
-      <p-panelMenu
-        [model]="items"
-        [style]="{ width: '100%' }"
-        [multiple]="false"
-      ></p-panelMenu>
-
-      <p-button
-        class="logOutBtn"
-        title="Вийти"
-        label="Вийти"
-        [style]="{ width: '100%' }"
-        icon="pi pi-sign-out"
-        iconPos="left"
-        (onClick)="logout()"
-      ></p-button>
-    </div>
-    <div class="content">
-      <router-outlet></router-outlet>
-    </div>
-  </div> -->
 </ng-container>
 
 <ng-template #loginBlock>

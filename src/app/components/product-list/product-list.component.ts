@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TProduct, TNullable } from '@common/types';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
@@ -18,6 +18,7 @@ export class ProductListComponent implements OnInit {
   >(null);
   productList$: Observable<Array<TProduct>>;
   prevText: TNullable<number> = null;
+  @Input() id = 'id';
 
   constructor(private productListService: ProductListService) {
     this.productList$ = this.productListService.productList$;

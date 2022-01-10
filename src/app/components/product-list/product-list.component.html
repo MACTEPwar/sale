@@ -14,13 +14,30 @@
   </ng-template></p-autoComplete
 > -->
 
-<input type="text" inputmode="numeric" (input)="onInput(inp)" #inp />
+<div class="searchline">
+  <span class="searchIcon"></span>
+  <input
+    [id]="this.id"
+    type="text"
+    inputmode="numeric"
+    (input)="onInput(inp)"
+    #inp
+  />
+</div>
 
-<div *ngFor="let product of productList$ | async">
-  <div class="p-grid">
-    <div class="p-col">{{ product.article }}</div>
-    <div class="p-col">{{ product.name }}</div>
-    <div class="p-col">{{ product.price }}</div>
-    <div class="p-col"><button (click)="addProductToReceipt(product)">ADD</button></div>
+<div class="datasearch">
+  <div *ngFor="let product of productList$ | async">
+    <div class="datasearch_tr">
+      <div class="p-col-2">{{ product.article }}</div>
+      <div class="p-col-7">{{ product.name }}</div>
+      <div class="p-col-2">{{ product.price }}</div>
+      <div class="p-col-1">
+        <p-button
+          icon="pi pi-shopping-cart"
+          (click)="addProductToReceipt(product)"
+        >
+        </p-button>
+      </div>
+    </div>
   </div>
 </div>
