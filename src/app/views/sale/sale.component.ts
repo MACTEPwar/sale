@@ -1,12 +1,11 @@
-import { SaleNewService } from './../../core/BLL/sale-logic/sale-new.service';
-import { PrinterService } from '@common/core';
-import { ServiceService } from './../service/service.service';
 import { Component, OnInit } from '@angular/core';
-import { TProduct, TNullable } from '@common/types';
-import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
-import { debounceTime, map, take, throwIfEmpty } from 'rxjs/operators';
-import { SaleService } from './../../core/BLL/sale-logic/sale.service';
+import { PrinterService } from '@common/core';
+import { TNullable, TProduct } from '@common/types';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { SaleNewService } from './../../core/BLL/sale-logic/sale-new.service';
 import { TReceiptProduct } from './../../shared/types/types/t-receipt-product';
+import { ServiceService } from './../service/service.service';
 
 @Component({
   selector: 'app-sale',
@@ -132,25 +131,19 @@ export class SaleComponent implements OnInit {
     }
   }
 
-  doPayment(paymentType: number): void {
-    this.payInProgress = true;
-    this.visiblePaymantProcess = true;
-    this.saleService
-      .doPayment([{ sum: this.totalSum.getValue(), paymentType: paymentType }])
-      .subscribe((res) => {
-        this.saleService.getCurrentReceipt();
-        this.serviceService.getMoneyInKassa();
-        this.payInProgress = false;
-        this.saleService.getContentForPrint(
-          this.saleService.lastReceiptNumber.getValue()
-        );
-      });
-  }
-
-  doPay(): void {
+  /**
+   * Оплата
+   * @param paymentType Тип оплаты (может быть null)
+   */
+  doPayment(paymentType: TNullable<number> = null): void {
     this.payInProgress = true;
     this.visiblePaymantProcess = true;
     let arr: Array<{ sum: number; paymentType: number }> = [];
+
+    if (paymentType != null) {
+      this.pay[paymentType] = this.totalSum.getValue();
+    }
+
     for (let p in this.pay) {
       arr.push({
         sum: +this.pay[p],
@@ -159,10 +152,10 @@ export class SaleComponent implements OnInit {
     }
 
     this.saleService.doPayment(arr).subscribe((res) => {
-      this.saleService.getCurrentReceipt();
+      // this.saleService.getCurrentReceipt();
       this.serviceService.getMoneyInKassa();
       this.visibleOtherPayment = false;
-      this.payInProgress = true;
+      this.payInProgress = false;
 
       for (let p in this.pay) {
         this.pay[p] = null;
@@ -170,14 +163,18 @@ export class SaleComponent implements OnInit {
     });
   }
 
+  /**
+   * Оплата прошла успешно (завершающие действия)
+   * @param printReceipt Признак печати чека
+   * @param content Контент для печати чека
+   */
   finishPay(
     printReceipt: boolean,
     content: HTMLElement | null | string = null
   ): void {
-    // this.visiblePaymantProcess = false;
     if (printReceipt === true) {
       this.printerService.print(content!).subscribe((res) => {
-        this.visiblePaymantProcess = false;
+        // this.visiblePaymantProcess = false;
       });
     } else {
       this.visiblePaymantProcess = false;

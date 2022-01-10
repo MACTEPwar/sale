@@ -97,20 +97,21 @@ export class SaleNewService {
     array: Array<{ sum: number; paymentType: number }>
   ): Observable<any> {
     return this.doPayment$(array).pipe(
+      map((m) => m.data),
       filter((f) => f === true),
       tap((t) => {
-        // console.log('TEST', t);
         this.receipt.products.next([]);
         this.receipt.totalSum.next(0);
-      }),
-      take(1)
+      })
     );
   }
 
   getPaymentsList(): void {
-    this.getPaementsList$().subscribe((res) => {
-      this.paymentsList.next(res);
-    });
+    this.getPaementsList$()
+      .pipe(map((m) => m.data))
+      .subscribe((res) => {
+        this.paymentsList.next(res);
+      });
   }
 
   getContentForPrint(fiscalNumber: TNullable<number> = null): void {
