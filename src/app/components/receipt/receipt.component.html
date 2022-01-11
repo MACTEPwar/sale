@@ -23,11 +23,11 @@
   </ng-container>
   <ng-container *ngSwitchCase="'print'">
     <div id="print-section" #forPrint>
-
       <p *ngFor="let str of printContent | async">
         {{ str | pt }}
       </p>
     </div>
-    <button (click)="print(forPrint)">print</button>
+
+    <button class="receipt_btn" (click)="print(forPrint)">Друк</button>
   </ng-container>
 </div>
