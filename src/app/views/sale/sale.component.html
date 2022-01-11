@@ -4,6 +4,79 @@
     (add)="addProductToReceipt($event)"
   ></app-product-list>
 </div>
+<div class="datasale">
+  <!-- Table section   -->
+  <div class="sale_table">
+    <div class="receiptProducts">
+      <div
+        class="sale_table-header"
+        *ngIf="(receiptProducts | async)!.length > 0"
+      >
+        <div class="_name">Назва</div>
+        <div class="_amount">Кiлькiсть</div>
+        <div class="_discountSum">Цiна за од.</div>
+        <div class="_sum">Сума</div>
+      </div>
+
+      <div
+        class="receiptProducts_line"
+        *ngFor="let receiptProduct of receiptProducts | async"
+      >
+        <div class="receiptProducts_name">
+          {{ receiptProduct.name }}
+        </div>
+
+        <div class="receiptProducts_amount">
+          <p-button
+            icon="pi pi-minus"
+            (click)="this.amountMinus(receiptProduct)"
+          ></p-button>
+          <input
+            type="text"
+            inputmode="decimal"
+            pInputText
+            min="0"
+            class="amountEdit w-100"
+            (focus)="onFocusAmount(amountInp)"
+            (input)="onInputAmount(amountInp, receiptProduct)"
+            [ngModel]="receiptProduct.amount"
+            #amountInp
+          />
+
+          <p-button
+            icon="pi pi-plus"
+            (click)="this.amountPlus(receiptProduct)"
+          ></p-button>
+        </div>
+
+        <div class="receiptProducts_discountSum">
+          {{ receiptProduct.discountSum }}
+        </div>
+
+        <div class="receiptProducts_sum">
+          <div class="s">
+            {{ receiptProduct.sum }}
+            <ng-container *ngIf="receiptProduct.sum"></ng-container>
+          </div>
+          <div
+            class="d"
+            *ngIf="
+              receiptProduct.discountSum != null &&
+              receiptProduct.discountSum > 0
+            "
+          >
+            Знижка: {{ receiptProduct.discountSum }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Buttons section -->
+  <div class="sale_buttons">
+    <div>jksdjksdj</div>
+    <div>d;fkd</div>
+  </div>
+</div>
 
 <!-- <div class="container" #container>
   <div class="p-grid title p-m-0" #title>

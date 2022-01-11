@@ -454,11 +454,15 @@ body {
     padding-bottom: 20px;
     margin-bottom: 20px;
     .datasearch_tr {
+      font-size: 18px;
       display: flex;
       flex-wrap: wrap;
       border-top: 1px solid $color4;
       min-height: 50px;
       align-items: center;
+      div {
+        padding: 0 10px;
+      }
       button.p-component.p-button {
         border-radius: 5px;
       }
@@ -489,5 +493,354 @@ body {
       box-shadow: none;
       outline: none;
     }
+  }
+}
+
+.datasale {
+  height: calc(100vh - 100px);
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+
+  .sale_table {
+    width: calc(100vw - 150px);
+    overflow: auto;
+    height: 100%;
+  }
+  .sale_buttons {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    background-color: darkorange;
+    width: 150px;
+  }
+}
+
+$titleHeight: 51px;
+$saleSearchHeight: 55px;
+
+$tdNameWidth: auto;
+$tdCodeWidth: 110px;
+$tdPriceWidth: 110px;
+$tdAddBtnWidth: 60px;
+
+$sendEmailBlock: 53px;
+$btns: 37px;
+
+// .container {
+//   height: 100%;
+//   .title {
+//     height: $titleHeight;
+//     border-bottom: 2px solid #01a9ac;
+//     color: #000000;
+//     font-size: 18px;
+//     display: flex;
+//     align-items: center;
+//     font-weight: 400;
+//   }
+
+//   .saleTitle {
+//     display: inline-block;
+//     height: 51px;
+//     width: 100%;
+//     padding: 0;
+//     margin: 0;
+//     & > div {
+//       width: 50%;
+//       height: 51px;
+//       padding: 0 20px;
+//       display: inline-flex;
+//       align-items: center;
+//       background-color: #e0e6f1;
+//       &:last-child {
+//         background-color: #607292;
+//         color: #fff;
+//       }
+//     }
+//   }
+
+//   .sale {
+//     height: calc(100% - #{$titleHeight});
+//     // min-height: 400px;
+//     .sale-search {
+//       height: $saleSearchHeight;
+//       .p-inputgroup-addon {
+//         background-color: $control-bg-color;
+//         color: $control-color;
+//       }
+//     }
+//     .product-list {
+//       // max-height: calc(100% - #{$saleSearchHeight});
+//       height: calc(100% - #{$saleSearchHeight});
+//       .p-col {
+//         height: 100%;
+//         padding: 0 0.5rem;
+//         th {
+//           background-color: white;
+//           border-top: none;
+//           border-left: none;
+//           border-right: none;
+//           border-bottom: #bbb 1px solid;
+//           color: $font-color;
+//         }
+//         td {
+//           border-left: none;
+//           border-right: none;
+//           border-top: none;
+//           border-bottom: #e8e8e8 1px solid;
+//           color: $font-color;
+//           padding: 5px;
+//         }
+//         .tdName {
+//           flex: 4;
+//           min-width: 200px;
+//         }
+//         .tdCode {
+//           flex: 2;
+//           min-width: 105px;
+//         }
+//         .tdPrice {
+//           flex: 2;
+//           justify-content: center;
+//         }
+//         .tdAddBtn {
+//           flex: 1;
+//           min-width: 50px;
+//           .addBtn {
+//             width: 30px;
+//             height: 30px;
+//             border-radius: 30px;
+//             border: none;
+//             background-color: #89a2d0;
+//             color: white;
+//           }
+//         }
+//       }
+//       // overflow-y: auto;
+//     }
+//     .receipt {
+//       // height: calc(100% - #{$sendEmailBlock} - #{$btns} - 0.5rem);
+//       background: linear-gradient(
+//         90deg,
+//         #e0e6f170,
+//         #fff 20%,
+//         #fff 80%,
+//         #e0e6f182
+//       );
+//       border-radius: 6px;
+//       margin-right: -2px;
+//       margin-top: 10px;
+//       margin-bottom: 10px;
+//       border: 2px dashed #bcc3ce;
+//       height: auto;
+//       min-height: calc(100% - 56px);
+//       .receiptTitle {
+//         height: 34px;
+//         border-bottom: #b0bfdb 1px solid;
+//         font-size: 15px;
+//         background: #e0e6f1;
+//         span {
+//           color: $font-color;
+//         }
+//       }
+//       .receiptProducts {
+//         // max-height: calc(100% -34px - 34px);
+//         overflow-y: auto;
+
+//         > .p-grid {
+//           &.edit {
+//             .amountText {
+//               display: none;
+//             }
+//             .amountEdit {
+//               display: inline-block;
+//               height: 30px;
+//             }
+//             .dropFromReceiptBtn .editBtn {
+//               display: none;
+//             }
+//             .dropFromReceiptBtn .saveBtn {
+//               display: inline-block;
+//             }
+//           }
+//           &:not(.edit) {
+//             .amountText {
+//               display: inline;
+//             }
+//             .amountEdit {
+//               display: none;
+//             }
+//             .dropFromReceiptBtn .editBtn {
+//               display: inline-block;
+//             }
+//             .dropFromReceiptBtn .saveBtn {
+//               display: none;
+//             }
+//           }
+//           .tdReceiptProduct {
+//             color: $font-color;
+//             margin-top: auto;
+//             margin-bottom: auto;
+//             &.name {
+//               width: auto;
+//               max-width: auto;
+//               min-width: auto;
+//             }
+//             &.amount {
+//               width: 110px;
+//               max-width: 110px;
+//               min-width: 110px;
+//             }
+//             &.sum {
+//               width: 110px;
+//               max-width: 110px;
+//               min-width: 110px;
+//             }
+//             &.dropFromReceiptBtn {
+//               width: 60px;
+//               max-width: 60px;
+//               min-width: 60px;
+//               text-align: right;
+//               button {
+//                 width: 30px;
+//                 height: 30px;
+//                 border-radius: 30px;
+//                 border: none;
+//                 background-color: #89a2d0;
+//                 color: white;
+//               }
+//             }
+//           }
+//         }
+//       }
+//       .total {
+//         height: 34px;
+//         border-top: #bbb 1px solid;
+//         span {
+//           color: $font-color;
+//         }
+//       }
+//     }
+//     .sendEmailBlock {
+//       height: 53px;
+//     }
+//     .btns {
+//       height: 37px;
+//     }
+//   }
+// }
+
+.receiptProducts {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-size: 17px;
+
+  .receiptProducts_line {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.2);
+    padding: 5px 0;
+
+    &:last-child {
+      border-bottom: none;
+    }
+    div {
+      padding: 3px;
+    }
+
+    .receiptProducts_amount {
+      flex-direction: row;
+      white-space: nowrap;
+      overflow: hidden;
+      text-align: right;
+      width: 140px;
+      input {
+        padding: 4px;
+        width: 50px;
+      }
+    }
+    .receiptProducts_discountSum {
+      width: 110px;
+      text-align: center;
+    }
+
+    .receiptProducts_dropFromReceiptBtn {
+      flex: 1;
+      max-width: 15%;
+      overflow: hidden;
+    }
+
+    .receiptProducts_dropFromReceiptBtn {
+      justify-content: end;
+      display: flex;
+      button {
+        border: none;
+        height: 32px;
+        width: 32px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        color: #fff;
+        background-color: #89a2d0;
+      }
+    }
+
+    .receiptProducts_name {
+      flex: 1;
+
+      word-break: break-all;
+      text-overflow: ellipsis;
+    }
+
+    .receiptProducts_sum {
+      width: 120px;
+      overflow: hidden;
+      text-align: right;
+      flex-direction: column;
+      .s {
+        font-size: 18px;
+      }
+      .d {
+        font-size: 14px;
+        color: red;
+      }
+    }
+  }
+}
+
+#pData {
+  // display: none;
+  #printData {
+    font-family: "Droid Sans Mono", Arial, Helvetica, sans-serif;
+    width: 32pt;
+  }
+}
+
+.sale_table-header {
+  display: flex;
+  width: 100%;
+  height: 50px;
+  align-items: center;
+  flex-direction: row;
+  background-color: $color4;
+  ._name {
+    flex: 1;
+    text-align: center;
+  }
+  ._amount {
+    width: 140px;
+    text-align: center;
+  }
+  ._discountSum {
+    width: 110px;
+    text-align: center;
+  }
+  ._sum {
+    width: 120px;
+    text-align: center;
   }
 }
