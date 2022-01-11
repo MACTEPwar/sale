@@ -88,6 +88,8 @@ export class SaleComponent implements OnInit {
     this.serviceService.getEcrStatus();
     /** Поулчаю статус смены */
     this.serviceService.getShiftStatus();
+    /** Получаю список доступных оплат */
+    this.saleService.getPaymentsList();
   }
 
   /**
