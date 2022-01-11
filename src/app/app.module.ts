@@ -19,8 +19,9 @@ import { CoreModule } from './core/core.module';
 import { IsLoginPagePipe } from './is-login-page.pipe';
 import { ServiceModule } from './views/service/service.module';
 import { TestComponent } from './views/test/test.component';
-
-
+import { RippleModule } from 'primeng/ripple';
+import { MenuModule } from 'primeng/menu';
+import { SlideMenuModule } from 'primeng/slidemenu';
 
 @NgModule({
   declarations: [AppComponent, IsLoginPagePipe, TestComponent],
@@ -39,6 +40,9 @@ import { TestComponent } from './views/test/test.component';
     ConfirmDialogModule,
     FormsModule,
     DialogModule,
+    RippleModule,
+    MenuModule,
+    SlideMenuModule,
   ],
   providers: [MessageService, Printer, HTTP],
   bootstrap: [AppComponent],

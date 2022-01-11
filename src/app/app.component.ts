@@ -1,20 +1,18 @@
-import { PrinterService } from '@common/core';
-import { TUser } from './shared/types/types/t-user';
-import { TNullable } from './shared/types/types/t-nullabel';
-import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import {
   Component,
+  Renderer2,
   ViewChild,
   ViewContainerRef,
-  Renderer2,
 } from '@angular/core';
 import { Router } from '@angular/router';
+import { PrinterService } from '@common/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
-import { ServiceService } from './views/service/service.service';
-import { Observable } from 'rxjs';
-import { ServiceComponent } from './views/service/service.component';
-import { SaleService } from './core/BLL/sale-logic/sale.service';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
+import { TNullable } from './shared/types/types/t-nullabel';
+import { TUser } from './shared/types/types/t-user';
+import { ServiceService } from './views/service/service.service';
 
 @Component({
   selector: 'app-root',
@@ -23,8 +21,12 @@ import { map } from 'rxjs/operators';
   providers: [ServiceService, ConfirmationService],
 })
 export class AppComponent {
+  online: Observable<boolean> = of(false);
+  opencashbox: Observable<boolean> = of(false);
+
   title = 'sale';
   items: MenuItem[] = [];
+  items2: MenuItem[] = [];
   currentUser: Observable<TNullable<TUser>>;
   confirmText: number | null = null;
   visibleConfirmDialog = false;
@@ -72,17 +74,12 @@ export class AppComponent {
         ],
       },
     ];
+
+    this.items2 = [{ label: 'Вийти', command: () => this.logout() }];
   }
 
   ngAfterViewInit(): void {
-    console.log(this.printContainerDOM);
     this.printerService.registerViewContainer(this.printContainerDOM!);
-    // this.printerService.addTextToPrint(this.renderer, 'Hello world !!!');
-    // this.printerService.addTextToPrint(this.renderer, 'string 1');
-    // this.printerService.clearPrintBlank();
-    // this.printerService.addTextToPrint(this.renderer, 'string 2');
-    // this.printerService.addQrCode(this.renderer,'test');
-    // this.printerService.test_print();
   }
 
   doCashIn(): void {
