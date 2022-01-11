@@ -2,6 +2,7 @@ import { TNullable } from './../../../shared/types/types/t-nullabel';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ReceiptsService, TReceipt } from './receipt.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-receipts',
@@ -19,7 +20,11 @@ export class ReceiptsComponent implements OnInit {
 
   date: Date = new Date();
 
-  constructor(private receiptService: ReceiptsService) {
+  constructor(
+    private receiptService: ReceiptsService,
+    private titleService: Title
+  ) {
+    this.titleService.setTitle('Список чекiв');
     this.receipts = this.receiptService.receipts;
     this.count = this.receiptService.count;
     this.loading = this.receiptService.loading;

@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-return',
   templateUrl: './return.component.html',
-  styleUrls: ['./return.component.scss']
+  styleUrls: ['./return.component.scss'],
 })
 export class ReturnComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor(private titleService: Title) {
+    this.titleService.setTitle('Повернення товару');
   }
 
+  ngOnInit(): void {}
 }

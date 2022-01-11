@@ -13,13 +13,12 @@ export class ProductListService {
   constructor(private queryService: QueryService) {}
 
   getPorducts(name: number | null = null): void {
-    let obj: any = {};
-    if (name) {
-      obj.name = name;
+    let url = `${environment.apiUrl}/api/barPrice/list`;
+    if (name != null) {
+      url += `?name=${name}`;
     }
-
     this.queryService
-      .get(`${environment.apiUrl}/api/barPrice/list`, obj)
+      .get(url)
       .pipe(map((m: any) => m.data))
       .subscribe(
         (res) => {
