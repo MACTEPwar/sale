@@ -19,7 +19,8 @@
     "lib": ["es2018", "dom"],
     "paths": {
       "@common/types": ["src/app/shared/types/index.ts"],
-      "@common/core": ["src/app/core/index.ts"]
+      "@common/core": ["src/app/core/index.ts"],
+      "@common/pipes": ["src/app/pipes/index.ts"]
     }
   },
   "angularCompilerOptions": {

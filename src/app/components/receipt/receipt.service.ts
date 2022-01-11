@@ -1,11 +1,12 @@
 import { TNullable } from './../../shared/types/types/t-nullabel';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Renderer2 } from '@angular/core';
 import { Receipt } from '@common/types';
 import { MessageService } from 'primeng/api';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
+import { PrinterService } from '@common/core';
 
 @Injectable()
 export class ReceiptService {
@@ -16,7 +17,8 @@ export class ReceiptService {
 
   constructor(
     private httpClient: HttpClient,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private printerService: PrinterService
   ) {}
 
   getReceipt(fiscalNumber: TNullable<number> = null): void {
@@ -41,8 +43,21 @@ export class ReceiptService {
     this.getContentForPrint$(fiscalNumber)
       .pipe(take(1))
       .subscribe((res) => {
-        this.contentForPrint.next(res);
+        this.contentForPrint.next(res.data);
       });
+  }
+
+  print(fiscalNumber: TNullable<number> = null, render: Renderer2): void {
+    this.getContentForPrint$(fiscalNumber).subscribe((res) => {
+      this.printerService.clearPrintBlank();
+      res.data.forEach((str: string) => {
+        this.printerService.addTextToPrint(render, str);
+      });
+      if (res.link != null) {
+        this.printerService.addQrCode(render, res.link);
+      }
+      this.printerService.test_print();
+    });
   }
 
   getContentForPrint$(fiscalNumber: TNullable<number> = null): Observable<any> {

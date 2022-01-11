@@ -1,3 +1,4 @@
+import { PtModule } from '@common/pipes';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ProductListModule } from './../../components/product-list/product-list.module';
 import { QRCodeModule } from 'angularx-qrcode';
@@ -12,10 +13,8 @@ import { StyleClassModule } from 'primeng/styleclass';
 import { TableModule } from 'primeng/table';
 import { SaleRoutingModule } from './sale-router.module';
 import { SaleComponent } from './sale.component';
-import { PtPipe } from './pt.pipe';
-
 @NgModule({
-  declarations: [SaleComponent, PtPipe],
+  declarations: [SaleComponent],
   imports: [
     CommonModule,
     SaleRoutingModule,
@@ -29,6 +28,7 @@ import { PtPipe } from './pt.pipe';
     QRCodeModule,
     ProductListModule,
     ConfirmDialogModule,
+    PtModule,
   ],
 })
 export class SaleModule {}

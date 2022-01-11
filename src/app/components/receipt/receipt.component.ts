@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  Renderer2,
+} from '@angular/core';
 import { Receipt, TNullable } from '@common/types';
 import { Observable } from 'rxjs';
 import { ReceiptService } from './receipt.service';
@@ -33,7 +40,10 @@ export class ReceiptComponent implements OnInit {
     }
   }
 
-  constructor(private receiptService: ReceiptService) {
+  constructor(
+    private receiptService: ReceiptService,
+    private renderer: Renderer2
+  ) {
     this.receipt = this.receiptService.receipt;
     this.printContent = this.receiptService.contentForPrint;
   }
@@ -41,20 +51,6 @@ export class ReceiptComponent implements OnInit {
   ngOnInit(): void {}
 
   print(printContent: any): void {
-    const WindowPrt = window.open(
-      '',
-      '',
-      'left=0,top=0,width=900,height=900,toolbar=0,scrollbars=0,status=0'
-    );
-    WindowPrt!.document.write(`<header></header>`);
-    WindowPrt!.document.write(`<body>`);
-    WindowPrt!.document.write(printContent!.innerHTML);
-    WindowPrt!.document.write(`</body>`);
-    setTimeout(() => {
-      WindowPrt!.document.close();
-      WindowPrt!.focus();
-      WindowPrt!.print();
-      WindowPrt!.close();
-    }, 2000);
+    this.receiptService.print(this.fiscalNumber, this.renderer);
   }
 }

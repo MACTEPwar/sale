@@ -25,7 +25,7 @@
     <div id="print-section" #forPrint>
 
       <p *ngFor="let str of printContent | async">
-        {{ str | json }}
+        {{ str | pt }}
       </p>
     </div>
     <button (click)="print(forPrint)">print</button>
