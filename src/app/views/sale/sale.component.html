@@ -17,7 +17,6 @@
         <div class="_discountSum">Цiна за од.</div>
         <div class="_sum">Сума</div>
       </div>
-
       <div
         class="receiptProducts_line"
         *ngFor="let receiptProduct of receiptProducts | async"
@@ -70,11 +69,26 @@
         </div>
       </div>
     </div>
+    <div class="sale_table-footer">
+      <span>Сума разом: {{ totalSum | async }} грн</span>
+    </div>
   </div>
   <!-- Buttons section -->
   <div class="sale_buttons">
-    <div>jksdjksdj</div>
-    <div>d;fkd</div>
+    <div>
+      <button class="anulation_btn"><span></span> Ануляцiя</button>
+    </div>
+    <div>
+      <button class="_btn" (click)="doPayment(0)">
+        <span class="nal"></span> Готiвка
+      </button>
+      <button class="_btn" (click)="doPayment(1)">
+        <span class="map"></span> Карта
+      </button>
+      <button class="_btn" (click)="visibleOtherPayment = true">
+        <span class="other"></span> Iнше
+      </button>
+    </div>
   </div>
 </div>
 
