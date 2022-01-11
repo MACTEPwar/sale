@@ -82,18 +82,26 @@
     </div>
   </div>
   <div class="p-grid">
+    <div class="p-col">
+      <label for="printReceipt"
+        ><input id="printReceipt" type="checkbox" #needPrint />Друкувати
+        чек</label
+      >
+    </div>
+  </div>
+  <div class="p-grid">
     <div class="p-col p-text-center confirm_buttons">
       <p-button
         icon="pi pi-check"
         label="Так"
         class="p-button-lg"
-        (onClick)="confirm(true)"
+        (onClick)="confirm(true, needPrint.checked)"
       ></p-button>
       <p-button
         icon="pi pi-times"
         label="Нi"
         class="p-button-lg p-button-warning"
-        (onClick)="confirm(false)"
+        (onClick)="confirm(false, needPrint.checked)"
       ></p-button>
     </div>
   </div>

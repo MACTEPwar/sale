@@ -1,18 +1,12 @@
-import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
-import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import {
-  ComponentFactoryResolver,
-  Injectable,
-  Renderer2,
-  ViewContainerRef,
-} from '@angular/core';
-import { BehaviorSubject, from, iif, Observable, of } from 'rxjs';
-import { map, switchMap, take, tap, mergeMap } from 'rxjs/operators';
+import { Injectable, Renderer2 } from '@angular/core';
 import { HTTP } from '@awesome-cordova-plugins/http/ngx';
 import { Capacitor } from '@capacitor/core';
 import { PrinterService, QueryService } from '@common/core';
-import { QRCodeComponent } from 'angularx-qrcode';
+import { BehaviorSubject, from, iif, Observable, of } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
+import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class ServiceService {
@@ -58,35 +52,15 @@ export class ServiceService {
   }
 
   doCashIn(sum: number): Observable<any> {
-    return of({}).pipe(
-      switchMap((_) =>
-        iif(
-          () => Capacitor.getPlatform() === 'android',
-          doCashIn_ANDROID$(
-            this.http,
-            this.authService.currentUser?.access_token!,
-            sum
-          ),
-          doCashIn_WEB$(this.httpClient, sum)
-        )
-      )
-    );
+    return this.queryService
+      .post(`${environment.apiUrl}/api/service/servicein`, { sum })
+      .pipe(map((m: any) => m.data));
   }
 
   doCashOut(sum: number): Observable<any> {
-    return of({}).pipe(
-      switchMap((_) =>
-        iif(
-          () => Capacitor.getPlatform() === 'android',
-          doCashOut_ANDROID$(
-            this.http,
-            this.authService.currentUser?.access_token!,
-            sum
-          ),
-          doCashOut_WEB$(this.httpClient, sum)
-        )
-      )
-    );
+    return this.queryService
+      .post(`${environment.apiUrl}/api/service/serviceout`, { sum })
+      .pipe(map((m: any) => m.data));
   }
 
   printZReport(render: Renderer2): void {
@@ -96,6 +70,21 @@ export class ServiceService {
         res.data.forEach((str: string) => {
           this.printService.addTextToPrint(render, str);
         });
+        this.printService.test_print();
+      });
+  }
+
+  printLastReceipt(render: Renderer2): void {
+    this.getLastReceipt$()
+      .pipe(map((m) => m.data))
+      .subscribe((res) => {
+        this.printService.clearPrintBlank();
+        res.data.forEach((str: string) => {
+          this.printService.addTextToPrint(render, str);
+        });
+        if (res.link != null) {
+          this.printService.addQrCode(render, res.link);
+        }
         this.printService.test_print();
       });
   }

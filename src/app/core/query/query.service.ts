@@ -93,7 +93,13 @@ export class QueryService {
     ).pipe(
       map((m: any) => {
         // console.log('m', m);
-        return JSON.parse(m.data) as T;
+        let result: any = null;
+        try {
+          result = JSON.parse(m.data) as T;
+        } catch {
+          result = m.data;
+        }
+        return result;
       }),
       catchError((_) => {
         // console.log(_);

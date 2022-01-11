@@ -75,18 +75,20 @@ export class SaleNewService {
       .pipe(map((m) => m.data))
       .subscribe(
         (result) => {
-          this.receipt.totalSum.next(+result.sum);
-          this.receipt.products.next(
-            result.positions.map((m: any) => ({
-              articlePosition: m.articlePosition,
-              name: m.name,
-              amount: m.amount,
-              price: m.price,
-              bar: m.bar,
-              discountSum: +m.discountSum,
-              sum: +m.sum,
-            }))
-          );
+          if (result != null) {
+            this.receipt.totalSum.next(+result.sum);
+            this.receipt.products.next(
+              result.positions.map((m: any) => ({
+                articlePosition: m.articlePosition,
+                name: m.name,
+                amount: m.amount,
+                price: m.price,
+                bar: m.bar,
+                discountSum: +m.discountSum,
+                sum: +m.sum,
+              }))
+            );
+          }
         },
         (err) => {
           // alert(JSON.stringify(err, null, 4));

@@ -8,7 +8,7 @@ import { NavigationEnd, Router } from '@angular/router';
 import { PrinterService } from '@common/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Observable, of } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter, map, switchMap } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { TNullable } from './shared/types/types/t-nullabel';
 import { TUser } from './shared/types/types/t-user';
@@ -134,7 +134,7 @@ export class AppComponent {
     this.authenticationService.logout();
   }
 
-  confirm(state: boolean): void {
+  confirm(state: boolean, needPrint: boolean): void {
     switch (this.confirmOperation) {
       case 'cashIn': {
         if (state === true && this.confirmText != null) {
@@ -147,6 +147,9 @@ export class AppComponent {
               summary: 'Iнфо',
               detail: 'Виконано внесення',
             });
+            if (needPrint === true) {
+              this.serviceComponent.printLastReceipt(this.renderer);
+            }
           });
         } else {
           this.visibleConfirmDialog = false;
@@ -166,6 +169,9 @@ export class AppComponent {
                 summary: 'Iнфо',
                 detail: 'Виконано вилучення',
               });
+              if (needPrint === true) {
+                this.serviceComponent.printLastReceipt(this.renderer);
+              }
             });
         }
         break;
