@@ -1,11 +1,19 @@
-import { Injectable } from '@angular/core';
+import {
+  ComponentFactoryResolver,
+  Injectable,
+  Renderer2,
+  ViewContainerRef,
+} from '@angular/core';
 import { Printer, PrintOptions } from '@awesome-cordova-plugins/printer/ngx';
 import { Capacitor } from '@capacitor/core';
-import { from, iif, Observable, throwError } from 'rxjs';
+import { TNullable } from '@common/types';
+import { QRCodeComponent } from 'angularx-qrcode';
+import { from, iif, Observable, throwError, timer } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
 
 @Injectable()
 export class PrinterService {
+  private _container: TNullable<ViewContainerRef> = null;
   options: PrintOptions = {
     name: 'MyDocument',
     duplex: false,
@@ -23,7 +31,53 @@ export class PrinterService {
     },
   };
 
-  constructor(private printer: Printer) {}
+  constructor(
+    private printer: Printer,
+    private cfr: ComponentFactoryResolver
+  ) {}
+
+  addTextToPrint(renderer: Renderer2, str: string): this {
+    const text = renderer.createText(
+      str.replace(/ /g, String.fromCharCode(160))
+    );
+    const child = renderer.createElement('p');
+    renderer.appendChild(child, text);
+    renderer.appendChild(this._container?.element.nativeElement, child);
+    return this;
+  }
+
+  addQrCode(renderer: Renderer2, str: string): this {
+    const factory = this.cfr.resolveComponentFactory(QRCodeComponent);
+    const componentRef = this._container?.createComponent(factory);
+    renderer.appendChild(
+      this._container?.element.nativeElement,
+      componentRef?.location.nativeElement
+    );
+    componentRef!.instance.elementType = 'img';
+    componentRef!.instance.qrdata = str;
+    (componentRef!.instance as any).createQRCode();
+    componentRef?.changeDetectorRef.detectChanges();
+    return this;
+  }
+
+  clearPrintBlank(): this {
+    this._container!.element.nativeElement.innerHTML = '';
+    return this;
+  }
+
+  registerViewContainer(container: ViewContainerRef): void {
+    this._container = container;
+  }
+
+  test_print(): void {
+    timer(100)
+      .pipe(
+        switchMap((_) =>
+          this.print(this._container?.element.nativeElement.innerHTML)
+        )
+      )
+      .subscribe((res) => {});
+  }
 
   print(content: string | HTMLElement): Observable<any> {
     return this._isAvailable$().pipe(

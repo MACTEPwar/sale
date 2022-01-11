@@ -1,11 +1,18 @@
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import {
+  ComponentFactoryResolver,
+  Injectable,
+  Renderer2,
+  ViewContainerRef,
+} from '@angular/core';
 import { BehaviorSubject, from, iif, Observable, of } from 'rxjs';
-import { map, switchMap, take, tap } from 'rxjs/operators';
+import { map, switchMap, take, tap, mergeMap } from 'rxjs/operators';
 import { HTTP } from '@awesome-cordova-plugins/http/ngx';
 import { Capacitor } from '@capacitor/core';
+import { PrinterService, QueryService } from '@common/core';
+import { QRCodeComponent } from 'angularx-qrcode';
 
 @Injectable()
 export class ServiceService {
@@ -13,7 +20,9 @@ export class ServiceService {
   constructor(
     private httpClient: HttpClient,
     private http: HTTP,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private queryService: QueryService,
+    private printService: PrinterService
   ) {}
 
   getMoneyInKassa(): void {
@@ -74,18 +83,33 @@ export class ServiceService {
     );
   }
 
-  doZReport(): Observable<any> {
-    return of({}).pipe(
-      switchMap((_) =>
-        iif(
-          () => Capacitor.getPlatform() === 'android',
-          doZReport_ANDROID$(
-            this.http,
-            this.authService.currentUser?.access_token!
-          ),
-          doZReport_WEB$(this.httpClient)
-        )
-      )
+  printZReport(render: Renderer2): void {
+    this.getLastZReport$()
+      .pipe(map((m) => m.data))
+      .subscribe((res) => {
+        res.data.forEach((str: string) => {
+          this.printService.addTextToPrint(render, str);
+        });
+        this.printService.test_print();
+      });
+  }
+
+  doZReport$(): Observable<any> {
+    return this.queryService.post(
+      `${environment.apiUrl}/api/Service/dozreport`,
+      {}
+    );
+  }
+
+  getLastZReport$(): Observable<any> {
+    return this.queryService.get(
+      `${environment.apiUrl}/api/Service/zreport/last`
+    );
+  }
+
+  getLastReceipt$(): Observable<any> {
+    return this.queryService.get(
+      `${environment.apiUrl}/api/Service/receipt/last`
     );
   }
 }
@@ -130,7 +154,7 @@ export function doCashIn_ANDROID$(
 
 export function doCashIn_WEB$(http: HttpClient, sum: number): Observable<any> {
   return http
-    .post(`${environment.apiUrl}/api/service/servicein`, {sum})
+    .post(`${environment.apiUrl}/api/service/servicein`, { sum })
     .pipe(take(1));
 }
 
@@ -155,7 +179,7 @@ export function doCashOut_ANDROID$(
 
 export function doCashOut_WEB$(http: HttpClient, sum: number): Observable<any> {
   return http
-    .post(`${environment.apiUrl}/api/service/serviceout`, {sum})
+    .post(`${environment.apiUrl}/api/service/serviceout`, { sum })
     .pipe(take(1));
 }
 
