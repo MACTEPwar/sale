@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TProduct, TNullable } from '@common/types';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, filter } from 'rxjs/operators';
 import { ProductListService } from './product-list.service';
 
 @Component({
@@ -11,6 +11,7 @@ import { ProductListService } from './product-list.service';
   providers: [ProductListService],
 })
 export class ProductListComponent implements OnInit {
+  @Input() id = 'id';
   @Output() add: EventEmitter<TProduct> = new EventEmitter<TProduct>();
 
   serachStr$: BehaviorSubject<TNullable<number>> = new BehaviorSubject<
@@ -18,14 +19,18 @@ export class ProductListComponent implements OnInit {
   >(null);
   productList$: Observable<Array<TProduct>>;
   prevText: TNullable<number> = null;
-  @Input() id = 'id';
+  visibleResult = false;
 
   constructor(private productListService: ProductListService) {
     this.productList$ = this.productListService.productList$;
     this.serachStr$
-      .pipe(debounceTime(300))
+      .pipe(
+        filter((f: TNullable<number>) => f != null && String(f!).length > 1),
+        debounceTime(300)
+      )
       .subscribe((str: TNullable<number>) => {
         this.productListService.getPorducts(str);
+        this.visibleResult = true;
       });
   }
 
@@ -40,7 +45,11 @@ export class ProductListComponent implements OnInit {
     }
   }
 
-  addProductToReceipt(product: TProduct): void {
+  addProductToReceipt(product: TProduct, input: any): void {
     this.add.emit(product);
+    this.visibleResult = false;
+    this.prevText = null;
+    this.serachStr$.next(null);
+    input.value = null;
   }
 }
