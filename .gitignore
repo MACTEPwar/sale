@@ -2,6 +2,7 @@
 
 # config
 /capacitor.config.ts
+capacitor.config.ts
 
 # compiled output
 /dist
