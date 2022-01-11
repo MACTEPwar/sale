@@ -14,7 +14,7 @@
   </ng-template></p-autoComplete
 > -->
 
-<div class="searchline">
+<div class="searchline" #searchLine>
   <span class="searchIcon"></span>
   <input
     [id]="this.id"
@@ -25,7 +25,7 @@
   />
 </div>
 
-<div class="datasearch" *ngIf="visibleResult">
+<div class="datasearch" *ngIf="visibleResult" #searchResult>
   <div *ngFor="let product of productList$ | async">
     <div class="datasearch_tr">
       <div class="p-col-2">{{ product.article }}</div>

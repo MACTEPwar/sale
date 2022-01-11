@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { TProduct, TNullable } from '@common/types';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { debounceTime, filter } from 'rxjs/operators';
@@ -13,6 +22,26 @@ import { ProductListService } from './product-list.service';
 export class ProductListComponent implements OnInit {
   @Input() id = 'id';
   @Output() add: EventEmitter<TProduct> = new EventEmitter<TProduct>();
+
+  @ViewChild('searchResult') searchResultERef?: ElementRef<any>;
+  @ViewChild('searchLine') searchLineERef?: ElementRef<any>;
+  @ViewChild('inp') inputERef?: ElementRef<any>;
+
+  @HostListener('document:click', ['$event'])
+  clickout(event: any) {
+    try {
+      if (
+        this.searchResultERef!.nativeElement.contains(event.target) ||
+        this.searchLineERef!.nativeElement.contains(event.target)
+      ) {
+      } else {
+        if (this.visibleResult) {
+          this.visibleResult = false;
+          this.inputERef!.nativeElement!.value = '';
+        }
+      }
+    } catch {}
+  }
 
   serachStr$: BehaviorSubject<TNullable<number>> = new BehaviorSubject<
     TNullable<number>
@@ -35,6 +64,10 @@ export class ProductListComponent implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  ngAfterviewInit(): void {
+    console.log(this.searchResultERef);
+  }
 
   onInput(inp: any): void {
     if (inp.value == +inp.value) {
