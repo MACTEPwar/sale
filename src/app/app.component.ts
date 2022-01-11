@@ -36,6 +36,9 @@ export class AppComponent {
   isOnline: Observable<boolean>;
   shiftStatus: Observable<boolean>;
 
+  /** Денег в кассе */
+  moneyInKassa: Observable<number>;
+
   constructor(
     public router: Router,
     private authenticationService: AuthenticationService,
@@ -48,6 +51,8 @@ export class AppComponent {
     private serviceService: ServiceService
   ) {
     this.currentUser = this.authenticationService._currentUser$;
+    /** Подписка на сумму денег в кассе */
+    this.moneyInKassa = this.serviceService.moneyInKassa;
 
     router.events
       .pipe(filter((event) => event instanceof NavigationEnd))

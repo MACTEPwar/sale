@@ -22,9 +22,6 @@ export class SaleComponent implements OnInit {
   /** Общаа сумма чека */
   totalSum: BehaviorSubject<number>;
 
-  /** Денег в кассе */
-  moneyInKassa: Observable<number>;
-
   /** Список типов оплат */
   listPaymentTypes: Observable<Array<any>>;
   /** Форма печати для чека */
@@ -59,8 +56,6 @@ export class SaleComponent implements OnInit {
     this.receiptProducts = this.saleService.receipt.products;
     /** Подписка на сумму в чеке */
     this.totalSum = this.saleService.receipt.totalSum;
-    /** Подписка на сумму денег в кассе */
-    this.moneyInKassa = this.serviceService.moneyInKassa;
     /** Подписка на типы оплат */
     this.listPaymentTypes = this.saleService.paymentsList;
     /** Подписка на данные для печати */

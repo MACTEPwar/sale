@@ -24,7 +24,7 @@
       <div class="topcenter">
         <div class="toptitle">{{ title }}</div>
 
-        <div class="topinfo">Грошей у сейфi: 78932,00грн</div>
+        <div class="topinfo">Грошей у сейфi: {{ moneyInKassa | async }}грн</div>
 
         <div class="topicons">
           <ng-container *ngIf="isOnline | async; else offline"
