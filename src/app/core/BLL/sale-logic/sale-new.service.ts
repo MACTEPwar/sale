@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { QueryService } from '@common/core';
+import { QueryService, PrinterService } from '@common/core';
 import { Receipt, TNullable, TProduct } from '@common/types';
 import { MessageService } from 'primeng/api';
 import { BehaviorSubject, Observable, of } from 'rxjs';
@@ -25,7 +25,8 @@ export class SaleNewService {
 
   constructor(
     private messageService: MessageService,
-    private queryService: QueryService
+    private queryService: QueryService,
+    private printerService: PrinterService
   ) {}
 
   addProductToReceipt(product: TProduct, amount: number): void {
@@ -97,6 +98,9 @@ export class SaleNewService {
     array: Array<{ sum: number; paymentType: number }>
   ): Observable<any> {
     return this.doPayment$(array).pipe(
+      tap((p) => {
+        this.lastReceiptNumber.next(p.orderTaxNum);
+      }),
       map((m) => m.data),
       filter((f) => f === true),
       tap((t) => {

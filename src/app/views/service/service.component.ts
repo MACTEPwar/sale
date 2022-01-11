@@ -46,7 +46,7 @@ export class ServiceComponent implements OnInit {
   }
 
   doZReport(): void {
-    this.serviceService.doZReport().subscribe((res) => {});
+    this.serviceService.doZReport$().subscribe((res) => {});
   }
 
   logout(): void {

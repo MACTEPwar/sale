@@ -1,4 +1,5 @@
 <p-toast></p-toast>
+<div id="printContainer" #printContainer></div>
 <ng-container *ngIf="!(router | isLoginPage | async); else loginBlock">
   <div class="p-d-flex">
     <div class="header">
@@ -97,3 +98,6 @@
     </div>
   </div>
 </p-dialog>
+
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle">
+</p-confirmDialog>

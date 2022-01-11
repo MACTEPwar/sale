@@ -1,18 +1,18 @@
-import { TUser } from './shared/types/types/t-user';
-import { TNullable } from './shared/types/types/t-nullabel';
-import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import {
-  ConfirmationService,
-  MenuItem,
-  MessageService,
-  PrimeNGConfig,
-} from 'primeng/api';
+  Component,
+  Renderer2,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core';
+import { Router } from '@angular/router';
+import { PrinterService } from '@common/core';
+import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
+import { TNullable } from './shared/types/types/t-nullabel';
+import { TUser } from './shared/types/types/t-user';
 import { ServiceService } from './views/service/service.service';
-import { EMPTY, Observable, of } from 'rxjs';
-import { ServiceComponent } from './views/service/service.component';
-import { SaleService } from './core/BLL/sale-logic/sale.service';
 
 @Component({
   selector: 'app-root',
@@ -32,20 +32,22 @@ export class AppComponent {
   visibleConfirmDialog = false;
   confirmOperation: 'cashIn' | 'cashOut' | null = null;
 
+  @ViewChild('printContainer', { read: ViewContainerRef })
+  printContainerDOM: any;
+
   constructor(
     public router: Router,
     private authenticationService: AuthenticationService,
     private serviceComponent: ServiceService,
     private messageService: MessageService,
-    private primengConfig: PrimeNGConfig,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private printerService: PrinterService,
+    private renderer: Renderer2
   ) {
     this.currentUser = this.authenticationService._currentUser$;
   }
 
   ngOnInit(): void {
-    this.primengConfig.ripple = true;
-
     this.items = [
       { routerLink: '/test', label: 'Test' },
       { routerLink: '/sale', label: 'Продаж' },
@@ -76,6 +78,10 @@ export class AppComponent {
     this.items2 = [{ label: 'Вийти', command: () => this.logout() }];
   }
 
+  ngAfterViewInit(): void {
+    this.printerService.registerViewContainer(this.printContainerDOM!);
+  }
+
   doCashIn(): void {
     this.confirmOperation = 'cashIn';
     this.visibleConfirmDialog = true;
@@ -87,7 +93,20 @@ export class AppComponent {
   }
 
   doZReport(): void {
-    this.serviceComponent.doZReport().subscribe((res) => {});
+    this.serviceComponent
+      .doZReport$()
+      .pipe(map((m) => m.data))
+      .subscribe((res) => {
+        this.confirmationService.confirm({
+          message: 'Z-звiт зроблено. Роздрукувати?',
+          acceptLabel: 'Так',
+          rejectLabel: 'Нi',
+          header: 'Iнфо',
+          accept: () => {
+            this.serviceComponent.printZReport(this.renderer);
+          },
+        });
+      });
   }
 
   logout(): void {
