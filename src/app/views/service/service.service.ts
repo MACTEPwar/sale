@@ -16,7 +16,13 @@ import { QRCodeComponent } from 'angularx-qrcode';
 
 @Injectable()
 export class ServiceService {
+  /** Деньги в кассе */
   moneyInKassa: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  /** Состояние смены */
+  shiftStatus$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  /** состояние ПРРО */
+  isOnline$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
   constructor(
     private httpClient: HttpClient,
     private http: HTTP,
@@ -111,6 +117,44 @@ export class ServiceService {
     return this.queryService.get(
       `${environment.apiUrl}/api/Service/receipt/last`
     );
+  }
+
+  /**
+   * Проверяет состояние смены
+   */
+  getShiftStatus(): void {
+    this.getShiftStatus$().subscribe((res) => {
+      this.shiftStatus$.next(res);
+    });
+  }
+
+  /**
+   * Проверяет состояние ПРРО
+   */
+  getEcrStatus(): void {
+    this.getEcrStatus$().subscribe((res) => {
+      this.isOnline$.next(res);
+    });
+  }
+
+  /**
+   * Запрос на проверку состояние смены
+   * @returns Observable<any>
+   */
+  private getShiftStatus$(): Observable<boolean> {
+    return this.queryService
+      .get(`${environment.apiUrl}/api/Service/shiftStatus`)
+      .pipe(map((m) => m.data as boolean));
+  }
+
+  /**
+   * Запрос на проверку состояние ПРРО
+   * @returns Observable<any>
+   */
+  private getEcrStatus$(): Observable<boolean> {
+    return this.queryService
+      .get(`${environment.apiUrl}/api/ecr/status`)
+      .pipe(map((m) => m.data as boolean));
   }
 }
 

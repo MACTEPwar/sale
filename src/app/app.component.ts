@@ -22,8 +22,8 @@ import { Title } from '@angular/platform-browser';
   providers: [ServiceService, ConfirmationService],
 })
 export class AppComponent {
-  online: Observable<boolean> = of(false);
-  opencashbox: Observable<boolean> = of(false);
+  @ViewChild('printContainer', { read: ViewContainerRef })
+  printContainerDOM: any;
 
   title = '';
   items: MenuItem[] = [];
@@ -33,8 +33,8 @@ export class AppComponent {
   visibleConfirmDialog = false;
   confirmOperation: 'cashIn' | 'cashOut' | null = null;
 
-  @ViewChild('printContainer', { read: ViewContainerRef })
-  printContainerDOM: any;
+  isOnline: Observable<boolean>;
+  shiftStatus: Observable<boolean>;
 
   constructor(
     public router: Router,
@@ -44,7 +44,8 @@ export class AppComponent {
     private confirmationService: ConfirmationService,
     private printerService: PrinterService,
     private renderer: Renderer2,
-    private titleService: Title
+    private titleService: Title,
+    private serviceService: ServiceService
   ) {
     this.currentUser = this.authenticationService._currentUser$;
 
@@ -53,6 +54,9 @@ export class AppComponent {
       .subscribe((event: any) => {
         this.title = titleService.getTitle();
       });
+
+    this.isOnline = this.serviceService.isOnline$;
+    this.shiftStatus = this.serviceService.shiftStatus$;
   }
 
   ngOnInit(): void {
@@ -105,6 +109,10 @@ export class AppComponent {
       .doZReport$()
       .pipe(map((m) => m.data))
       .subscribe((res) => {
+        /** Поулчаю статус ПРРО */
+        this.serviceService.getEcrStatus();
+        /** Поулчаю статус смены */
+        this.serviceService.getShiftStatus();
         this.confirmationService.confirm({
           message: 'Z-звiт зроблено. Роздрукувати?',
           acceptLabel: 'Так',
