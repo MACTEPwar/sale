@@ -1,3 +1,4 @@
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ProductListModule } from './../../components/product-list/product-list.module';
 import { QRCodeModule } from 'angularx-qrcode';
 import { CommonModule } from '@angular/common';
@@ -27,6 +28,7 @@ import { PtPipe } from './pt.pipe';
     ProgressBarModule,
     QRCodeModule,
     ProductListModule,
+    ConfirmDialogModule,
   ],
 })
 export class SaleModule {}

@@ -10,7 +10,7 @@ import { AuthenticationService } from 'src/app/core/authentication/authenticatio
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  providers: [ConfirmationService],
+  // providers: [ConfirmationService],
 })
 export class LoginComponent implements OnInit {
   profileForm: FormGroup = new FormGroup({

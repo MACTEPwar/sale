@@ -76,7 +76,9 @@
   <!-- Buttons section -->
   <div class="sale_buttons">
     <div>
-      <button class="anulation_btn"><span></span> Ануляцiя</button>
+      <button class="anulation_btn" (click)="doCancelReceipt()">
+        <span></span> Ануляцiя
+      </button>
     </div>
     <div>
       <button class="_btn" (click)="doPayment(0)">

@@ -1,3 +1,4 @@
+import { ConfirmationService } from 'primeng/api';
 import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { PrinterService } from '@common/core';
@@ -51,7 +52,8 @@ export class SaleComponent implements OnInit {
     private saleService: SaleNewService,
     private serviceService: ServiceService,
     private printerService: PrinterService,
-    private titleService: Title
+    private titleService: Title,
+    private confirmationService: ConfirmationService
   ) {
     /** Подписка на товары в чеке */
     this.receiptProducts = this.saleService.receipt.products;
@@ -201,6 +203,19 @@ export class SaleComponent implements OnInit {
     this.serviceService.getEcrStatus();
     /** Поулчаю статус смены */
     this.serviceService.getShiftStatus();
+  }
+
+  /** Анулирует чек */
+  doCancelReceipt(): void {
+    this.confirmationService.confirm({
+      message: 'Вы бажаєте анулювати чек?',
+      acceptLabel: 'Так',
+      rejectLabel: 'Нi',
+      header: 'Iнфо',
+      accept: () => {
+        this.saleService.doCancelReceipt();
+      },
+    });
   }
 }
 

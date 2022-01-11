@@ -94,6 +94,20 @@ export class SaleNewService {
       );
   }
 
+  doCancelReceipt(): void {
+    this.cancelReceipt$()
+      .pipe(map((m) => m.data))
+      .subscribe((res) => {
+        this.receipt.products.next([]);
+        this.receipt.totalSum.next(0);
+        this.messageService.add({
+          severity: 'info',
+          detail: 'Чек анульовано',
+          summary: 'Iнфо',
+        });
+      });
+  }
+
   doPayment(
     array: Array<{ sum: number; paymentType: number }>
   ): Observable<any> {
@@ -177,5 +191,12 @@ export class SaleNewService {
 
   private getPaementsList$(): Observable<any> {
     return this.queryService.get(`${environment.apiUrl}/api/payments/list`);
+  }
+
+  private cancelReceipt$(): Observable<any> {
+    return this.queryService.post(
+      `${environment.apiUrl}/api/Receipt/cancel`,
+      {}
+    );
   }
 }
