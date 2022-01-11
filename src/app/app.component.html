@@ -27,12 +27,12 @@
         <div class="topinfo">Грошей у сейфi: 78932,00грн</div>
 
         <div class="topicons">
-          <ng-container *ngIf="online | async; else offline"
-            >{{ this.online }}<span id="online_icon"></span
+          <ng-container *ngIf="isOnline | async; else offline"
+            ><span id="online_icon"></span
           ></ng-container>
           <ng-template #offline><span id="offline_icon"></span></ng-template>
 
-          <ng-container *ngIf="opencashbox | async; else closecashbox"
+          <ng-container *ngIf="shiftStatus | async; else closecashbox"
             ><span id="opencashbox_icon"></span
           ></ng-container>
           <ng-template #closecashbox

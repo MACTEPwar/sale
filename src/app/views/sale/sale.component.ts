@@ -84,6 +84,10 @@ export class SaleComponent implements OnInit {
     this.saleService.getCurrentReceipt();
     /** Получаю сумму денег в кассе */
     this.serviceService.getMoneyInKassa();
+    /** Поулчаю статус ПРРО */
+    this.serviceService.getEcrStatus();
+    /** Поулчаю статус смены */
+    this.serviceService.getShiftStatus();
   }
 
   /**
@@ -181,11 +185,20 @@ export class SaleComponent implements OnInit {
   ): void {
     if (printReceipt === true) {
       this.printerService.print(content!).subscribe((res) => {
-        this.visiblePaymantProcess = false;
+        this.afterFinishPay();
       });
     } else {
-      this.visiblePaymantProcess = false;
+      this.afterFinishPay();
     }
+  }
+
+  /** Поусл того как продажа полностью завершена */
+  private afterFinishPay() {
+    this.visiblePaymantProcess = false;
+    /** Поулчаю статус ПРРО */
+    this.serviceService.getEcrStatus();
+    /** Поулчаю статус смены */
+    this.serviceService.getShiftStatus();
   }
 }
 
