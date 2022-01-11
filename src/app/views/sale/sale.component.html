@@ -36,8 +36,9 @@
             pInputText
             min="0"
             class="amountEdit w-100"
+            (blur)="onBlurAmount()"
             (focus)="onFocusAmount(amountInp)"
-            (input)="onInputAmount(amountInp, receiptProduct)"
+            (input)="onInputAmount(amountInp, receiptProduct, $event)"
             [ngModel]="receiptProduct.amount"
             #amountInp
           />

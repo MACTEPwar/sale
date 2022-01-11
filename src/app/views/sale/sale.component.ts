@@ -1,5 +1,5 @@
 import { ConfirmationService } from 'primeng/api';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { PrinterService } from '@common/core';
 import { TNullable, TProduct } from '@common/types';
@@ -14,6 +14,20 @@ import { ServiceService } from './../service/service.service';
   templateUrl: './sale.component.html',
 })
 export class SaleComponent implements OnInit {
+  @HostListener('document:keypress', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    console.log(event);
+    let x = event.keyCode;
+    if (x === 13 && this.focusAmountInput === true) {
+      this.changeProductInReceipt.next(this.currentProduct);
+      this.currentAmountInput.blur();
+    }
+  }
+
+  focusAmountInput = false;
+  currentProduct: any = null;
+  currentAmountInput: any = null;
+
   /**
    * Товары в чеке
    */
@@ -71,6 +85,7 @@ export class SaleComponent implements OnInit {
       )
       .subscribe((product: TNullable<TReceiptProduct>) => {
         this.saleService.changeProductFromReceipt(product as TReceiptProduct);
+        this.currentProduct = null;
       });
 
     this.titleService.setTitle('Продаж товару');
@@ -103,6 +118,16 @@ export class SaleComponent implements OnInit {
    */
   onFocusAmount(amountInp: any): void {
     this.prevAmount = amountInp.value;
+    this.focusAmountInput = true;
+    this.currentAmountInput = amountInp;
+  }
+
+  onBlurAmount(): void {
+    this.focusAmountInput = false;
+    this.currentAmountInput = null;
+    if (this.currentProduct !== null) {
+      this.changeProductInReceipt.next(this.currentProduct);
+    }
   }
 
   /**
@@ -110,11 +135,13 @@ export class SaleComponent implements OnInit {
    * @param amountInp Input
    * @param product Товар
    */
-  onInputAmount(amountInp: any, product: TReceiptProduct): void {
+  onInputAmount(amountInp: any, product: TReceiptProduct, event: any): void {
+    // console.log(event);
     if (amountInp.value == +amountInp.value && amountInp.value > 0) {
       this.prevAmount = amountInp.value;
       product.amount = +amountInp.value;
-      this.changeProductInReceipt.next(product);
+      this.currentProduct = product;
+      // this.changeProductInReceipt.next(product);
     } else {
       amountInp.value = this.prevAmount;
     }
