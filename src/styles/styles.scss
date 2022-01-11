@@ -381,7 +381,7 @@ body {
   .toptitle {
     flex: 1;
     display: flex;
-    font-size: 16px;
+    font-size: 18px;
     color: #fff;
     align-items: center;
     padding: 0 20px;
@@ -392,7 +392,7 @@ body {
     flex: 1;
     display: flex;
     color: #fff;
-    font-size: 16px;
+    font-size: 18px;
     height: 100%;
     align-items: center;
     background-color: $secondcolor;
@@ -493,26 +493,6 @@ body {
       box-shadow: none;
       outline: none;
     }
-  }
-}
-
-.datasale {
-  height: calc(100vh - 100px);
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-
-  .sale_table {
-    width: calc(100vw - 150px);
-    overflow: auto;
-    height: 100%;
-  }
-  .sale_buttons {
-    display: flex;
-    height: 100%;
-    flex-direction: column;
-    background-color: darkorange;
-    width: 150px;
   }
 }
 
@@ -820,27 +800,115 @@ $btns: 37px;
   }
 }
 
-.sale_table-header {
-  display: flex;
+.datasale {
+  height: calc(100vh - 100px);
   width: 100%;
-  height: 50px;
-  align-items: center;
+  display: flex;
   flex-direction: row;
-  background-color: $color4;
-  ._name {
-    flex: 1;
-    text-align: center;
+
+  .sale_table {
+    width: calc(100vw - 150px);
+    overflow: auto;
+    height: 100%;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    .sale_table-header {
+      display: flex;
+      width: 100%;
+      height: 50px;
+      align-items: center;
+      flex-direction: row;
+      background-color: $color4;
+      ._name {
+        flex: 1;
+        text-align: center;
+      }
+      ._amount {
+        width: 140px;
+        text-align: center;
+      }
+      ._discountSum {
+        width: 110px;
+        text-align: center;
+      }
+      ._sum {
+        width: 120px;
+        text-align: center;
+      }
+    }
+
+    .sale_table-footer {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      height: 50px;
+      align-items: center;
+      padding: 0 20px;
+      justify-content: flex-end;
+      background-color: $color4;
+      font-size: 18px;
+      span {
+        display: flex;
+        height: 50px;
+        align-items: center;
+        color: #000;
+      }
+    }
   }
-  ._amount {
-    width: 140px;
-    text-align: center;
-  }
-  ._discountSum {
-    width: 110px;
-    text-align: center;
-  }
-  ._sum {
-    width: 120px;
-    text-align: center;
+  .sale_buttons {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    width: 150px;
+    justify-content: space-between;
+    background-color: $color4;
+    .anulation_btn {
+      height: 50px;
+      width: 100%;
+      background: #ff5e71;
+      display: flex;
+      color: #fff;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      letter-spacing: 0.4px;
+      border: none;
+      span {
+        width: 25px;
+        height: 25px;
+        background-image: url("../images/sprite_icons.png");
+        background-position: 102px -15px;
+      }
+    }
+    ._btn {
+      height: 80px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      color: #fff;
+      background: #01a9ac;
+      border-top: 1px solid #fff;
+      border-left: none;
+      border-bottom: none;
+      border-right: none;
+      span {
+        width: 25px;
+        height: 25px;
+        background-image: url("../images/sprite_icons.png");
+
+        &.nal {
+          background-position: 100px -50px;
+        }
+        &.map {
+          background-position: 65px -50px;
+        }
+        &.other {
+          background-position: 29px -50px;
+        }
+      }
+    }
   }
 }
