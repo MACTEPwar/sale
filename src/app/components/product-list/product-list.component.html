@@ -42,4 +42,8 @@
   </div>
 </div>
 
-<div class="invis_bg"></div>
+<div
+  class="invis_bg"
+  *ngIf="visibleResult"
+  (click)="bgclick()"
+></div>

@@ -27,22 +27,6 @@ export class ProductListComponent implements OnInit {
   @ViewChild('searchLine') searchLineERef?: ElementRef<any>;
   @ViewChild('inp') inputERef?: ElementRef<any>;
 
-  @HostListener('document:click', ['$event'])
-  clickout(event: any) {
-    try {
-      if (
-        this.searchResultERef!.nativeElement.contains(event.target) ||
-        this.searchLineERef!.nativeElement.contains(event.target)
-      ) {
-      } else {
-        if (this.visibleResult) {
-          this.visibleResult = false;
-          this.inputERef!.nativeElement!.value = '';
-        }
-      }
-    } catch {}
-  }
-
   serachStr$: BehaviorSubject<TNullable<number>> = new BehaviorSubject<
     TNullable<number>
   >(null);
@@ -61,6 +45,8 @@ export class ProductListComponent implements OnInit {
         this.productListService.getPorducts(str);
         this.visibleResult = true;
       });
+
+    console.log('TEST');
   }
 
   ngOnInit(): void {}
@@ -84,5 +70,11 @@ export class ProductListComponent implements OnInit {
     this.prevText = null;
     this.serachStr$.next(null);
     input.value = null;
+  }
+
+  bgclick(): void {
+    console.log('click');
+    this.visibleResult = false;
+    this.inputERef!.nativeElement!.value = '';
   }
 }
