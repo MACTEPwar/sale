@@ -439,6 +439,16 @@ body {
   position: relative;
   .searchline {
     position: relative;
+    z-index: 10;
+  }
+  .invis_bg {
+    background: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 2;
   }
   .datasearch {
     position: absolute;
