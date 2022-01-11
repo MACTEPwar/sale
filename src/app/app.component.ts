@@ -66,14 +66,14 @@ export class AppComponent {
 
   ngOnInit(): void {
     this.items = [
-      { routerLink: '/test', label: 'Test' },
+      // { routerLink: '/test', label: 'Test' },
       { routerLink: '/sale', label: 'Продаж' },
-      { routerLink: '/return', label: 'Повернення' },
+      // { routerLink: '/return', label: 'Повернення' },
       {
         label: 'Звiти',
         items: [
           { routerLink: '/report/receipts', label: 'Чеки' },
-          { routerLink: '/report/z-reports', label: 'Z-звiти' },
+          // { routerLink: '/report/z-reports', label: 'Z-звiти' },
         ],
       },
       {
