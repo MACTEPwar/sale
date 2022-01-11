@@ -25,7 +25,7 @@ export class ProductListComponent implements OnInit {
     this.productList$ = this.productListService.productList$;
     this.serachStr$
       .pipe(
-        filter((f: TNullable<number>) => f != null && String(f!).length > 1),
+        filter((f: TNullable<number>) => f != null && String(f!).length > 0),
         debounceTime(300)
       )
       .subscribe((str: TNullable<number>) => {

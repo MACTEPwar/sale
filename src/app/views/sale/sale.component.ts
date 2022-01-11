@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { PrinterService } from '@common/core';
 import { TNullable, TProduct } from '@common/types';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -49,7 +50,8 @@ export class SaleComponent implements OnInit {
   constructor(
     private saleService: SaleNewService,
     private serviceService: ServiceService,
-    private printerService: PrinterService
+    private printerService: PrinterService,
+    private titleService: Title
   ) {
     /** Подписка на товары в чеке */
     this.receiptProducts = this.saleService.receipt.products;
@@ -73,6 +75,8 @@ export class SaleComponent implements OnInit {
       .subscribe((product: TNullable<TReceiptProduct>) => {
         this.saleService.changeProductFromReceipt(product as TReceiptProduct);
       });
+
+    this.titleService.setTitle('Продаж товару');
   }
 
   ngOnInit(): void {

@@ -4,15 +4,16 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { PrinterService } from '@common/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Observable, of } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { TNullable } from './shared/types/types/t-nullabel';
 import { TUser } from './shared/types/types/t-user';
 import { ServiceService } from './views/service/service.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +25,7 @@ export class AppComponent {
   online: Observable<boolean> = of(false);
   opencashbox: Observable<boolean> = of(false);
 
-  title = 'sale';
+  title = '';
   items: MenuItem[] = [];
   items2: MenuItem[] = [];
   currentUser: Observable<TNullable<TUser>>;
@@ -42,9 +43,16 @@ export class AppComponent {
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private printerService: PrinterService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private titleService: Title
   ) {
     this.currentUser = this.authenticationService._currentUser$;
+
+    router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: any) => {
+        this.title = titleService.getTitle();
+      });
   }
 
   ngOnInit(): void {
