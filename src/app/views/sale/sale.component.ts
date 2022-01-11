@@ -1,4 +1,4 @@
-import { ConfirmationService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { PrinterService } from '@common/core';
@@ -64,7 +64,8 @@ export class SaleComponent implements OnInit {
     private serviceService: ServiceService,
     private printerService: PrinterService,
     private titleService: Title,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) {
     /** Подписка на товары в чеке */
     this.receiptProducts = this.saleService.receipt.products;
@@ -170,6 +171,14 @@ export class SaleComponent implements OnInit {
    * @param paymentType Тип оплаты (может быть null)
    */
   doPayment(paymentType: TNullable<number> = null): void {
+    if (this.totalSum.getValue() === 0) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Помилка',
+        detail: 'Чек порожнiй',
+      });
+      return;
+    }
     this.payInProgress = true;
     this.visiblePaymantProcess = true;
     let arr: Array<{ sum: number; paymentType: number }> = [];
@@ -185,19 +194,26 @@ export class SaleComponent implements OnInit {
       });
     }
 
-    this.saleService.doPayment(arr).subscribe((res) => {
-      // this.saleService.getCurrentReceipt();
-      this.serviceService.getMoneyInKassa();
-      this.visibleOtherPayment = false;
-      this.payInProgress = false;
-      this.saleService.getContentForPrint(
-        this.saleService.lastReceiptNumber.getValue()
-      );
+    this.saleService.doPayment(arr).subscribe(
+      (res) => {
+        // this.saleService.getCurrentReceipt();
+        this.serviceService.getMoneyInKassa();
+        this.visibleOtherPayment = false;
+        this.payInProgress = false;
+        this.saleService.getContentForPrint(
+          this.saleService.lastReceiptNumber.getValue()
+        );
 
-      for (let p in this.pay) {
-        this.pay[p] = null;
+        for (let p in this.pay) {
+          this.pay[p] = null;
+        }
+      },
+      (e) => {
+        this.visibleOtherPayment = false;
+        this.visiblePaymantProcess = false;
+        this.payInProgress = false;
       }
-    });
+    );
   }
 
   /**
