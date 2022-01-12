@@ -83,15 +83,15 @@
       </button>
     </div>
     <div>
-      <button class="_btn" (click)="doPayment(0)">
+      <button class="_btn" (click)="clickDoPayCash()">
         <span class="nal"></span> Готiвка
       </button>
       <button class="_btn" (click)="doPayment(1)">
         <span class="map"></span> Карта
       </button>
-      <button class="_btn" (click)="visibleOtherPayment = true">
+      <!-- <button class="_btn" (click)="visibleOtherPayment = true">
         <span class="other"></span> Iнше
-      </button>
+      </button> -->
     </div>
   </div>
 </div>
@@ -208,7 +208,7 @@
   </div>
 </div> -->
 
-<p-dialog header="Оберiть спосiб оплати" [(visible)]="visibleOtherPayment">
+<!-- <p-dialog header="Оберiть спосiб оплати" [(visible)]="visibleOtherPayment">
   <div
     class="p-fluid p-grid"
     *ngFor="let paymentType of listPaymentTypes | async"
@@ -233,7 +233,7 @@
       ></p-button>
     </div>
   </div>
-</p-dialog>
+</p-dialog> -->
 
 <p-dialog
   [header]="payInProgress === false ? 'Чек проведено!' : 'Оплата'"
@@ -244,13 +244,57 @@
   [closable]="false"
   [draggable]="false"
 >
-  <ng-container *ngIf="payInProgress; else payFinished">
+  <ng-container *ngIf="payInStart && !payInProgress">
+    <div class="p-grid">
+      <div class="p-col">
+        <p-inputNumber
+          class="w-100"
+          [style]="{ width: '100%' }"
+          [ngModel]="inputCash"
+          [showButtons]="true"
+          buttonLayout="horizontal"
+          inputId="horizontal"
+          spinnerMode="horizontal"
+          [step]="1"
+          decrementButtonClass="p-button-danger"
+          incrementButtonClass="p-button-success"
+          incrementButtonIcon="pi pi-plus"
+          decrementButtonIcon="pi pi-minus"
+          (onInput)="onInputCash($event.value)"
+          #sum
+        >
+        </p-inputNumber>
+      </div>
+    </div>
+    <div class="p-grid" *ngIf="restCash">
+      <div class="p-col">
+        <span>Решта: {{ restCash | round10 }}</span>
+      </div>
+    </div>
+    <div class="p-grid">
+      <div class="p-col p-text-center confirm_buttons">
+        <p-button
+          icon="pi pi-check"
+          label="Так"
+          class="p-button-lg"
+          (onClick)="doPayment(0)"
+        ></p-button>
+        <p-button
+          icon="pi pi-times"
+          label="Нi"
+          class="p-button-lg p-button-warning"
+          (onClick)="cancelPay()"
+        ></p-button>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="payInProgress">
     <p-progressBar
       mode="indeterminate"
       [style]="{ height: '6px' }"
     ></p-progressBar>
   </ng-container>
-  <ng-template #payFinished>
+  <ng-container *ngIf="!payInStart && !payInProgress">
     <div class="p-grid">
       <div class="p-col p-text-center">Бажаєте роздрукувати чек?</div>
     </div>
@@ -314,5 +358,5 @@
         </div>
       </div>
     </div>
-  </ng-template>
+  </ng-container>
 </p-dialog>

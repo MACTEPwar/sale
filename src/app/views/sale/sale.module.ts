@@ -13,8 +13,12 @@ import { StyleClassModule } from 'primeng/styleclass';
 import { TableModule } from 'primeng/table';
 import { SaleRoutingModule } from './sale-router.module';
 import { SaleComponent } from './sale.component';
+
+import { InputNumberModule } from 'primeng/inputnumber';
+import { Round10Pipe } from './round10.pipe';
+
 @NgModule({
-  declarations: [SaleComponent],
+  declarations: [SaleComponent, Round10Pipe],
   imports: [
     CommonModule,
     SaleRoutingModule,
@@ -29,6 +33,7 @@ import { SaleComponent } from './sale.component';
     ProductListModule,
     ConfirmDialogModule,
     PtModule,
+    InputNumberModule,
   ],
 })
 export class SaleModule {}

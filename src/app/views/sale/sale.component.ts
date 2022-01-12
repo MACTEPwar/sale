@@ -43,15 +43,16 @@ export class SaleComponent implements OnInit {
   /** Смылка (QR-код) */
   link: Observable<string>;
 
-  /** Признак видимости расширенного окна оплаты */
-  visibleOtherPayment = false;
-  /** Сумма по каждой оплате */
-  pay: any = {};
+  /** Введенные деньги в наличке */
+  inputCash: TNullable<number> = null;
+  /** Остаток */
+  restCash: TNullable<number> = null;
 
   /** Признак видимости окна оплаты */
   visiblePaymantProcess = false;
   /** Признак выполнения запроса на оплату */
   payInProgress = false;
+  payInStart = false;
 
   /** Изменение кол-ва товара в чеке (принимает новый объект товара, инициирует запрос) */
   changeProductInReceipt: BehaviorSubject<TNullable<TReceiptProduct>> =
@@ -144,7 +145,7 @@ export class SaleComponent implements OnInit {
     } else if (amountInp.value == '') {
       this.prevAmount = 0;
       product.amount = 0;
-      amountInp.value === '0'
+      amountInp.value === '0';
       this.currentProduct = product;
     } else {
       amountInp.value = this.prevAmount;
@@ -169,6 +170,21 @@ export class SaleComponent implements OnInit {
     this.changeProductInReceipt.next(product);
   }
 
+  /** Когда нажал расплатиться наличкой */
+  clickDoPayCash(): void {
+    this.payInStart = true;
+    this.visiblePaymantProcess = true;
+  }
+
+  /**
+   * Уогда вводишь наличку
+   * @param event Сколько денег ввел
+   */
+  onInputCash(event: any): void {
+    this.inputCash = event;
+    this.restCash = this.inputCash! - this.totalSum.getValue();
+  }
+
   /**
    * Оплата
    * @param paymentType Тип оплаты (может быть null)
@@ -182,41 +198,47 @@ export class SaleComponent implements OnInit {
       });
       return;
     }
-    this.payInProgress = true;
-    this.visiblePaymantProcess = true;
-    let arr: Array<{ sum: number; paymentType: number }> = [];
-
-    if (paymentType != null) {
-      this.pay[paymentType] = this.totalSum.getValue();
-    }
-
-    for (let p in this.pay) {
-      arr.push({
-        sum: +this.pay[p],
-        paymentType: +p,
+    if (!this.restCash || this.restCash < 0) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Помилка',
+        detail: 'Введено мало коштiв',
       });
+      return;
     }
+    this.payInProgress = true;
+    this.payInStart = false;
 
-    this.saleService.doPayment(arr).subscribe(
-      (res) => {
-        // this.saleService.getCurrentReceipt();
-        this.serviceService.getMoneyInKassa();
-        this.visibleOtherPayment = false;
-        this.payInProgress = false;
-        this.saleService.getContentForPrint(
-          this.saleService.lastReceiptNumber.getValue()
-        );
-
-        for (let p in this.pay) {
-          this.pay[p] = null;
+    this.saleService
+      .doPayment([
+        {
+          paymentType: paymentType as number,
+          sum: this.totalSum.getValue(),
+        },
+      ])
+      .subscribe(
+        (res) => {
+          this.restCash = null;
+          this.inputCash = null;
+          this.serviceService.getMoneyInKassa();
+          this.payInProgress = false;
+          this.saleService.getContentForPrint(
+            this.saleService.lastReceiptNumber.getValue()
+          );
+        },
+        (e) => {
+          this.visiblePaymantProcess = false;
+          this.payInProgress = false;
         }
-      },
-      (e) => {
-        this.visibleOtherPayment = false;
-        this.visiblePaymantProcess = false;
-        this.payInProgress = false;
-      }
-    );
+      );
+  }
+
+  /** Когда отменил ввод налички */
+  cancelPay(): void {
+    this.visiblePaymantProcess = false;
+    this.payInStart = false;
+    this.restCash = null;
+    this.inputCash = null;
   }
 
   /**
