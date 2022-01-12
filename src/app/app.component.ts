@@ -39,9 +39,18 @@ export class AppComponent {
   /** Денег в кассе */
   moneyInKassa: Observable<number>;
 
+  //#region Import file
+  visibleImporProducts = false;
+
+  fileForImport: TNullable<File> = null;
+  shopGroup: TNullable<{ id: string; name: string }> = null;
+
+  shopGroups$: Observable<Array<{ id: string; name: string }>>;
+  //#endregion
+
   constructor(
     public router: Router,
-    private authenticationService: AuthenticationService,
+    public authenticationService: AuthenticationService,
     private serviceComponent: ServiceService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
@@ -62,6 +71,7 @@ export class AppComponent {
 
     this.isOnline = this.serviceService.isOnline$;
     this.shiftStatus = this.serviceService.shiftStatus$;
+    this.shopGroups$ = this.serviceComponent.shopGroups$;
   }
 
   ngOnInit(): void {
@@ -91,6 +101,20 @@ export class AppComponent {
         ],
       },
     ];
+
+    if (this.authenticationService.currentUser?.isAdmin) {
+      this.items.unshift({
+        label: 'Адмiн',
+        items: [
+          {
+            label: 'Iмпорт товарiв',
+            command: () => (this.visibleImporProducts = true),
+          },
+        ],
+      });
+
+      this.serviceComponent.getShopGroups();
+    }
 
     this.items2 = [{ label: 'Вийти', command: () => this.logout() }];
   }
@@ -177,5 +201,17 @@ export class AppComponent {
         break;
       }
     }
+  }
+
+  onSelect(event: any): void {
+    this.fileForImport = event.files[0]
+  }
+
+  doImportProducts(): void {
+    alert(JSON.stringify(this.shopGroup, null, 4));
+    // this.serviceComponent
+    //   .importProducts$(this.fileForImport!, this.shopGroupId!)
+    //   .pipe(map((m) => m.data))
+    //   .subscribe((res) => {});
   }
 }

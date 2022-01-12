@@ -23,28 +23,36 @@ export class QueryService {
     params: any = {},
     headers: RequestHeaders = {}
   ): Observable<T> {
-    return this.sendRequest<T>(EQueryMethod.GET, url, params, headers);
+    return this.sendRequest<T>(EQueryMethod.GET, url, params, headers, 'json');
   }
 
   post<T = any>(
     url: string,
     body: any,
-    headers: RequestHeaders = {}
+    headers: RequestHeaders = {},
+    type: 'json' | 'multipart' = 'json'
   ): Observable<T> {
-    return this.sendRequest<T>(EQueryMethod.POST, url, body, headers);
+    return this.sendRequest<T>(EQueryMethod.POST, url, body, headers, type);
   }
+
+  // import(formData: FormData): Observable<any> {
+  //   this.http.setDataSerializer('multipart');
+
+  //   return from(this.http.post(``, formData, {}));
+  // }
 
   private sendRequest<T>(
     method: EQueryMethod,
     url: string,
     body: any,
-    headers: RequestHeaders
+    headers: RequestHeaders,
+    type: 'json' | 'multipart'
   ): Observable<T> {
     return of({}).pipe(
       switchMap((s) =>
         iif(
           () => Capacitor.getPlatform() === 'android',
-          this.sendRequestAndroid(method, url, body, headers),
+          this.sendRequestAndroid(method, url, body, headers, type),
           this.sendRequestWeb(
             method,
             url,
@@ -75,10 +83,14 @@ export class QueryService {
     method: EQueryMethod,
     url: string,
     body: any,
-    headers: RequestHeaders
+    headers: RequestHeaders,
+    type: 'json' | 'multipart'
   ): Observable<any> {
     let httpHeaders: RequestHeaders = headers;
-    httpHeaders['Content-Type'] = 'application/json';
+    if (type === 'json') {
+      httpHeaders['Content-Type'] = 'application/json';
+    }
+
     if (this.authToken != null) {
       httpHeaders.Authorization = `Bearer ${this.authToken}`;
     }
@@ -86,7 +98,7 @@ export class QueryService {
     return from(
       this.http.sendRequest(url, {
         method,
-        serializer: 'json',
+        serializer: type,
         data: body,
         headers: httpHeaders,
       })

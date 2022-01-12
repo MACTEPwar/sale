@@ -1,10 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, Renderer2 } from '@angular/core';
 import { HTTP } from '@awesome-cordova-plugins/http/ngx';
-import { Capacitor } from '@capacitor/core';
 import { PrinterService, QueryService } from '@common/core';
-import { BehaviorSubject, from, iif, Observable, of } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { environment } from 'src/environments/environment';
 
@@ -16,11 +15,11 @@ export class ServiceService {
   shiftStatus$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   /** состояние ПРРО */
   isOnline$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  /**  */
+  shopGroups$: BehaviorSubject<Array<{ id: string; name: string }>> =
+    new BehaviorSubject<Array<{ id: string; name: string }>>([]);
 
   constructor(
-    private httpClient: HttpClient,
-    private http: HTTP,
-    private authService: AuthenticationService,
     private queryService: QueryService,
     private printService: PrinterService
   ) {}
@@ -36,19 +35,22 @@ export class ServiceService {
       });
   }
 
-  private getMoneyInKassa$(): Observable<any> {
-    return of({}).pipe(
-      switchMap((_) =>
-        iif(
-          () => Capacitor.getPlatform() === 'android',
-          getMoneyInKassa_ANDROID$(
-            this.http,
-            this.authService.currentUser?.access_token!
-          ),
-          getMoneyInKassa_WEB$(this.httpClient)
-        )
-      )
-    );
+  /**
+   * Проверяет состояние смены
+   */
+  getShiftStatus(): void {
+    this.getShiftStatus$().subscribe((res) => {
+      this.shiftStatus$.next(res);
+    });
+  }
+
+  /**
+   * Проверяет состояние ПРРО
+   */
+  getEcrStatus(): void {
+    this.getEcrStatus$().subscribe((res) => {
+      this.isOnline$.next(res);
+    });
   }
 
   doCashIn(sum: number): Observable<any> {
@@ -96,34 +98,22 @@ export class ServiceService {
     );
   }
 
-  getLastZReport$(): Observable<any> {
+  getShopGroups(): void {
+    this.getShopGroups$()
+      .pipe(map((m) => m.data))
+      .subscribe((res) => this.shopGroups$.next(res));
+  }
+
+  private getLastZReport$(): Observable<any> {
     return this.queryService.get(
       `${environment.apiUrl}/api/Service/zreport/last`
     );
   }
 
-  getLastReceipt$(): Observable<any> {
+  private getLastReceipt$(): Observable<any> {
     return this.queryService.get(
       `${environment.apiUrl}/api/Service/receipt/last`
     );
-  }
-
-  /**
-   * Проверяет состояние смены
-   */
-  getShiftStatus(): void {
-    this.getShiftStatus$().subscribe((res) => {
-      this.shiftStatus$.next(res);
-    });
-  }
-
-  /**
-   * Проверяет состояние ПРРО
-   */
-  getEcrStatus(): void {
-    this.getEcrStatus$().subscribe((res) => {
-      this.isOnline$.next(res);
-    });
   }
 
   /**
@@ -145,94 +135,25 @@ export class ServiceService {
       .get(`${environment.apiUrl}/api/ecr/status`)
       .pipe(map((m) => m.data as boolean));
   }
-}
 
-export function getMoneyInKassa_ANDROID$(
-  http: HTTP,
-  auth: string
-): Observable<any> {
-  return from(
-    http.get(
-      `${environment.apiUrl}/api/service/moneyInKassa`,
-      {},
-      {
-        Authorization: `Bearer ${auth}`,
-      }
-    )
-  ).pipe(map((m) => JSON.parse(m.data)));
-}
+  private getMoneyInKassa$(): Observable<any> {
+    return this.queryService
+      .get(`${environment.apiUrl}/api/service/moneyInKassa`)
+      .pipe(map((m) => m.data));
+  }
 
-export function getMoneyInKassa_WEB$(http: HttpClient): Observable<any> {
-  return http.get(`${environment.apiUrl}/api/service/moneyInKassa`);
-}
+  private getShopGroups$(): Observable<any> {
+    return this.queryService.get(`${environment.apiUrl}/api/shopGroup/list`);
+  }
 
-export function doCashIn_ANDROID$(
-  http: HTTP,
-  auth: string,
-  sum: number
-): Observable<any> {
-  http.setDataSerializer('json');
+  importProducts$(products: File, groupId: string): Observable<any> {
+    const formData = new FormData();
 
-  return from(
-    http.post(
-      `${environment.apiUrl}/api/service/servicein`,
-      { sum },
-      {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${auth}`,
-      }
-    )
-  ).pipe(map((m) => JSON.parse(m.data), take(1)));
-}
+    formData.append('products', products);
+    formData.append('groupId', groupId);
 
-export function doCashIn_WEB$(http: HttpClient, sum: number): Observable<any> {
-  return http
-    .post(`${environment.apiUrl}/api/service/servicein`, { sum })
-    .pipe(take(1));
-}
-
-export function doCashOut_ANDROID$(
-  http: HTTP,
-  auth: string,
-  sum: number
-): Observable<any> {
-  http.setDataSerializer('json');
-
-  return from(
-    http.post(
-      `${environment.apiUrl}/api/service/serviceout`,
-      { sum },
-      {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${auth}`,
-      }
-    )
-  ).pipe(map((m) => JSON.parse(m.data), take(1)));
-}
-
-export function doCashOut_WEB$(http: HttpClient, sum: number): Observable<any> {
-  return http
-    .post(`${environment.apiUrl}/api/service/serviceout`, { sum })
-    .pipe(take(1));
-}
-
-export function doZReport_ANDROID$(http: HTTP, auth: string): Observable<any> {
-  http.setDataSerializer('json');
-
-  return from(
-    http.post(
-      `${environment.apiUrl}/api/service/serviceout`,
-      {},
-      {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${auth}`,
-      }
-    )
-  ).pipe(map((m) => JSON.parse(m.data), take(1)));
-}
-
-export function doZReport_WEB$(http: HttpClient): Observable<any> {
-  return http
-    .post(`${environment.apiUrl}/api/service/serviceout`, {})
-    .pipe(take(1));
+    return this.queryService
+      .post(`${environment.apiUrl}/api/service/moneyInKassa`, formData)
+      .pipe(map((m) => m.data));
+  }
 }

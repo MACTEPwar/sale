@@ -22,6 +22,8 @@ import { TestComponent } from './views/test/test.component';
 import { RippleModule } from 'primeng/ripple';
 import { MenuModule } from 'primeng/menu';
 import { SlideMenuModule } from 'primeng/slidemenu';
+import { DropdownModule } from 'primeng/dropdown';
+import { FileUploadModule } from 'primeng/fileupload';
 
 @NgModule({
   declarations: [AppComponent, IsLoginPagePipe, TestComponent],
@@ -43,6 +45,8 @@ import { SlideMenuModule } from 'primeng/slidemenu';
     RippleModule,
     MenuModule,
     SlideMenuModule,
+    DropdownModule,
+    FileUploadModule,
   ],
   providers: [MessageService, Printer, HTTP],
   bootstrap: [AppComponent],

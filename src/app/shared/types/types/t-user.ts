@@ -4,4 +4,5 @@ export type TUser = {
   password?: string;
   access_token?: string;
   refresh_token?: string;
+  isAdmin?: boolean;
 };

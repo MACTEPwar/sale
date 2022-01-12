@@ -97,6 +97,7 @@ export class AuthenticationService {
             map((user) => {
               _.name = user?.name;
               _.username = user?.username;
+              _.isAdmin = user?.isAdmin;
               return _;
             })
           )
