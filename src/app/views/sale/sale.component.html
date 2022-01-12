@@ -71,7 +71,8 @@
       </div>
     </div>
     <div class="sale_table-footer">
-      <span>Сума разом: {{ totalSum | async }} грн</span>
+      <span>Позицiй: {{ (receiptProducts | async)?.length ?? 0 }} шт.</span>
+      <span>Сума: {{ totalSum | async }} грн</span>
     </div>
   </div>
   <!-- Buttons section -->
