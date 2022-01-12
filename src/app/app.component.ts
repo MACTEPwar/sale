@@ -207,6 +207,8 @@ export class AppComponent {
                 this.serviceComponent.printLastReceipt(this.renderer);
               }
             });
+        } else {
+          this.visibleConfirmDialog = false;
         }
         break;
       }
