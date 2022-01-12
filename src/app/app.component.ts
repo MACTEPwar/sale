@@ -110,6 +110,10 @@ export class AppComponent {
             label: 'Iмпорт товарiв',
             command: () => (this.visibleImporProducts = true),
           },
+          {
+            label: 'Тест печати',
+            command: () => this.serviceComponent.testPrint(this.renderer),
+          },
         ],
       });
 
@@ -204,14 +208,14 @@ export class AppComponent {
   }
 
   onSelect(event: any): void {
-    this.fileForImport = event.files[0]
+    this.fileForImport = event.files[0];
   }
 
   doImportProducts(): void {
-    alert(JSON.stringify(this.shopGroup, null, 4));
-    // this.serviceComponent
-    //   .importProducts$(this.fileForImport!, this.shopGroupId!)
-    //   .pipe(map((m) => m.data))
-    //   .subscribe((res) => {});
+    // alert(JSON.stringify(this.shopGroup, null, 4));
+    this.serviceComponent
+      .importProducts$(this.fileForImport!, this.shopGroup?.id!)
+      .pipe(map((m) => m.data))
+      .subscribe((res) => {});
   }
 }

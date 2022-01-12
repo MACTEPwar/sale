@@ -25,14 +25,9 @@ export class ServiceService {
   ) {}
 
   getMoneyInKassa(): void {
-    this.getMoneyInKassa$()
-      .pipe(
-        map((m) => m.data),
-        take(1)
-      )
-      .subscribe((res) => {
-        this.moneyInKassa.next(res);
-      });
+    this.getMoneyInKassa$().subscribe((res) => {
+      this.moneyInKassa.next(res);
+    });
   }
 
   /**
@@ -153,7 +148,18 @@ export class ServiceService {
     formData.append('groupId', groupId);
 
     return this.queryService
-      .post(`${environment.apiUrl}/api/service/moneyInKassa`, formData)
+      .post(`${environment.apiUrl}/api/barPrice/import`, formData)
       .pipe(map((m) => m.data));
+  }
+
+  testPrint(renderer: Renderer2): void {
+    this.printService
+      .clearPrintBlank()
+      .addTextToPrint(renderer, 'Hello world')
+      .addTextToPrint(renderer, 'Hello world 1')
+      .addTextToPrint(renderer, 'Hello world 2')
+      .addTextToPrint(renderer, 'Hello world 3')
+      .addTextToPrint(renderer, 'Hello world 4')
+      .test_print();
   }
 }

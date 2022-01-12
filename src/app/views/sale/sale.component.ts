@@ -137,12 +137,15 @@ export class SaleComponent implements OnInit {
    * @param product Товар
    */
   onInputAmount(amountInp: any, product: TReceiptProduct, event: any): void {
-    // console.log(event);
-    if (amountInp.value == +amountInp.value && amountInp.value > 0) {
+    if (amountInp.value == +amountInp.value && amountInp.value >= 0) {
       this.prevAmount = amountInp.value;
       product.amount = +amountInp.value;
       this.currentProduct = product;
-      // this.changeProductInReceipt.next(product);
+    } else if (amountInp.value == '') {
+      this.prevAmount = 0;
+      product.amount = 0;
+      amountInp.value === '0'
+      this.currentProduct = product;
     } else {
       amountInp.value = this.prevAmount;
     }
