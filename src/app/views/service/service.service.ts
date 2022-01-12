@@ -93,6 +93,25 @@ export class ServiceService {
     );
   }
 
+  doXReport(renderer: Renderer2): void {
+    this.queryService
+      .get(`${environment.apiUrl}/api/service/xreport`)
+      .pipe(map((m) => m.data))
+      .subscribe((res: any) => {
+        this.getMoneyInKassa();
+        this.getEcrStatus();
+        this.getShiftStatus();
+
+        if ((res.data as Array<string>).length > 0) {
+          this.printService.clearPrintBlank();
+          (res.data as Array<string>).forEach((str, ind) => {
+            this.printService.addTextToPrint(renderer, str);
+          });
+          this.printService.test_print();
+        }
+      });
+  }
+
   getShopGroups(): void {
     this.getShopGroups$()
       .pipe(map((m) => m.data))

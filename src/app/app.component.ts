@@ -97,6 +97,7 @@ export class AppComponent {
             label: 'Вилучення',
             command: () => this.doCashOut(),
           },
+          { label: 'X-звiт', command: () => this.doXReport() },
           { label: 'Z-звiт', command: () => this.doZReport() },
         ],
       },
@@ -156,6 +157,10 @@ export class AppComponent {
           },
         });
       });
+  }
+
+  doXReport(): void {
+    this.serviceComponent.doXReport(this.renderer);
   }
 
   logout(): void {
