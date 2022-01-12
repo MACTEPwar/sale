@@ -168,6 +168,7 @@ export class AppComponent {
         if (state === true && this.confirmText != null) {
           this.serviceComponent.doCashIn(+this.confirmText).subscribe((res) => {
             this.serviceComponent.getMoneyInKassa();
+            this.serviceComponent.getShiftStatus();
             this.visibleConfirmDialog = false;
             this.confirmText = null;
             this.messageService.add({
