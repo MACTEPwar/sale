@@ -232,15 +232,7 @@ export class SaleComponent implements OnInit {
       });
       return;
     }
-    // проверка только для начлички
-    if ((!this.restCash || this.restCash < 0) && paymentType === 0) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Помилка',
-        detail: 'Введено мало коштiв',
-      });
-      return;
-    }
+
     this.payInProgress = true;
     this.payInStart = false;
     this.visiblePaymantProcess = true;
@@ -249,7 +241,7 @@ export class SaleComponent implements OnInit {
 
     switch (paymentType) {
       case 0: {
-        sum = this.inputCash!;
+        sum = this.inputCash ?? this.totalSum.getValue();
         break;
       }
       case 1: {
