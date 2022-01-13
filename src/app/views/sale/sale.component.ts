@@ -1,10 +1,17 @@
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Component, HostListener, OnInit } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  OnInit,
+  QueryList,
+  ViewChildren,
+  ViewContainerRef,
+} from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { PrinterService } from '@common/core';
 import { TNullable, TProduct } from '@common/types';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { debounceTime, filter, switchMap } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest, concat, Observable } from 'rxjs';
+import { debounceTime, filter, switchMap, take } from 'rxjs/operators';
 import { SaleNewService } from './../../core/BLL/sale-logic/sale-new.service';
 import { TReceiptProduct } from './../../shared/types/types/t-receipt-product';
 import { ServiceService } from './../service/service.service';
@@ -60,6 +67,8 @@ export class SaleComponent implements OnInit {
   /** Сохраняет предыдущее значение количества товара в чеке */
   prevAmount: TNullable<number> = null;
 
+  @ViewChildren('amountInp') amountInps?: QueryList<ViewContainerRef>;
+
   constructor(
     private saleService: SaleNewService,
     private serviceService: ServiceService,
@@ -106,12 +115,37 @@ export class SaleComponent implements OnInit {
     this.saleService.getPaymentsList();
   }
 
+  ngAfterViewInit(): void {
+    // this.amountInps?.changes.subscribe((ch) => {
+    //   console.log('ch', ch);
+    // });
+  }
+
   /**
    * Добавляет товар в чек
    * @param product Товар
    */
   addProductToReceipt(product: TProduct): void {
-    this.saleService.addProductToReceipt(product, 0);
+    // this.saleService
+    //   .addProductToReceipt(product, 0)
+    //   .pipe(combineLatest((s) => this.amountInps?.changes))
+    //   .subscribe((res) => {
+    //     console.log('test', this.amountInps?.last);
+    //     (this.amountInps?.last as any).nativeElement.value = '20';
+    //   });
+
+    combineLatest([
+      this.saleService.addProductToReceipt(product, 0),
+      this.amountInps?.changes!,
+    ])
+      .pipe(take(1))
+      .subscribe(([res, inp]) => {
+        console.log(inp.last.nativeElement);
+        // inp.last.nativeElement.select()
+        setTimeout(() => {
+          inp.last.nativeElement.focus();
+        }, 100);
+      });
   }
 
   /**
