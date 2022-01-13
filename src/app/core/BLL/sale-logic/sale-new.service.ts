@@ -29,10 +29,10 @@ export class SaleNewService {
     private printerService: PrinterService
   ) {}
 
-  addProductToReceipt(product: TProduct, amount: number): void {
-    this.addProductToReceipt$(product, amount)
-      .pipe(map((m) => m.data))
-      .subscribe((result) => {
+  addProductToReceipt(product: TProduct, amount: number): Observable<any> {
+    return this.addProductToReceipt$(product, amount).pipe(
+      map((m) => m.data),
+      tap((result) => {
         this.receipt.totalSum.next(+result.sum);
         this.receipt.products.next(
           result.positions.map((m: any) => ({
@@ -45,7 +45,8 @@ export class SaleNewService {
             sum: +m.sum,
           }))
         );
-      });
+      })
+    );
   }
 
   changeProductFromReceipt(product: TReceiptProduct): void {
