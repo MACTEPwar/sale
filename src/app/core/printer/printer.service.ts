@@ -37,9 +37,12 @@ export class PrinterService {
   ) {}
 
   addTextToPrint(renderer: Renderer2, str: string): this {
-    const text = renderer.createText(
-      str.replace(/ /g, String.fromCharCode(160))
-    );
+    str = str.replace('І', 'I');
+    str = str.replace('і', 'i');
+    const text = renderer.createText(str.replace(/ /g, ' '));
+    // const text = renderer.createText(
+    //   str.replace(/ /g, String.fromCharCode(160))
+    // );
     const child = renderer.createElement('p');
     renderer.appendChild(child, text);
     renderer.appendChild(this._container?.element.nativeElement, child);
@@ -55,6 +58,9 @@ export class PrinterService {
     );
     componentRef!.instance.elementType = 'img';
     componentRef!.instance.qrdata = str;
+    componentRef!.instance.scale = 1;
+    componentRef!.instance.width = 15;
+    componentRef!.instance.errorCorrectionLevel = 'H';
     (componentRef!.instance as any).createQRCode();
     componentRef?.changeDetectorRef.detectChanges();
     return this;
@@ -70,10 +76,10 @@ export class PrinterService {
   }
 
   test_print(): void {
-    timer(100)
+    timer(500)
       .pipe(
         switchMap((_) =>
-          this.print(this._container?.element.nativeElement.innerHTML)
+          this.print(this._container?.element.nativeElement.outerHTML)
         )
       )
       .subscribe((res) => {});

@@ -1,5 +1,12 @@
 <p-toast></p-toast>
-<div id="printContainer" #printContainer></div>
+<pre id="printContainer" #printContainer>
+  <style>
+    p:first-child {
+      margin-left: 10pt;
+      color: red;
+    }
+  </style>
+</pre>
 <ng-container *ngIf="!(router | isLoginPage | async); else loginBlock">
   <div class="p-d-flex">
     <div class="header">
@@ -23,7 +30,7 @@
 
       <div class="topcenter">
         <div class="toptitle">
-          {{ title }}
+          {{ title }} {{ authenticationService.currentUser?.isAdmin }}
         </div>
 
         <div class="topinfo">Грошей у сейфi: {{ moneyInKassa | async }}грн</div>

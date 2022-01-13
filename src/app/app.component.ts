@@ -75,51 +75,109 @@ export class AppComponent {
   }
 
   ngOnInit(): void {
-    this.items = [
-      // { routerLink: '/test', label: 'Test' },
-      { routerLink: '/sale', label: 'Продаж' },
-      // { routerLink: '/return', label: 'Повернення' },
-      {
-        label: 'Звiти',
-        items: [
-          { routerLink: '/report/receipts', label: 'Чеки' },
-          // { routerLink: '/report/z-reports', label: 'Z-звiти' },
-        ],
-      },
-      {
-        label: 'Сервiси',
-        items: [
-          {
-            label: 'Внесення',
-            command: () => this.doCashIn(),
-          },
-          {
-            label: 'Вилучення',
-            command: () => this.doCashOut(),
-          },
-          { label: 'X-звiт', command: () => this.doXReport() },
-          { label: 'Z-звiт', command: () => this.doZReport() },
-        ],
-      },
-    ];
+    // this.items = [
+    //   // { routerLink: '/test', label: 'Test' },
+    //   { routerLink: '/sale', label: 'Продаж' },
+    //   // { routerLink: '/return', label: 'Повернення' },
+    //   {
+    //     label: 'Звiти',
+    //     items: [
+    //       { routerLink: '/report/receipts', label: 'Чеки' },
+    //       // { routerLink: '/report/z-reports', label: 'Z-звiти' },
+    //     ],
+    //   },
+    //   {
+    //     label: 'Сервiси',
+    //     items: [
+    //       {
+    //         label: 'Внесення',
+    //         command: () => this.doCashIn(),
+    //       },
+    //       {
+    //         label: 'Вилучення',
+    //         command: () => this.doCashOut(),
+    //       },
+    //       { label: 'X-звiт', command: () => this.doXReport() },
+    //       { label: 'Z-звiт', command: () => this.doZReport() },
+    //     ],
+    //   },
+    // ];
 
-    if (this.authenticationService.currentUser?.isAdmin) {
-      this.items.unshift({
-        label: 'Адмiн',
-        items: [
+    this.authenticationService._currentUser$.subscribe((user) => {
+      if (user?.isAdmin) {
+        this.items = [
           {
-            label: 'Iмпорт товарiв',
-            command: () => (this.visibleImporProducts = true),
+            label: 'Адмiн',
+            items: [
+              {
+                label: 'Iмпорт товарiв',
+                command: () => (this.visibleImporProducts = true),
+              },
+              {
+                label: 'Тест печати',
+                command: () => this.serviceComponent.testPrint(this.renderer),
+              },
+            ],
+          },
+          // { routerLink: '/test', label: 'Test' },
+          { routerLink: '/sale', label: 'Продаж' },
+          // { routerLink: '/return', label: 'Повернення' },
+          {
+            label: 'Звiти',
+            items: [
+              { routerLink: '/report/receipts', label: 'Чеки' },
+              // { routerLink: '/report/z-reports', label: 'Z-звiти' },
+            ],
           },
           {
-            label: 'Тест печати',
-            command: () => this.serviceComponent.testPrint(this.renderer),
+            label: 'Сервiси',
+            items: [
+              {
+                label: 'Внесення',
+                command: () => this.doCashIn(),
+              },
+              {
+                label: 'Вилучення',
+                command: () => this.doCashOut(),
+              },
+              { label: 'X-звiт', command: () => this.doXReport() },
+              { label: 'Z-звiт', command: () => this.doZReport() },
+            ],
           },
-        ],
-      });
+        ];
 
-      this.serviceComponent.getShopGroups();
-    }
+        this.serviceComponent.getShopGroups();
+      } else {
+        this.serviceComponent.shopGroups$.next([]);
+        this.items = [
+          // { routerLink: '/test', label: 'Test' },
+          { routerLink: '/sale', label: 'Продаж' },
+          // { routerLink: '/return', label: 'Повернення' },
+          {
+            label: 'Звiти',
+            items: [
+              { routerLink: '/report/receipts', label: 'Чеки' },
+              // { routerLink: '/report/z-reports', label: 'Z-звiти' },
+            ],
+          },
+          {
+            label: 'Сервiси',
+            items: [
+              {
+                label: 'Внесення',
+                command: () => this.doCashIn(),
+              },
+              {
+                label: 'Вилучення',
+                command: () => this.doCashOut(),
+              },
+              { label: 'X-звiт', command: () => this.doXReport() },
+              { label: 'Z-звiт', command: () => this.doZReport() },
+            ],
+          },
+        ];
+      }
+    });
 
     this.items2 = [{ label: 'Вийти', command: () => this.logout() }];
   }
