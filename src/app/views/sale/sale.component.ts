@@ -4,7 +4,7 @@ import { Title } from '@angular/platform-browser';
 import { PrinterService } from '@common/core';
 import { TNullable, TProduct } from '@common/types';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { debounceTime, filter } from 'rxjs/operators';
+import { debounceTime, filter, switchMap } from 'rxjs/operators';
 import { SaleNewService } from './../../core/BLL/sale-logic/sale-new.service';
 import { TReceiptProduct } from './../../shared/types/types/t-receipt-product';
 import { ServiceService } from './../service/service.service';
@@ -198,7 +198,8 @@ export class SaleComponent implements OnInit {
       });
       return;
     }
-    if (!this.restCash || this.restCash < 0) {
+    // проверка только для начлички
+    if ((!this.restCash || this.restCash < 0) && paymentType === 0) {
       this.messageService.add({
         severity: 'warn',
         summary: 'Помилка',
@@ -208,13 +209,25 @@ export class SaleComponent implements OnInit {
     }
     this.payInProgress = true;
     this.payInStart = false;
+    this.visiblePaymantProcess = true;
+
+    let sum: any = null;
+
+    switch (paymentType) {
+      case 0: {
+        sum = this.inputCash!;
+        break;
+      }
+      case 1: {
+        sum = this.totalSum.getValue();
+      }
+    }
 
     this.saleService
       .doPayment([
         {
           paymentType: paymentType as number,
-          // sum: this.totalSum.getValue(),
-          sum: this.inputCash!,
+          sum,
         },
       ])
       .subscribe(
