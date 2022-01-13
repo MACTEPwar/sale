@@ -1,9 +1,9 @@
-<div class="topSearch">
+<!-- <div class="topSearch">
   <app-product-list
     id="searchTop"
     (add)="addProductToReceipt($event)"
   ></app-product-list>
-</div>
+</div> -->
 <div class="datasale">
   <!-- Table section   -->
   <div class="sale_table">
@@ -12,21 +12,25 @@
         class="sale_table-header"
         *ngIf="(receiptProducts | async)!.length > 0"
       >
+        <div class="receiptProducts_addtbn"></div>
         <div class="_name">Назва</div>
         <div class="_amount">Кiлькiсть</div>
         <div class="_discountSum">Цiна за од.</div>
         <div class="_sum">Сума</div>
       </div>
-      <div
-        class="receiptProducts_line"
-        *ngFor="let receiptProduct of receiptProducts | async"
-      >
-        <div class="receiptProducts_name">
-          {{ receiptProduct.name }}
-        </div>
+      <div class="prod_list">
+        <div
+          class="receiptProducts_line"
+          *ngFor="let receiptProduct of receiptProducts | async"
+        >
+          <div class="receiptProducts_addtbn"></div>
+          <div class="receiptProducts_name">
+            {{ receiptProduct.name }}
+          </div>
 
-        <div class="receiptProducts_amount">
-          <p-button
+          <div class="receiptProducts_amount">
+            777
+            <!-- <p-button
             icon="pi pi-minus"
             (click)="this.amountMinus(receiptProduct)"
           ></p-button>
@@ -46,194 +50,61 @@
           <p-button
             icon="pi pi-plus"
             (click)="this.amountPlus(receiptProduct)"
-          ></p-button>
-        </div>
-
-        <div class="receiptProducts_discountSum">
-          {{ receiptProduct.price }}
-        </div>
-
-        <div class="receiptProducts_sum">
-          <div class="s">
-            {{ receiptProduct.sum }}
-            <ng-container *ngIf="receiptProduct.sum"></ng-container>
+          ></p-button> -->
           </div>
-          <div
-            class="d"
-            *ngIf="
-              receiptProduct.discountSum != null &&
-              receiptProduct.discountSum > 0
-            "
-          >
-            Знижка: {{ receiptProduct.discountSum }}
+
+          <div class="receiptProducts_discountSum">
+            {{ receiptProduct.price }}
+          </div>
+
+          <div class="receiptProducts_sum">
+            <div class="s">
+              {{ receiptProduct.sum }}
+              <ng-container *ngIf="receiptProduct.sum"></ng-container>
+            </div>
+            <div
+              class="d"
+              *ngIf="
+                receiptProduct.discountSum != null &&
+                receiptProduct.discountSum > 0
+              "
+            >
+              Знижка: {{ receiptProduct.discountSum }}
+            </div>
           </div>
         </div>
       </div>
     </div>
     <div class="sale_table-footer">
-      <span>Позицiй: {{ (receiptProducts | async)?.length ?? 0 }} шт.</span>
-      <span>Сума: {{ totalSum | async }} грн</span>
+      <span
+        >Позицiй: <i>{{ (receiptProducts | async)?.length ?? 0 }}</i> шт.</span
+      >
+      <span
+        >Сума: <i> {{ totalSum | async }}</i> грн</span
+      >
     </div>
   </div>
+
   <!-- Buttons section -->
   <div class="sale_buttons">
     <div>
-      <button class="anulation_btn" (click)="doCancelReceipt()">
-        <span></span> Ануляцiя
+      <button class="_btn">
+        <span class="add"></span>
+      </button>
+      <button class="_btn" (click)="clickDoPayCash()">
+        <span class="nal"></span>
+      </button>
+      <button class="_btn" (click)="doPayment(1)">
+        <span class="credicart"></span>
       </button>
     </div>
     <div>
-      <button class="_btn" (click)="clickDoPayCash()">
-        <span class="nal"></span> Готiвка
+      <button class="anulation_btn" (click)="doCancelReceipt()">
+        <span></span>
       </button>
-      <button class="_btn" (click)="doPayment(1)">
-        <span class="map"></span> Карта
-      </button>
-      <!-- <button class="_btn" (click)="visibleOtherPayment = true">
-        <span class="other"></span> Iнше
-      </button> -->
     </div>
   </div>
 </div>
-
-<!-- <div class="container" #container>
-  <div class="p-grid title p-m-0" #title>
-    <div class="saleTitle">
-      <div>Продаж товару</div>
-
-      <div>Грошей у сейфi: {{ moneyInKassa | async }} грн.</div>
-    </div>
-  </div>
-
-  <div class="p-grid sale p-m-0">
-    <div class="p-col-6 h-100">
-      <div class="p-grid">
-        <app-product-list
-          (add)="addProductToReceipt($event)"
-        ></app-product-list>
-      </div>
-    </div>
-    <div class="p-col-6 p-py-0">
-      <div class="p-grid receipt">
-        <div class="p-col">
-          <div class="p-grid receiptTitle">
-            <div class="p-col p-text-center"><span>Чек</span></div>
-          </div>
-
-          <div class="receiptProducts">
-            <div
-              class="receiptProducts_line"
-              *ngFor="let receiptProduct of receiptProducts | async"
-            >
-              <div class="receiptProducts_name">
-                {{ receiptProduct.name }}
-              </div>
-
-              <div class="receiptProducts_amount">
-
-                <p-button
-                  icon="pi pi-minus"
-                  (click)="this.amountMinus(receiptProduct)"
-                ></p-button>
-                <input
-                  type="text"
-                  inputmode="decimal"
-                  pInputText
-                  min="0"
-                  class="amountEdit w-100"
-                  (focus)="onFocusAmount(amountInp)"
-                  (input)="onInputAmount(amountInp, receiptProduct)"
-                  [ngModel]="receiptProduct.amount"
-                  #amountInp
-                />
-
-                <p-button
-                  icon="pi pi-plus"
-                  (click)="this.amountPlus(receiptProduct)"
-                ></p-button>
-              </div>
-
-              <div class="receiptProducts_discountSum">
-                {{ receiptProduct.discountSum }}
-              </div>
-
-              <div class="receiptProducts_sum">
-                {{ receiptProduct.sum }}
-                <ng-container *ngIf="receiptProduct.sum"> грн</ng-container>
-              </div>
-
-            </div>
-          </div>
-
-          <div class="p-grid p-mt-0 total">
-            <div class="p-col">
-              <span
-                style="
-                  font-size: 16px;
-                  font-weight: 600;
-                  color: #222;
-                  float: right;
-                "
-                >Сума разом: {{ totalSum | async }} грн</span
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="p-grid p-mt-0 btns" #btns>
-        <div class="p-col p-p-0" style="border-right: 1px solid #fff">
-          <p-button
-            [style]="{ width: '100%' }"
-            label="Готiвка"
-            (onClick)="doPayment(0)"
-          ></p-button>
-        </div>
-        <div class="p-col p-p-0" style="border-right: 1px solid #fff">
-          <p-button
-            [style]="{ width: '100%' }"
-            label="Карта"
-            (onClick)="doPayment(1)"
-          ></p-button>
-        </div>
-        <div class="p-col p-p-0">
-          <p-button
-            [style]="{ width: '100%' }"
-            label="Iнше"
-            (onClick)="visibleOtherPayment = true"
-          ></p-button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> -->
-
-<!-- <p-dialog header="Оберiть спосiб оплати" [(visible)]="visibleOtherPayment">
-  <div
-    class="p-fluid p-grid"
-    *ngFor="let paymentType of listPaymentTypes | async"
-  >
-    <div class="p-col p-field">{{ paymentType.paymentName }}</div>
-    <div class="p-col p-field">
-      <input
-        type="number"
-        min="0"
-        pInputText
-        [(ngModel)]="pay[paymentType.type]"
-        #inpPay
-      />
-    </div>
-  </div>
-  <div class="p-fluid p-grid">
-    <div class="p-col p-field">
-      <p-button
-        [style]="{ width: '100%' }"
-        label="Оплата"
-        (onClick)="doPayment()"
-      ></p-button>
-    </div>
-  </div>
-</p-dialog> -->
 
 <p-dialog
   [header]="payInProgress === false ? 'Чек проведено!' : 'Оплата'"
