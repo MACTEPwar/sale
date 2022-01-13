@@ -111,7 +111,7 @@ export class SaleComponent implements OnInit {
    * @param product Товар
    */
   addProductToReceipt(product: TProduct): void {
-    this.saleService.addProductToReceipt(product, 1);
+    this.saleService.addProductToReceipt(product, 0);
   }
 
   /**
@@ -213,7 +213,8 @@ export class SaleComponent implements OnInit {
       .doPayment([
         {
           paymentType: paymentType as number,
-          sum: this.totalSum.getValue(),
+          // sum: this.totalSum.getValue(),
+          sum: this.inputCash!,
         },
       ])
       .subscribe(
