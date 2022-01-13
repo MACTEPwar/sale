@@ -1,3 +1,4 @@
+import { KeyboardNumberModule } from './components/keyboard-number/keyboard-number.module';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -47,6 +48,7 @@ import { FileUploadModule } from 'primeng/fileupload';
     SlideMenuModule,
     DropdownModule,
     FileUploadModule,
+    KeyboardNumberModule,
   ],
   providers: [MessageService, Printer, HTTP],
   bootstrap: [AppComponent],

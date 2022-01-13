@@ -1,0 +1,23 @@
+<div class="content">
+  <ng-container
+    *ngTemplateOutlet="
+      itemTemplate!;
+      context: { $implicit: value, clearFunction: clearFunction }
+    "
+  >
+  </ng-container>
+</div>
+<div class="btns">
+  <button (click)="setValue('1')">1</button>
+  <button (click)="setValue('2')">2</button>
+  <button (click)="setValue('3')">3</button>
+  <button (click)="setValue('4')">4</button>
+  <button (click)="setValue('5')">5</button>
+  <button (click)="setValue('6')">6</button>
+  <button (click)="setValue('7')">7</button>
+  <button (click)="setValue('8')">8</button>
+  <button (click)="setValue('9')">9</button>
+  <button (click)="setValue('0')">0</button>
+  <button (click)="setValue('.')">.</button>
+  <button (click)="setValue('b')">b</button>
+</div>
