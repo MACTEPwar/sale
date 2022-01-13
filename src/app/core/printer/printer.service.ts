@@ -58,9 +58,9 @@ export class PrinterService {
     );
     componentRef!.instance.elementType = 'img';
     componentRef!.instance.qrdata = str;
-    componentRef!.instance.scale = 1;
-    componentRef!.instance.width = 15;
-    componentRef!.instance.errorCorrectionLevel = 'H';
+    componentRef!.instance.scale = 4;
+    // componentRef!.instance.width = 15;
+    // componentRef!.instance.errorCorrectionLevel = 'H';
     (componentRef!.instance as any).createQRCode();
     componentRef?.changeDetectorRef.detectChanges();
     return this;
