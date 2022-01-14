@@ -1,7 +1,16 @@
 <div class="main-menu" *ngIf="visible$ | async">
-  <div *ngFor="let item of items$ | async" (click)="executeCommand(item)">
-    <img [src]="item.icon" />
-    {{ item.label }}
+  <div class="menubtnbox">
+    <div
+      class="menu_back"
+      *ngIf="(parrent$ | async) !== null"
+      (click)="goToBack()"
+    >
+      <div class="back_ico"></div>
+      <span> Назад</span>
+    </div>
+    <div *ngFor="let item of items$ | async" (click)="executeCommand(item)">
+      <div [class]="'menuicon m_' + item.icon"></div>
+      <span>{{ item.label }}</span>
+    </div>
   </div>
-  <div *ngIf="(parrent$ | async) !== null" (click)="goToBack()">Back</div>
 </div>
