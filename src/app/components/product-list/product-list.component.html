@@ -15,11 +15,11 @@
 > -->
 
 <div class="product_inSearch">
-  <span class="inSearch_input"></span>
-  <button (click)="clearBtn(inp)"></button>
+  <span class="inSearch_input">{{searchValue}}</span>
+  <button (click)="clearBtn()"></button>
 </div>
 
-<div class="searchline" #searchLine>
+<!-- <div class="searchline" #searchLine>
   <span class="searchIcon"></span>
   <input
     [id]="this.id"
@@ -30,7 +30,7 @@
   />
   <span>{{searchValue}}</span>
   <button (click)="clearBtn(inp)">clear</button>
-</div>
+</div> -->
 
 <div class="datasearch" *ngIf="visibleResult" #searchResult>
   <div *ngFor="let product of productList$ | async">
@@ -41,7 +41,7 @@
       <div class="p-col-1">
         <p-button
           icon="pi pi-shopping-cart"
-          (click)="addProductToReceipt(product, inp)"
+          (click)="addProductToReceipt(product)"
         >
         </p-button>
       </div>

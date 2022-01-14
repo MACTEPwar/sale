@@ -34,7 +34,7 @@ export class ProductListComponent implements OnInit {
     } else {
       this._searchValue = String(this.prevText);
     }
-    this.inputERef!.nativeElement.value = this._searchValue;
+    // this.inputERef!.nativeElement.value = this._searchValue;
     // this._searchValue = value;
   }
   @Output() add: EventEmitter<TProduct> = new EventEmitter<TProduct>();
@@ -42,7 +42,7 @@ export class ProductListComponent implements OnInit {
 
   @ViewChild('searchResult') searchResultERef?: ElementRef<any>;
   @ViewChild('searchLine') searchLineERef?: ElementRef<any>;
-  @ViewChild('inp') inputERef?: ElementRef<any>;
+  // @ViewChild('inp') inputERef?: ElementRef<any>;
 
   serachStr$: BehaviorSubject<TNullable<number>> = new BehaviorSubject<
     TNullable<number>
@@ -81,23 +81,25 @@ export class ProductListComponent implements OnInit {
     }
   }
 
-  addProductToReceipt(product: TProduct, input: any): void {
+  addProductToReceipt(product: TProduct): void {
     this.add.emit(product);
     this.visibleResult = false;
     this.prevText = null;
     this.serachStr$.next(null);
-    input.value = null;
+    this.clear.emit();
+    // input.value = null;
   }
 
   bgclick(): void {
-    console.log('click');
+    // console.log('click');
     this.visibleResult = false;
-    this.inputERef!.nativeElement!.value = '';
+    this.clear.emit();
+    // this.inputERef!.nativeElement!.value = '';
   }
 
-  clearBtn(input: any): void {
+  clearBtn(): void {
     this.clear.emit();
-    input.value = '';
+
     // this.serachStr$.next(null);
   }
 }
