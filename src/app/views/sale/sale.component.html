@@ -125,15 +125,16 @@
     {{ lastAddedProduct!.sum }}
   </ng-template>
 
-  <app-keyboard-number
-    [itemTemplate]="
-      addProductState === 'selectProduct' ? selectProduct : selectAmount
-    "
-    [value]="currentInputValue"
-    (valueChange)="onChangeKeyboard($event)"
-  ></app-keyboard-number>
+  <div class="keyboarddialog">
+    <app-keyboard-number
+      [itemTemplate]="
+        addProductState === 'selectProduct' ? selectProduct : selectAmount
+      "
+      [value]="currentInputValue"
+      (valueChange)="onChangeKeyboard($event)"
+    ></app-keyboard-number>
+  </div>
 </div>
-
 <p-dialog
   [header]="payInProgress === false ? 'Чек проведено!' : 'Оплата'"
   [modal]="true"
