@@ -34,16 +34,19 @@
 <div class="datasearch" *ngIf="visibleResult" #searchResult>
   <div *ngFor="let product of productList$ | async">
     <div class="datasearch_tr">
-      <div class="p-col-2">{{ product.article }}</div>
-      <div class="p-col-7">{{ product.name }}</div>
-      <div class="p-col-2">{{ product.price }}</div>
-      <div class="p-col-1">
-        <p-button
-          icon="pi pi-shopping-cart"
-          (click)="addProductToReceipt(product, inp)"
-        >
-        </p-button>
+      <div>
+        <div class="p-grid">
+          <div class="p-col-12 article">{{ product.article }}</div>
+        </div>
+        <div class="p-grid">
+          <div class="p-col-7 name">{{ product.name }}</div>
+          <div class="p-col-5 price">{{ product.price }}</div>
+        </div>
       </div>
+      <button
+        class="prodlistadd"
+        (click)="addProductToReceipt(product, inp)"
+      ></button>
     </div>
   </div>
 </div>

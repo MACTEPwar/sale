@@ -826,6 +826,36 @@ $btns: 37px;
   }
 }
 
+.datasearch {
+  display: flex;
+  width: 100%;
+  padding-right: 20px;
+  flex-direction: column;
+  height: calc(100% - 80px);
+  overflow: auto;
+  .datasearch_tr {
+    display: inline-flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    button.prodlistadd {
+      display: flex;
+      width: 90px;
+      height: 90px;
+      background: $blue1;
+      border: none;
+      background-image: url("../images/cart.svg");
+      background-position: center;
+      background-repeat: no-repeat;
+      &:active {
+        background-color: $blue2;
+      }
+    }
+  }
+}
+
 .main-menu {
   position: absolute;
   width: 100%;
