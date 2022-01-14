@@ -825,3 +825,96 @@ $btns: 37px;
     }
   }
 }
+
+.main-menu {
+  position: absolute;
+  width: 100%;
+  height: calc(100% - 50px);
+  top: 50px;
+  left: 0;
+  background: #1a1b1ff2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  z-index: 9999;
+  .menubtnbox {
+    width: 100%;
+    height: 100%;
+    max-width: 80vw;
+    max-height: 80vh;
+    display: block;
+    position: relative;
+    box-sizing: border-box;
+    & > div {
+      background: $blue1;
+      min-width: 100px;
+      min-height: 100px;
+      width: 18vw;
+      height: 18vw;
+      float: left;
+      display: flex;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      flex-direction: column;
+      font-size: 2vw;
+      &:active {
+        background: $blue2;
+      }
+    }
+    .menu_back {
+      background: $blue2;
+    }
+
+    .menuicon,
+    .back_ico {
+      width: 9vw;
+      height: 9vw;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      margin-bottom: 10px;
+    }
+    .back_ico {
+      opacity: 0.5;
+      width: 5vw;
+      background-image: url("../images/icons/m_back.svg");
+    }
+    .m_admin {
+      background-image: url("../images/icons/m_admin.svg");
+    }
+    .m_sale {
+      background-image: url("../images/icons/m_sale.svg");
+    }
+    .m_report {
+      background-image: url("../images/icons/m_report.svg");
+    }
+    .m_service {
+      background-image: url("../images/icons/m_service.svg");
+    }
+    .m_check {
+      background-image: url("../images/icons/m_check.svg");
+    }
+    .m_incash {
+      background-image: url("../images/icons/m_cach-in.svg");
+    }
+    .m_outcash {
+      background-image: url("../images/icons/m_cash-out.svg");
+    }
+    .m_x-report {
+      background-image: url("../images/icons/m_x-report.svg");
+    }
+    .m_z-report {
+      background-image: url("../images/icons/m_z-report.svg");
+    }
+    .m_import {
+      background-image: url("../images/icons/m_import.svg");
+    }
+    .m_print {
+      background-image: url("../images/icons/m_print.svg");
+    }
+  }
+}
