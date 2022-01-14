@@ -14,6 +14,11 @@
   </ng-template></p-autoComplete
 > -->
 
+<div class="product_inSearch">
+  <span class="inSearch_input"></span>
+  <button (click)="clearBtn(inp)"></button>
+</div>
+
 <div class="searchline" #searchLine>
   <span class="searchIcon"></span>
   <input
@@ -44,8 +49,4 @@
   </div>
 </div>
 
-<div
-  class="invis_bg"
-  *ngIf="visibleResult"
-  (click)="bgclick()"
-></div>
+<div class="invis_bg" *ngIf="visibleResult" (click)="bgclick()"></div>
