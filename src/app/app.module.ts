@@ -25,6 +25,7 @@ import { MenuModule } from 'primeng/menu';
 import { SlideMenuModule } from 'primeng/slidemenu';
 import { DropdownModule } from 'primeng/dropdown';
 import { FileUploadModule } from 'primeng/fileupload';
+import { MainMenuModule } from './components/main-menu/main-menu.module';
 
 @NgModule({
   declarations: [AppComponent, IsLoginPagePipe, TestComponent],
@@ -49,6 +50,7 @@ import { FileUploadModule } from 'primeng/fileupload';
     DropdownModule,
     FileUploadModule,
     KeyboardNumberModule,
+    MainMenuModule
   ],
   providers: [MessageService, Printer, HTTP],
   bootstrap: [AppComponent],

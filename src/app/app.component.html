@@ -17,15 +17,15 @@
           pButton
           icon="pi pi-bars"
           label="Меню"
-          (click)="menu.toggle($event)"
+          (click)="showMenu()"
         ></button>
-        <p-slideMenu
+        <!-- <p-slideMenu
           #menu
           [model]="items"
           [popup]="true"
           [viewportHeight]="400"
           backLabel="Назад"
-        ></p-slideMenu>
+        ></p-slideMenu> -->
       </div>
 
       <div class="topcenter">
@@ -142,3 +142,5 @@
 
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle">
 </p-confirmDialog>
+
+<app-main-menu></app-main-menu>
