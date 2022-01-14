@@ -1,9 +1,8 @@
 <ng-template #keyboardContent let-value let-clearFunction="clearFunction">
-  <div class="product_inSearch">
-    <span class="inSearch_input">{{ value | json }}</span>
-    <button (click)="clearFunction()"></button>
-  </div>
-  <app-product-list [searchValue]="value" (clear)="clearFunction()"></app-product-list>
+  <app-product-list
+    [searchValue]="value"
+    (clear)="clearFunction()"
+  ></app-product-list>
 </ng-template>
 
 <app-keyboard-number [itemTemplate]="keyboardContent"></app-keyboard-number>
