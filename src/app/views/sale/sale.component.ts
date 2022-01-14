@@ -31,6 +31,8 @@ export class SaleComponent implements OnInit {
     }
   }
 
+  addProductState: 'none' | 'selectProduct' | 'selectAmount' = 'none';
+
   focusAmountInput = false;
   currentProduct: any = null;
   currentAmountInput: any = null;

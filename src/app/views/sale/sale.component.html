@@ -89,7 +89,7 @@
   <div class="sale_buttons">
     <div>
       <button class="_btn">
-        <span class="add"></span>
+        <span class="add" (click)="addProductState = 'selectProduct'"></span>
       </button>
       <button class="_btn" (click)="clickDoPayCash()">
         <span class="nal"></span>
@@ -104,6 +104,17 @@
       </button>
     </div>
   </div>
+</div>
+
+<div class="add-prodduct" *ngIf="addProductState !== 'none'">
+  <ng-template #keyboardContent let-value let-clearFunction="clearFunction">
+    <app-product-list
+      [searchValue]="value"
+      (clear)="clearFunction()"
+    ></app-product-list>
+  </ng-template>
+
+  <app-keyboard-number [itemTemplate]="keyboardContent"></app-keyboard-number>
 </div>
 
 <p-dialog
