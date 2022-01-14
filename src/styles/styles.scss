@@ -787,8 +787,23 @@ $btns: 37px;
     font-size: 11vh;
     font-weight: 600;
     color: #fff;
+
     &:active {
       background-color: $blue2;
+    }
+
+    &.backspace {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      span {
+        width: 5vw;
+        height: 5vw;
+        background-size: contain;
+        background-image: url("../images/backspace.svg");
+        background-repeat: no-repeat;
+        background-position: center;
+      }
     }
   }
 }
@@ -833,13 +848,38 @@ $btns: 37px;
   flex-direction: column;
   height: calc(100% - 80px);
   overflow: auto;
+  margin-top: 20px;
   .datasearch_tr {
     display: inline-flex;
     width: 100%;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    font-size: 20px;
+    margin: 2px 0px;
+    background: #fff;
+    & > div {
+      flex: 1;
+    }
 
+    .article {
+      font-weight: bold;
+    }
+    .prodname {
+      flex-direction: row;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .name {
+        flex: 1;
+      }
+      .price {
+        min-width: 110px;
+        font-weight: bold;
+        text-align: right;
+        padding-right: 20px;
+      }
+    }
     button.prodlistadd {
       display: flex;
       width: 90px;

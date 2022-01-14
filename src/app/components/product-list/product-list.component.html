@@ -36,12 +36,12 @@
   <div *ngFor="let product of productList$ | async">
     <div class="datasearch_tr">
       <div>
-        <div class="p-grid">
-          <div class="p-col-12 article">{{ product.article }}</div>
+        <div>
+          <div class="article">{{ product.article }}</div>
         </div>
-        <div class="p-grid">
-          <div class="p-col-7 name">{{ product.name }}</div>
-          <div class="p-col-5 price">{{ product.price }}</div>
+        <div class="prodname">
+          <div class="name">{{ product.name }}</div>
+          <div class="price">{{ product.price }}</div>
         </div>
       </div>
       <button
