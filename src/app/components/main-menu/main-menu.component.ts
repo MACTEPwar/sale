@@ -39,9 +39,11 @@ export class MainMenuComponent implements OnInit {
     } else if (item.command === undefined) {
       this.router.navigate([item.routerLink]);
       this.goToBack();
+      this.mainMenuService.toggleMenu(false);
     } else {
-      item.command?.call(null);
+      item.command?.apply(null);
       this.goToBack();
+      this.mainMenuService.toggleMenu(false);
     }
   }
 
