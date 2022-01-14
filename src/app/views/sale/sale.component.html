@@ -29,7 +29,7 @@
           </div>
 
           <div class="receiptProducts_amount">
-            777
+            {{ receiptProduct.amount }}
             <!-- <p-button
             icon="pi pi-minus"
             (click)="this.amountMinus(receiptProduct)"
@@ -107,14 +107,31 @@
 </div>
 
 <div class="add-prodduct" *ngIf="addProductState !== 'none'">
-  <ng-template #keyboardContent let-value let-clearFunction="clearFunction">
+  <ng-template #selectProduct let-value let-clearFunction="clearFunction">
     <app-product-list
       [searchValue]="value"
       (clear)="clearFunction()"
+      (add)="addProductToReceipt($event)"
     ></app-product-list>
   </ng-template>
 
-  <app-keyboard-number [itemTemplate]="keyboardContent"></app-keyboard-number>
+  <ng-template #selectAmount let-value let-clearFunction="clearFunction">
+    <button (click)="clearFunction()">cancel</button>
+    <button (click)="amountMinus()">minus</button>
+    <button (click)="amountPlus()">plus</button>
+    <button (click)="applyAmount()">apply</button>
+    Количество: {{ value }} Артикул {{ lastAddedProduct!.bar }} Название
+    {{ lastAddedProduct!.name }} Цена {{ lastAddedProduct!.price }} Сумма
+    {{ lastAddedProduct!.sum }}
+  </ng-template>
+
+  <app-keyboard-number
+    [itemTemplate]="
+      addProductState === 'selectProduct' ? selectProduct : selectAmount
+    "
+    [value]="currentInputValue"
+    (valueChange)="onChangeKeyboard($event)"
+  ></app-keyboard-number>
 </div>
 
 <p-dialog

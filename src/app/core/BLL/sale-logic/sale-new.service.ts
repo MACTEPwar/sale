@@ -49,26 +49,26 @@ export class SaleNewService {
     );
   }
 
-  changeProductFromReceipt(product: TReceiptProduct): void {
-    of({})
+  changeProductFromReceipt(product: TReceiptProduct): Observable<any> {
+    return of({})
       .pipe(
         switchMap((_) => this.changeProductFromReceipt$(product)),
-        map((m) => m.data)
+        map((m) => m.data),
+        tap(result => {
+          this.receipt.totalSum.next(+result.sum);
+          this.receipt.products.next(
+            result.positions.map((m: any) => ({
+              articlePosition: m.articlePosition,
+              name: m.name,
+              amount: m.amount,
+              price: m.price,
+              bar: m.bar,
+              discountSum: +m.discountSum,
+              sum: +m.sum,
+            }))
+          );
+        })
       )
-      .subscribe((result) => {
-        this.receipt.totalSum.next(+result.sum);
-        this.receipt.products.next(
-          result.positions.map((m: any) => ({
-            articlePosition: m.articlePosition,
-            name: m.name,
-            amount: m.amount,
-            price: m.price,
-            bar: m.bar,
-            discountSum: +m.discountSum,
-            sum: +m.sum,
-          }))
-        );
-      });
   }
 
   getCurrentReceipt(): void {

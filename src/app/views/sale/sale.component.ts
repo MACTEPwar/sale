@@ -21,21 +21,23 @@ import { ServiceService } from './../service/service.service';
   templateUrl: './sale.component.html',
 })
 export class SaleComponent implements OnInit {
-  @HostListener('document:keypress', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
-    console.log(event);
-    let x = event.keyCode;
-    if (x === 13 && this.focusAmountInput === true) {
-      this.changeProductInReceipt.next(this.currentProduct);
-      this.currentAmountInput.blur();
-    }
-  }
+  // @HostListener('document:keypress', ['$event'])
+  // handleKeyboardEvent(event: KeyboardEvent) {
+  //   console.log(event);
+  //   let x = event.keyCode;
+  //   if (x === 13 && this.focusAmountInput === true) {
+  //     this.changeProductInReceipt.next(this.currentProduct);
+  //     this.currentAmountInput.blur();
+  //   }
+  // }
 
   addProductState: 'none' | 'selectProduct' | 'selectAmount' = 'none';
+  lastAddedProduct: TNullable<TReceiptProduct> = null;
 
   focusAmountInput = false;
-  currentProduct: any = null;
+  // currentProduct: any = null;
   currentAmountInput: any = null;
+  currentInputValue = '';
 
   /**
    * Товары в чеке
@@ -97,8 +99,16 @@ export class SaleComponent implements OnInit {
         filter((f) => f !== null)
       )
       .subscribe((product: TNullable<TReceiptProduct>) => {
-        this.saleService.changeProductFromReceipt(product as TReceiptProduct);
-        this.currentProduct = null;
+        this.saleService
+          .changeProductFromReceipt(product as TReceiptProduct)
+          .subscribe((res) => {
+            const arr = res.positions.sort(
+              (x: any, y: any) => x.articlePosition - y.articlePosition
+            );
+            this.lastAddedProduct = arr[arr.length - 1];
+          });
+        // this.currentProduct = null;
+        // this.lastAddedProduct = null;
       });
 
     this.titleService.setTitle('Продаж товару');
@@ -128,44 +138,29 @@ export class SaleComponent implements OnInit {
    * @param product Товар
    */
   addProductToReceipt(product: TProduct): void {
-    // this.saleService
-    //   .addProductToReceipt(product, 0)
-    //   .pipe(combineLatest((s) => this.amountInps?.changes))
-    //   .subscribe((res) => {
-    //     console.log('test', this.amountInps?.last);
-    //     (this.amountInps?.last as any).nativeElement.value = '20';
-    //   });
-
-    combineLatest([
-      this.saleService.addProductToReceipt(product, 0),
-      this.amountInps?.changes!,
-    ])
-      .pipe(take(1))
-      .subscribe(([res, inp]) => {
-        console.log(inp.last.nativeElement);
-        // inp.last.nativeElement.select()
-        setTimeout(() => {
-          inp.last.nativeElement.focus();
-        }, 100);
-      });
+    this.saleService.addProductToReceipt(product, 0).subscribe((res) => {
+      this.addProductState = 'selectAmount';
+      const arr = res.positions.sort(
+        (x: any, y: any) => x.articlePosition - y.articlePosition
+      );
+      this.lastAddedProduct = arr[arr.length - 1];
+    });
   }
 
-  /**
-   * При фокусе количества - оно запоминается
-   * @param amountInp Input
-   */
-  onFocusAmount(amountInp: any): void {
-    this.prevAmount = amountInp.value;
-    this.focusAmountInput = true;
-    this.currentAmountInput = amountInp;
-  }
-
-  onBlurAmount(): void {
-    this.focusAmountInput = false;
-    this.currentAmountInput = null;
-    if (this.currentProduct !== null) {
-      this.changeProductInReceipt.next(this.currentProduct);
+  onChangeKeyboard(event: any): void {
+    if (event == +event && event >= 0) {
+      this.prevAmount = event;
+      this.lastAddedProduct!.amount = +event;
+      // this.currentProduct = product;
+    } else if (event == '') {
+      this.prevAmount = 0;
+      this.lastAddedProduct!.amount = 0;
+      event === '0';
+      // this.currentProduct = product;
+    } else {
+      event = this.prevAmount;
     }
+    this, this.changeProductInReceipt.next(this.lastAddedProduct);
   }
 
   /**
@@ -173,37 +168,46 @@ export class SaleComponent implements OnInit {
    * @param amountInp Input
    * @param product Товар
    */
-  onInputAmount(amountInp: any, product: TReceiptProduct, event: any): void {
-    if (amountInp.value == +amountInp.value && amountInp.value >= 0) {
-      this.prevAmount = amountInp.value;
-      product.amount = +amountInp.value;
-      this.currentProduct = product;
-    } else if (amountInp.value == '') {
-      this.prevAmount = 0;
-      product.amount = 0;
-      amountInp.value === '0';
-      this.currentProduct = product;
-    } else {
-      amountInp.value = this.prevAmount;
-    }
-  }
+  // onInputAmount(amountInp: any, product: TReceiptProduct, event: any): void {
+  //   if (amountInp.value == +amountInp.value && amountInp.value >= 0) {
+  //     this.prevAmount = amountInp.value;
+  //     product.amount = +amountInp.value;
+  //     this.currentProduct = product;
+  //   } else if (amountInp.value == '') {
+  //     this.prevAmount = 0;
+  //     product.amount = 0;
+  //     amountInp.value === '0';
+  //     this.currentProduct = product;
+  //   } else {
+  //     amountInp.value = this.prevAmount;
+  //   }
+  // }
 
   /**
    * При нажатии на кнопку "+1 товар"
    * @param product Товар
    */
-  amountPlus(product: any): void {
-    product.amount = product.amount + 1;
-    this.changeProductInReceipt.next(product);
+  amountPlus(): void {
+    // this.lastAddedProduct!.amount = this.lastAddedProduct!.amount + 1;
+    this.currentInputValue = String(this.lastAddedProduct!.amount + 1);
+    this.changeProductInReceipt.next(this.lastAddedProduct);
   }
 
   /**
    * При нажатии на кнопку "-1 товар"
    * @param product Товар
    */
-  amountMinus(product: any): void {
-    product.amount = product.amount - 1 > 0 ? product.amount - 1 : 0;
-    this.changeProductInReceipt.next(product);
+  amountMinus(): void {
+    this.currentInputValue =
+      +this.lastAddedProduct!.amount - 1 > 0
+        ? String(+this.lastAddedProduct!.amount - 1)
+        : '0';
+    this.changeProductInReceipt.next(this.lastAddedProduct);
+  }
+
+  applyAmount(): void {
+    this.lastAddedProduct = null;
+    this.addProductState = 'none';
   }
 
   /** Когда нажал расплатиться наличкой */
