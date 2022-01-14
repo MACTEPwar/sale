@@ -23,6 +23,7 @@
     (input)="onInput(inp)"
     #inp
   />
+  <button (click)="clearBtn(inp)">clear</button>
 </div>
 
 <div class="datasearch" *ngIf="visibleResult" #searchResult>

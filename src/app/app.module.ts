@@ -1,3 +1,4 @@
+import { ProductListModule } from './components/product-list/product-list.module';
 import { KeyboardNumberModule } from './components/keyboard-number/keyboard-number.module';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
@@ -50,7 +51,8 @@ import { MainMenuModule } from './components/main-menu/main-menu.module';
     DropdownModule,
     FileUploadModule,
     KeyboardNumberModule,
-    MainMenuModule
+    MainMenuModule,
+    ProductListModule,
   ],
   providers: [MessageService, Printer, HTTP],
   bootstrap: [AppComponent],
