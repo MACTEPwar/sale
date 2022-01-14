@@ -107,16 +107,17 @@
 </div>
 
 <div class="add-prodduct" *ngIf="addProductState !== 'none'">
-  <ng-template #keyboardContent let-value let-clearFunction="clearFunction">
-    <app-product-list
-      [searchValue]="value"
-      (clear)="clearFunction()"
-    ></app-product-list>
-  </ng-template>
+  <div class="keyboarddialog">
+    <ng-template #keyboardContent let-value let-clearFunction="clearFunction">
+      <app-product-list
+        [searchValue]="value"
+        (clear)="clearFunction()"
+      ></app-product-list>
+    </ng-template>
 
-  <app-keyboard-number [itemTemplate]="keyboardContent"></app-keyboard-number>
+    <app-keyboard-number [itemTemplate]="keyboardContent"></app-keyboard-number>
+  </div>
 </div>
-
 <p-dialog
   [header]="payInProgress === false ? 'Чек проведено!' : 'Оплата'"
   [modal]="true"

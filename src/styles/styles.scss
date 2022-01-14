@@ -986,3 +986,16 @@ $btns: 37px;
     }
   }
 }
+
+.keyboarddialog {
+  position: fixed;
+  top: 0;
+  height: calc(100% - 50px);
+  display: flex;
+  bottom: 52px;
+  left: 0;
+  background: #dedede;
+  padding: 15px;
+  right: 0;
+  width: 100%;
+}
