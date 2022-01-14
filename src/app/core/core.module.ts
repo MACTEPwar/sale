@@ -6,6 +6,7 @@ import { AuthenticationService } from './authentication/authentication.service';
 import { SaleLogicModule } from './BLL/sale-logic/sale-logic.module';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { JwtInterceptor } from './interceptors/jwt.iterceptor';
+import { MainMenuModule } from './main-menu/main-menu.module';
 import { PrinterModule } from './printer/printer.module';
 import { QueryModule } from './query/query.module';
 
@@ -17,6 +18,7 @@ import { QueryModule } from './query/query.module';
     SaleLogicModule,
     PrinterModule,
     QueryModule,
+    MainMenuModule,
   ],
   providers: [
     {
@@ -33,6 +35,12 @@ import { QueryModule } from './query/query.module';
       useClass: ErrorInterceptor,
     },
   ],
-  exports: [AuthenticationModule, SaleLogicModule, PrinterModule, QueryModule],
+  exports: [
+    AuthenticationModule,
+    SaleLogicModule,
+    PrinterModule,
+    QueryModule,
+    MainMenuModule,
+  ],
 })
 export class CoreModule {}

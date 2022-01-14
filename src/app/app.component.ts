@@ -5,7 +5,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { PrinterService } from '@common/core';
+import { MainMenuService, PrinterService } from '@common/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Observable, of } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
@@ -26,7 +26,7 @@ export class AppComponent {
   printContainerDOM: any;
 
   title = '';
-  items: MenuItem[] = [];
+  // items: MenuItem[] = [];
   items2: MenuItem[] = [];
   currentUser: Observable<TNullable<TUser>>;
   confirmText: number | null = null;
@@ -48,6 +48,8 @@ export class AppComponent {
   shopGroups$: Observable<Array<{ id: string; name: string }>>;
   //#endregion
 
+  visibleMainMenu$: Observable<boolean>;
+
   constructor(
     public router: Router,
     public authenticationService: AuthenticationService,
@@ -57,7 +59,8 @@ export class AppComponent {
     private printerService: PrinterService,
     private renderer: Renderer2,
     private titleService: Title,
-    private serviceService: ServiceService
+    private serviceService: ServiceService,
+    private mainMenuService: MainMenuService
   ) {
     this.currentUser = this.authenticationService._currentUser$;
     /** Подписка на сумму денег в кассе */
@@ -72,6 +75,7 @@ export class AppComponent {
     this.isOnline = this.serviceService.isOnline$;
     this.shiftStatus = this.serviceService.shiftStatus$;
     this.shopGroups$ = this.serviceComponent.shopGroups$;
+    this.visibleMainMenu$ = this.mainMenuService.visible$;
   }
 
   ngOnInit(): void {
@@ -104,9 +108,12 @@ export class AppComponent {
     // ];
 
     this.authenticationService._currentUser$.subscribe((user) => {
+      let menu: MenuItem[] = [];
       if (user?.isAdmin) {
-        this.items = [
+        menu = [
           {
+            // icon: '../images/icons/m_admin.svg',
+            icon: './images/icons/m_admin.svg',
             label: 'Адмiн',
             items: [
               {
@@ -149,7 +156,7 @@ export class AppComponent {
         this.serviceComponent.getShopGroups();
       } else {
         this.serviceComponent.shopGroups$.next([]);
-        this.items = [
+        menu = [
           // { routerLink: '/test', label: 'Test' },
           { routerLink: '/sale', label: 'Продаж' },
           // { routerLink: '/return', label: 'Повернення' },
@@ -177,6 +184,7 @@ export class AppComponent {
           },
         ];
       }
+      this.mainMenuService.setMenu(menu);
     });
 
     this.items2 = [{ label: 'Вийти', command: () => this.logout() }];
@@ -184,6 +192,10 @@ export class AppComponent {
 
   ngAfterViewInit(): void {
     this.printerService.registerViewContainer(this.printContainerDOM!);
+  }
+
+  showMenu(): void {
+    this.mainMenuService.toggleMenu();
   }
 
   doCashIn(): void {

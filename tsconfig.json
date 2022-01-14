@@ -20,7 +20,8 @@
     "paths": {
       "@common/types": ["src/app/shared/types/index.ts"],
       "@common/core": ["src/app/core/index.ts"],
-      "@common/pipes": ["src/app/pipes/index.ts"]
+      "@common/pipes": ["src/app/pipes/index.ts"],
+      "@common/shared": ["src/app/shared/shared.module.ts"]
     }
   },
   "angularCompilerOptions": {
