@@ -1022,3 +1022,30 @@ $btns: 37px;
     }
   }
 }
+
+.amount_line {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 60px;
+  width: 100%;
+  button {
+    height: 60px;
+    width: 60px;
+    border: none;
+    margin-right: 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  div.val {
+    background-color: $gray1;
+    flex: 1;
+    height: 60px;
+    color: #fff;
+    align-items: center;
+    font-size: 48px;
+    font-weight: bold;
+    padding: 10px;
+  }
+}
