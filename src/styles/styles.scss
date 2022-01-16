@@ -762,13 +762,13 @@ $btns: 37px;
   width: 100%;
   justify-content: space-between;
   padding-right: 20px;
-  height: 60px;
+  height: 80px;
   align-items: center;
   span.inSearch_input {
     display: flex;
     flex: 1;
     background: $gray1;
-    height: 60px;
+    height: 80px;
     color: #fff;
     align-items: center;
     font-size: 48px;
@@ -778,7 +778,7 @@ $btns: 37px;
   }
   button {
     width: 90px;
-    height: 60px;
+    height: 80px;
     border: none;
     background-color: $red1;
     background-position: center;
@@ -795,7 +795,7 @@ $btns: 37px;
   width: 100%;
   padding-right: 20px;
   flex-direction: column;
-  height: calc(100% - 80px);
+  height: calc(100% - 100px);
   overflow: auto;
   margin-top: 20px;
   .datasearch_tr {
@@ -1019,6 +1019,99 @@ $btns: 37px;
         background-repeat: no-repeat;
         background-position: center;
       }
+    }
+  }
+}
+
+.amount_line {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 80px;
+  width: 100%;
+  button {
+    height: 80px;
+    width: 80px;
+    border: none;
+    margin-right: 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-position: center;
+    background-repeat: no-repeat;
+    &.cancel {
+      background-image: url("../images/times.svg");
+      background-color: $red1;
+    }
+    &.minus {
+      background-image: url("../images/minus.svg");
+      background-color: $blue1;
+    }
+    &.plus {
+      background-color: $blue1;
+      background-image: url("../images/plus.svg");
+    }
+    &.apply {
+      background-image: url("../images/check.svg");
+      background-color: $blue1;
+    }
+  }
+  div.val {
+    background-color: #272b34;
+    flex: 1;
+    height: 80px;
+    color: #fff;
+    font-size: 48px;
+    font-weight: bold;
+    max-width: 222px;
+    overflow: hidden;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.amount_card {
+  font-size: 30px;
+  padding: 20px;
+  display: flex;
+  background: #fff;
+  flex-direction: column;
+  width: calc(100% - 20px);
+  margin: 20px 0 0 0;
+  .art {
+    font-size: 26px;
+    border-bottom: 2px solid;
+    padding: 0 0 10px 0;
+    margin-bottom: 10px;
+  }
+  .name {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .price {
+    display: flex;
+    justify-content: space-between;
+    font-size: 26px;
+    padding: 10px 0;
+    margin-bottom: 10px;
+    border-bottom: 2px solid;
+    & span:last-child {
+      font-weight: bold;
+      font-size: 30px;
+    }
+  }
+  .sum {
+    display: flex;
+    justify-content: space-between;
+    font-size: 26px;
+    padding: 10px 0;
+    margin-bottom: 10px;
+    border-bottom: 2px solid;
+    & span:last-child {
+      font-weight: bold;
+      font-size: 30px;
     }
   }
 }
