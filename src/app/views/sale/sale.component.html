@@ -117,23 +117,26 @@
 
   <ng-template #selectAmount let-value let-clearFunction="clearFunction">
     <div class="amount_line">
-      <button class="cancel" (click)="clearFunction()">cancel</button>
-      <button class="minus" (click)="amountMinus()">minus</button>
+      <button class="cancel" (click)="clearFunction()"></button>
+      <button class="minus" (click)="amountMinus()"></button>
 
       <div class="val">{{ value }}</div>
 
-      <button class="plus" (click)="amountPlus()">plus</button>
-      <button class="aply" (click)="applyAmount()">apply</button>
+      <button class="plus" (click)="amountPlus()"></button>
+      <button class="apply" (click)="applyAmount()"></button>
     </div>
 
-    <div class="amount_card">
-      <div class="art">Артикул {{ lastAddedProduct!.bar }}</div>
-      <div class="name">{{ lastAddedProduct!.name }}</div>
-      <div class="price">
-        <span>Цiна за одиницю:</span> <span>{{ lastAddedProduct!.price }}</span>
-      </div>
-      <div class="sum">
-        <span>Сума</span><span> {{ lastAddedProduct!.sum }}</span>
+    <div class="datasearch">
+      <div class="amount_card">
+        <div class="art">Артикул {{ lastAddedProduct!.bar }}</div>
+        <div class="name">{{ lastAddedProduct!.name }}</div>
+        <div class="price">
+          <span>Цiна за одиницю:</span>
+          <span>{{ lastAddedProduct!.price }}</span>
+        </div>
+        <div class="sum">
+          <span>Сума</span><span> {{ lastAddedProduct!.sum }}</span>
+        </div>
       </div>
     </div>
   </ng-template>
