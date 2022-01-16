@@ -1,8 +1,11 @@
+import { KeyboardNumberService } from './../../components/keyboard-number/keyboard-number.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import {
+  ChangeDetectorRef,
   Component,
   HostListener,
   OnInit,
+  Optional,
   QueryList,
   ViewChildren,
   ViewContainerRef,
@@ -10,8 +13,15 @@ import {
 import { Title } from '@angular/platform-browser';
 import { PrinterService } from '@common/core';
 import { TNullable, TProduct } from '@common/types';
-import { BehaviorSubject, combineLatest, concat, Observable } from 'rxjs';
-import { debounceTime, filter, switchMap, take } from 'rxjs/operators';
+import {
+  BehaviorSubject,
+  combineLatest,
+  concat,
+  EMPTY,
+  Observable,
+  Subject,
+} from 'rxjs';
+import { debounceTime, filter, switchMap, take, tap } from 'rxjs/operators';
 import { SaleNewService } from './../../core/BLL/sale-logic/sale-new.service';
 import { TReceiptProduct } from './../../shared/types/types/t-receipt-product';
 import { ServiceService } from './../service/service.service';
@@ -66,10 +76,14 @@ export class SaleComponent implements OnInit {
   payInStart = false;
 
   /** Изменение кол-ва товара в чеке (принимает новый объект товара, инициирует запрос) */
-  changeProductInReceipt: BehaviorSubject<TNullable<TReceiptProduct>> =
-    new BehaviorSubject<TNullable<TReceiptProduct>>(null);
+  // changeProductInReceipt: BehaviorSubject<TNullable<TReceiptProduct>> =
+  //   new BehaviorSubject<TNullable<TReceiptProduct>>(null);
   /** Сохраняет предыдущее значение количества товара в чеке */
   prevAmount: TNullable<number> = null;
+
+  selectedProduct: TNullable<TReceiptProduct> = null;
+
+  curentValueKeyboard: string = '';
 
   @ViewChildren('amountInp') amountInps?: QueryList<ViewContainerRef>;
 
@@ -79,7 +93,9 @@ export class SaleComponent implements OnInit {
     private printerService: PrinterService,
     private titleService: Title,
     private confirmationService: ConfirmationService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private cdr: ChangeDetectorRef,
+    @Optional() private keyboardNumberService: KeyboardNumberService
   ) {
     /** Подписка на товары в чеке */
     this.receiptProducts = this.saleService.receipt.products;
@@ -93,23 +109,24 @@ export class SaleComponent implements OnInit {
     this.link = this.saleService.link;
 
     /** Выполняется при изменении кол-ва в чеке */
-    this.changeProductInReceipt
-      .pipe(
-        debounceTime(300),
-        filter((f) => f !== null)
-      )
-      .subscribe((product: TNullable<TReceiptProduct>) => {
-        this.saleService
-          .changeProductFromReceipt(product as TReceiptProduct)
-          .subscribe((res) => {
-            const arr = res.positions.sort(
-              (x: any, y: any) => x.articlePosition - y.articlePosition
-            );
-            this.lastAddedProduct = arr[arr.length - 1];
-          });
-        // this.currentProduct = null;
-        // this.lastAddedProduct = null;
-      });
+    // this.changeProductInReceipt
+    //   .pipe(
+    //     debounceTime(300),
+    //     filter((f) => f !== null)
+    //   )
+    //   .subscribe((product: TNullable<TReceiptProduct>) => {
+    //     console.log(product);
+    //     this.saleService
+    //       .changeProductFromReceipt(product as TReceiptProduct)
+    //       .subscribe((res) => {
+    //         const arr = res.positions.sort(
+    //           (x: any, y: any) => x.articlePosition - y.articlePosition
+    //         );
+    //         this.lastAddedProduct = arr[arr.length - 1];
+    //       });
+    //   // this.currentProduct = null;
+    //   // this.lastAddedProduct = null;
+    // });
 
     this.titleService.setTitle('Продаж товару');
   }
@@ -125,6 +142,27 @@ export class SaleComponent implements OnInit {
     this.serviceService.getShiftStatus();
     /** Получаю список доступных оплат */
     this.saleService.getPaymentsList();
+
+    this.saleService.selectedProduct.subscribe((res) => {
+      if (
+        res?.amount.toString() !== this.keyboardNumberService.value.getValue()
+      ) {
+        this.keyboardNumberService.setValue(String(res?.amount ?? ''));
+      }
+
+      console.log('subs', this.curentValueKeyboard, res);
+      this.selectedProduct = res;
+    });
+
+    this.keyboardNumberService.value.subscribe((res) => {
+      this.saleService.changeAmount(res);
+    });
+
+    // let raera = 0;
+    // setInterval(() => {
+    //   this.curentValueKeyboard.next(raera.toString());
+    //   raera++;
+    // }, 1000);
   }
 
   ngAfterViewInit(): void {
@@ -143,25 +181,31 @@ export class SaleComponent implements OnInit {
       const arr = res.positions.sort(
         (x: any, y: any) => x.articlePosition - y.articlePosition
       );
-      this.lastAddedProduct = arr[arr.length - 1];
+      // this.saleService.selectedProduct = arr[arr.length - 1];
+      this.saleService.selectedProduct.next(arr[arr.length - 1]);
     });
   }
 
-  onChangeKeyboard(event: any): void {
-    if (event == +event && event >= 0) {
-      this.prevAmount = event;
-      this.lastAddedProduct!.amount = +event;
-      // this.currentProduct = product;
-    } else if (event == '') {
-      this.prevAmount = 0;
-      this.lastAddedProduct!.amount = 0;
-      event === '0';
-      // this.currentProduct = product;
-    } else {
-      event = this.prevAmount;
-    }
-    this, this.changeProductInReceipt.next(this.lastAddedProduct);
+  openWindowChangeAmount(product: TReceiptProduct): void {
+    // console.log(product);
+    this.saleService.selectedProduct.next(product);
+    this.addProductState = 'selectAmount';
   }
+
+  // onChangeKeyboard(event: any): void {
+  //   console.log('change', event);
+  //   this.saleService.changeAmount(event);
+  //   // if (event == +event && event >= 0) {
+  //   //   this.prevAmount = event;
+  //   //   this.lastAddedProduct!.amount = +event;
+  //   // } else if (event == '') {
+  //   //   this.prevAmount = 0;
+  //   //   this.lastAddedProduct!.amount = 0;
+  //   //   event === '0';
+  //   // } else {
+  //   //   event = this.prevAmount;
+  //   // }
+  // }
 
   /**
    * При вводе количества
@@ -190,7 +234,7 @@ export class SaleComponent implements OnInit {
   amountPlus(): void {
     // this.lastAddedProduct!.amount = this.lastAddedProduct!.amount + 1;
     this.currentInputValue = String(this.lastAddedProduct!.amount + 1);
-    this.changeProductInReceipt.next(this.lastAddedProduct);
+    // this.changeProductInReceipt.next(this.lastAddedProduct);
   }
 
   /**
@@ -202,7 +246,7 @@ export class SaleComponent implements OnInit {
       +this.lastAddedProduct!.amount - 1 > 0
         ? String(+this.lastAddedProduct!.amount - 1)
         : '0';
-    this.changeProductInReceipt.next(this.lastAddedProduct);
+    // this.changeProductInReceipt.next(this.lastAddedProduct);
   }
 
   applyAmount(): void {
