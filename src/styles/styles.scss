@@ -757,57 +757,6 @@ $btns: 37px;
   }
 }
 
-.keyboard_contain {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 100%;
-  .content {
-    flex: 4;
-    max-width: 60%;
-  }
-  .keyblock {
-    flex: 3;
-  }
-}
-
-.keyboard_btns {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-column-gap: 3px;
-  grid-row-gap: 3px;
-  height: 100%;
-  button {
-    width: 100%;
-    height: 100%;
-    min-width: 50px;
-    min-height: 50px;
-    background-color: $blue1;
-    border: none;
-    font-size: 11vh;
-    font-weight: 600;
-    color: #fff;
-
-    &:active {
-      background-color: $blue2;
-    }
-
-    &.backspace {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      span {
-        width: 5vw;
-        height: 5vw;
-        background-size: contain;
-        background-image: url("../images/backspace.svg");
-        background-repeat: no-repeat;
-        background-position: center;
-      }
-    }
-  }
-}
-
 .product_inSearch {
   display: flex;
   width: 100%;
@@ -994,7 +943,82 @@ $btns: 37px;
   bottom: 52px;
   left: 0;
   background: $gray4;
-  padding: 15px;
+  padding: 0;
   right: 0;
   width: 100%;
+  .keyboard_header {
+    height: 50px;
+    width: 100%;
+    background: $gray1;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    padding: 15px;
+    font-size: 20px;
+    button {
+      display: flex;
+      height: 30px;
+      width: 30px;
+      border: none;
+      background-color: transparent;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      background-image: url("../images/times.svg");
+    }
+  }
+}
+
+.keyboard_contain {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: calc(100% - 50px);
+  padding: 15px;
+  .content {
+    flex: 4;
+    max-width: 60%;
+  }
+  .keyblock {
+    flex: 3;
+  }
+}
+
+.keyboard_btns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-column-gap: 3px;
+  grid-row-gap: 3px;
+  height: 100%;
+  button {
+    width: 100%;
+    height: 100%;
+    min-width: 50px;
+    min-height: 50px;
+    background-color: $blue1;
+    border: none;
+    font-size: 11vh;
+    font-weight: 600;
+    color: #fff;
+
+    &:active {
+      background-color: $blue2;
+    }
+
+    &.backspace {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      span {
+        width: 5vw;
+        height: 5vw;
+        background-size: contain;
+        background-image: url("../images/backspace.svg");
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+    }
+  }
 }
