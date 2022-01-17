@@ -172,28 +172,40 @@ export class AppComponent {
         this.serviceComponent.shopGroups$.next([]);
         menu = [
           // { routerLink: '/test', label: 'Test' },
-          { routerLink: '/sale', label: 'Продаж' },
+          { routerLink: '/sale', label: 'Продаж', icon: 'sale' },
           // { routerLink: '/return', label: 'Повернення' },
           {
+            icon: 'report',
             label: 'Звiти',
             items: [
-              { routerLink: '/report/receipts', label: 'Чеки' },
+              { routerLink: '/report/receipts', label: 'Чеки', icon: 'check' },
               // { routerLink: '/report/z-reports', label: 'Z-звiти' },
             ],
           },
           {
+            icon: 'service',
             label: 'Сервiси',
             items: [
               {
+                icon: 'incash',
                 label: 'Внесення',
                 command: () => this.doCashIn(),
               },
               {
+                icon: 'outcash',
                 label: 'Вилучення',
                 command: () => this.doCashOut(),
               },
-              { label: 'X-звiт', command: () => this.doXReport() },
-              { label: 'Z-звiт', command: () => this.doZReport() },
+              {
+                icon: 'x-report',
+                label: 'X-звiт',
+                command: () => this.doXReport(),
+              },
+              {
+                icon: 'z-report',
+                label: 'Z-звiт',
+                command: () => this.doZReport(),
+              },
             ],
           },
         ];
