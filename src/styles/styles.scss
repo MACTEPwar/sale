@@ -809,6 +809,7 @@ $btns: 37px;
     background: #fff;
     & > div {
       flex: 1;
+      padding: 10px;
     }
 
     .article {
@@ -1078,8 +1079,7 @@ $btns: 37px;
   display: flex;
   background: #fff;
   flex-direction: column;
-  width: calc(100% - 20px);
-  margin: 20px 0 0 0;
+  width: 100%;
   .art {
     font-size: 26px;
     border-bottom: 2px solid;
