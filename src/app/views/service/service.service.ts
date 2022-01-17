@@ -64,6 +64,7 @@ export class ServiceService {
     this.getLastZReport$()
       .pipe(map((m) => m.data))
       .subscribe((res) => {
+        this.printService.clearPrintBlank();
         res.data.forEach((str: string) => {
           this.printService.addTextToPrint(render, str);
         });
