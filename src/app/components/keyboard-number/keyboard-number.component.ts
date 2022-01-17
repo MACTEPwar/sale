@@ -1,3 +1,4 @@
+import { TNullable } from '@common/types';
 import {
   Component,
   ContentChild,
@@ -19,28 +20,21 @@ import { KeyboardNumberService } from './keyboard-number.service';
 export class KeyboardNumberComponent implements OnInit {
   @Input()
   itemTemplate?: TemplateRef<any>;
-  // @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();
-  // @Output() change: EventEmitter<string> = new EventEmitter<string>();
+  @Input()
+  value: TNullable<string> = null;
+  @Input() defaultValue: any = null;
+  @Output() change: EventEmitter<TNullable<number>> = new EventEmitter<
+    TNullable<number>
+  >();
   @Output() close: EventEmitter<void> = new EventEmitter<void>();
 
-  // private _value: string = '';
-  // public get value(): string {
-  //   return this._value;
-  // }
-  // @Input()
-  // public set value(value: string) {
-  //   console.log('input', value);
-  //   this._value = value;
-  //   // this.cdr.detectChanges();
-  //   this.valueChange.emit(this.value);
-  // }
-
-  value: Observable<string> = EMPTY;
-
   clearFunction = () => {
-    // this.value = '';
-    // this.change.emit(this.value);
-    this.keyboardNumberService.clear();
+    this.value = this.defaultValue;
+    if (this.value == null || this.value === '' || this.value === undefined) {
+      this.change.emit(this.defaultValue);
+    } else {
+      this.change.emit(parseFloat(this.value));
+    }
   };
 
   constructor(
@@ -48,25 +42,29 @@ export class KeyboardNumberComponent implements OnInit {
     private keyboardNumberService: KeyboardNumberService
   ) {}
 
-  ngOnInit(): void {
-    this.value = this.keyboardNumberService.value;
-  }
+  ngOnInit(): void {}
 
   setValue(value: string): void {
     if (value === 'b') {
-      if (this.keyboardNumberService.value.getValue().length >= 1) {
-        this.keyboardNumberService.setValue(
-          this.keyboardNumberService.value
-            .getValue()
-            .slice(0, this.keyboardNumberService.value.getValue().length - 1)
-        );
+      if (this.value && this.value!.toString().length >= 2) {
+        this.value = this.value
+          .toString()
+          .slice(0, this.value.toString().length - 1);
+      } else if (this.value && this.value!.toString().length === 1) {
+        this.value = this.defaultValue;
       } else {
         return;
       }
     } else {
-      this.keyboardNumberService.setValue(
-        `${String(this.keyboardNumberService.value.getValue())}${String(value)}`
-      );
+      const temp = `${String(this.value?.toString())}${String(value)}`;
+      if (/^[0-9]*[.,]{0,1}[0-9]*$/.test(temp)) {
+        this.value = temp;
+      }
+    }
+    if (this.value == null || this.value === '' || this.value === undefined) {
+      this.change.emit(this.defaultValue);
+    } else {
+      this.change.emit(parseFloat(this.value));
     }
   }
 

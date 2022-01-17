@@ -144,19 +144,19 @@ export class SaleComponent implements OnInit {
     this.saleService.getPaymentsList();
 
     this.saleService.selectedProduct.subscribe((res) => {
-      if (
-        res?.amount.toString() !== this.keyboardNumberService.value.getValue()
-      ) {
-        this.keyboardNumberService.setValue(String(res?.amount ?? ''));
-      }
+      // if (
+      //   res?.amount.toString() !== this.keyboardNumberService.value.getValue()
+      // ) {
+      //   this.keyboardNumberService.setValue(String(res?.amount ?? ''));
+      // }
 
       console.log('subs', this.curentValueKeyboard, res);
       this.selectedProduct = res;
     });
 
-    this.keyboardNumberService.value.subscribe((res) => {
-      this.saleService.changeAmount(res);
-    });
+    // this.keyboardNumberService.value.subscribe((res) => {
+    //   this.saleService.changeAmount(res);
+    // });
 
     // let raera = 0;
     // setInterval(() => {
@@ -192,6 +192,10 @@ export class SaleComponent implements OnInit {
     this.addProductState = 'selectAmount';
   }
 
+  onChangeKeyboard(event: TNullable<number>): void {
+    console.log('change', event);
+    this.saleService.changeAmount(event);
+  }
   // onChangeKeyboard(event: any): void {
   //   console.log('change', event);
   //   this.saleService.changeAmount(event);

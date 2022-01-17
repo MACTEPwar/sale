@@ -54,17 +54,17 @@ export class SaleNewService {
 
   prevValue: TNullable<number> = null;
 
-  changeAmount(amount: string): void {
-    let numResult: TNullable<number> = +amount;
-    let flag = false;
+  changeAmount(amount: TNullable<number>): void {
+    // let numResult: TNullable<number> = +amount;
+    // let flag = false;
 
-    if (!isNaN(numResult)) {
-      this.prevValue = numResult;
-    } else {
-      numResult = this.prevValue;
-      console.log('goto prev', numResult);
-      flag = true;
-    }
+    // if (!isNaN(numResult)) {
+    //   this.prevValue = numResult;
+    // } else {
+    //   numResult = this.prevValue;
+    //   console.log('goto prev', numResult);
+    //   flag = true;
+    // }
 
     const temp = this.selectedProduct.getValue();
 
@@ -72,14 +72,14 @@ export class SaleNewService {
       return;
     }
 
-    if (String(numResult) != amount && !flag) {
-      return;
-    }
+    // if (String(numResult) != amount && !flag) {
+    //   return;
+    // }
 
-    temp!.amount = numResult ?? 0;
+    temp!.amount = amount ?? 0;
     this.selectedProduct!.next(temp);
     // console.log(temp);
-    // this.changeProductFromReceipt(temp!).subscribe((res) => {});
+    this.changeProductFromReceipt(temp!).subscribe((res) => {});
   }
 
   changeProductFromReceipt(product: TReceiptProduct): Observable<any> {

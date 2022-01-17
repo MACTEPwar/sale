@@ -146,13 +146,14 @@
   </ng-template>
 
   <div class="keyboarddialog">
-    <!-- [value]="(selectedProduct | async)!.amount.toString()" -->
-    <!-- (change)="onChangeKeyboard($event)" -->
     <app-keyboard-number
       [itemTemplate]="
         addProductState === 'selectProduct' ? selectProduct : selectAmount
       "
+      [value]="selectedProduct!.amount.toString()"
+      [defaultValue]="0"
       (close)="addProductState = 'none'"
+      (change)="onChangeKeyboard($event)"
     ></app-keyboard-number>
   </div>
 </div>

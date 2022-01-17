@@ -7,7 +7,7 @@
     <ng-container
       *ngTemplateOutlet="
         itemTemplate!;
-        context: { $implicit: value | async, clearFunction: clearFunction }
+        context: { $implicit: value, clearFunction: clearFunction }
       "
     >
     </ng-container>
