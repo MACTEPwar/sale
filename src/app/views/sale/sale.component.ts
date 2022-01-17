@@ -240,8 +240,13 @@ export class SaleComponent implements OnInit {
    */
   amountPlus(): void {
     // this.lastAddedProduct!.amount = this.lastAddedProduct!.amount + 1;
-    this.currentInputValue = String(this.lastAddedProduct!.amount + 1);
+    // this.currentInputValue = String(this.lastAddedProduct!.amount + 1);
     // this.changeProductInReceipt.next(this.lastAddedProduct);
+    if (this.addProductState === 'selectProduct') {
+    } else {
+      if (this.selectedProduct!.amount != null)
+        this.saleService.changeAmount(this.selectedProduct!.amount + 1);
+    }
   }
 
   /**
@@ -249,11 +254,20 @@ export class SaleComponent implements OnInit {
    * @param product Товар
    */
   amountMinus(): void {
-    this.currentInputValue =
-      +this.lastAddedProduct!.amount - 1 > 0
-        ? String(+this.lastAddedProduct!.amount - 1)
-        : '0';
+    // this.currentInputValue =
+    //   +this.lastAddedProduct!.amount - 1 > 0
+    //     ? String(+this.lastAddedProduct!.amount - 1)
+    //     : '0';
     // this.changeProductInReceipt.next(this.lastAddedProduct);
+    if (this.addProductState === 'selectProduct') {
+    } else {
+      if (this.selectedProduct!.amount != null)
+        if (this.selectedProduct!.amount >= 1) {
+          this.saleService.changeAmount(this.selectedProduct!.amount - 1);
+        } else {
+          this.saleService.changeAmount(0);
+        }
+    }
   }
 
   applyAmount(): void {
