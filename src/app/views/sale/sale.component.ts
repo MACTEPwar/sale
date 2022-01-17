@@ -193,8 +193,11 @@ export class SaleComponent implements OnInit {
   }
 
   onChangeKeyboard(event: TNullable<number>): void {
-    console.log('change', event);
-    this.saleService.changeAmount(event);
+    // console.log('change', event);
+    if (this.addProductState === 'selectProduct') {
+    } else {
+      this.saleService.changeAmount(event);
+    }
   }
   // onChangeKeyboard(event: any): void {
   //   console.log('change', event);

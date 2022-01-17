@@ -27,13 +27,15 @@ export class ProductListComponent implements OnInit {
   }
   @Input()
   public set searchValue(value) {
-    if (value == String(Number(value)) || value === '') {
-      this.prevText = +value;
-      this.serachStr$.next(+value);
-      this._searchValue = value;
-    } else {
-      this._searchValue = String(this.prevText);
-    }
+    this.serachStr$.next(+value);
+    this._searchValue = value;
+    // if (value == String(Number(value)) || value === '') {
+    //   this.prevText = +value;
+    //   this.serachStr$.next(+value);
+    //   this._searchValue = value;
+    // } else {
+    //   this._searchValue = String(this.prevText);
+    // }
     // this.inputERef!.nativeElement.value = this._searchValue;
     // this._searchValue = value;
   }

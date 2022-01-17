@@ -124,7 +124,6 @@
       <button class="minus" (click)="amountMinus()"></button>
 
       <div class="val">{{ value }}</div>
-      <div class="val">{{ selectedProduct!.amount }}</div>
 
       <button class="plus" (click)="amountPlus()"></button>
       <button class="apply" (click)="applyAmount()"></button>
@@ -150,7 +149,11 @@
       [itemTemplate]="
         addProductState === 'selectProduct' ? selectProduct : selectAmount
       "
-      [value]="selectedProduct!.amount.toString()"
+      [value]="
+        addProductState === 'selectProduct'
+          ? '0'
+          : selectedProduct!.amount.toString()
+      "
       [defaultValue]="0"
       (close)="addProductState = 'none'"
       (change)="onChangeKeyboard($event)"
