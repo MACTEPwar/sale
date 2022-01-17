@@ -1,6 +1,6 @@
 {
-	"appId": "com.sale.app",
-	"appName": "sale",
+	"appId": "com.webepz.app",
+	"appName": "web-epz",
 	"webDir": "dist",
 	"bundledWebRuntime": false,
 	"server": {
