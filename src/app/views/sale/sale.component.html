@@ -23,7 +23,10 @@
           class="receiptProducts_line"
           *ngFor="let receiptProduct of receiptProducts | async"
         >
-          <div class="receiptProducts_addtbn"></div>
+          <div
+            class="receiptProducts_addtbn"
+            (click)="openWindowChangeAmount(receiptProduct)"
+          ></div>
           <div class="receiptProducts_name">
             {{ receiptProduct.name }}
           </div>
@@ -121,6 +124,7 @@
       <button class="minus" (click)="amountMinus()"></button>
 
       <div class="val">{{ value }}</div>
+      <div class="val">{{ selectedProduct!.amount }}</div>
 
       <button class="plus" (click)="amountPlus()"></button>
       <button class="apply" (click)="applyAmount()"></button>
@@ -128,26 +132,27 @@
 
     <div class="datasearch">
       <div class="amount_card">
-        <div class="art">Артикул {{ lastAddedProduct!.bar }}</div>
-        <div class="name">{{ lastAddedProduct!.name }}</div>
+        <div class="art">Артикул {{ selectedProduct!.bar }}</div>
+        <div class="name">{{ selectedProduct!.name }}</div>
         <div class="price">
           <span>Цiна за одиницю:</span>
-          <span>{{ lastAddedProduct!.price }}</span>
+          <span>{{ selectedProduct!.price }}</span>
         </div>
         <div class="sum">
-          <span>Сума</span><span> {{ lastAddedProduct!.sum }}</span>
+          <span>Сума</span><span> {{ selectedProduct!.sum }}</span>
         </div>
       </div>
     </div>
   </ng-template>
 
   <div class="keyboarddialog">
+    <!-- [value]="(selectedProduct | async)!.amount.toString()" -->
+    <!-- (change)="onChangeKeyboard($event)" -->
     <app-keyboard-number
       [itemTemplate]="
         addProductState === 'selectProduct' ? selectProduct : selectAmount
       "
-      [value]="currentInputValue"
-      (valueChange)="onChangeKeyboard($event)"
+      (close)="addProductState = 'none'"
     ></app-keyboard-number>
   </div>
 </div>

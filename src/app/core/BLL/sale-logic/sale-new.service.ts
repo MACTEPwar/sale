@@ -23,6 +23,9 @@ export class SaleNewService {
   >([]);
   link: BehaviorSubject<string> = new BehaviorSubject<string>('');
 
+  selectedProduct: BehaviorSubject<TNullable<TReceiptProduct>> =
+    new BehaviorSubject<TNullable<TReceiptProduct>>(null);
+
   constructor(
     private messageService: MessageService,
     private queryService: QueryService,
@@ -49,26 +52,55 @@ export class SaleNewService {
     );
   }
 
+  prevValue: TNullable<number> = null;
+
+  changeAmount(amount: string): void {
+    let numResult: TNullable<number> = +amount;
+    let flag = false;
+
+    if (!isNaN(numResult)) {
+      this.prevValue = numResult;
+    } else {
+      numResult = this.prevValue;
+      console.log('goto prev', numResult);
+      flag = true;
+    }
+
+    const temp = this.selectedProduct.getValue();
+
+    if (temp == null) {
+      return;
+    }
+
+    if (String(numResult) != amount && !flag) {
+      return;
+    }
+
+    temp!.amount = numResult ?? 0;
+    this.selectedProduct!.next(temp);
+    // console.log(temp);
+    // this.changeProductFromReceipt(temp!).subscribe((res) => {});
+  }
+
   changeProductFromReceipt(product: TReceiptProduct): Observable<any> {
-    return of({})
-      .pipe(
-        switchMap((_) => this.changeProductFromReceipt$(product)),
-        map((m) => m.data),
-        tap(result => {
-          this.receipt.totalSum.next(+result.sum);
-          this.receipt.products.next(
-            result.positions.map((m: any) => ({
-              articlePosition: m.articlePosition,
-              name: m.name,
-              amount: m.amount,
-              price: m.price,
-              bar: m.bar,
-              discountSum: +m.discountSum,
-              sum: +m.sum,
-            }))
-          );
-        })
-      )
+    return of({}).pipe(
+      switchMap((_) => this.changeProductFromReceipt$(product)),
+      map((m) => m.data),
+      tap((result) => {
+        this.receipt.totalSum.next(+result.sum);
+        this.receipt.products.next(
+          result.positions.map((m: any) => ({
+            articlePosition: m.articlePosition,
+            name: m.name,
+            amount: m.amount,
+            price: m.price,
+            bar: m.bar,
+            discountSum: +m.discountSum,
+            sum: +m.sum,
+          }))
+        );
+      })
+    );
   }
 
   getCurrentReceipt(): void {

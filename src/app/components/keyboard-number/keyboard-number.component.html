@@ -1,13 +1,13 @@
 <div class="keyboard_header">
   <div>Додати товар</div>
-  <button></button>
+  <button (click)="onClose()"></button>
 </div>
 <div class="keyboard_contain">
   <div class="content">
     <ng-container
       *ngTemplateOutlet="
         itemTemplate!;
-        context: { $implicit: value, clearFunction: clearFunction }
+        context: { $implicit: value | async, clearFunction: clearFunction }
       "
     >
     </ng-container>
