@@ -1,8 +1,9 @@
 import { environment } from 'src/environments/environment';
-import { Injectable } from '@angular/core';
+import { Injectable, Renderer2 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
+import { PrinterService, QueryService } from '@common/core';
 
 @Injectable()
 export class ReceiptsService {
@@ -12,7 +13,11 @@ export class ReceiptsService {
   count: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(
+    private httpClient: HttpClient,
+    private queryService: QueryService,
+    private printerService: PrinterService
+  ) {}
 
   getReceipts(filter: TReceiptFilter): void {
     this.loading.next(true);
@@ -35,6 +40,13 @@ export class ReceiptsService {
         this.count.next(data.Key);
         this.loading.next(false);
       });
+  }
+
+  returnReceipt$(receipt: number): Observable<any> {
+    return this.queryService.post(
+      `${environment.apiUrl}/api/receipt/return/${receipt}`,
+      {}
+    );
   }
 }
 

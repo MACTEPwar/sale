@@ -271,7 +271,6 @@ body {
   background: #89a2d0;
   color: #fff;
   border: none;
-  border-radius: 4px;
   text-decoration: none;
   i {
     margin-right: 5px;
@@ -280,12 +279,15 @@ body {
 
 .confirm_buttons {
   padding: 20px 0 0;
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: center;
   .p-component.p-button {
     border-radius: 5px;
   }
   button {
-    margin: 0 20px;
-    min-width: 100px;
+    margin: 0 5px;
   }
 }
 .p-button-warning {
