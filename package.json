@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --aot && npm version patch && git push && git push --tags",
+    "build": "ng build --aot && npx cap copy android && npx cap run android && npm version patch && git push && git push --tags",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "push": "git push"
