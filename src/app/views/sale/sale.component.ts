@@ -372,8 +372,8 @@ export class SaleComponent implements OnInit {
       //   this.afterFinishPay();
       // });
     } else {
-      this.afterFinishPay();
     }
+    this.afterFinishPay();
   }
 
   /** Поусл того как продажа полностью завершена */

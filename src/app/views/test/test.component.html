@@ -1,8 +1,24 @@
-<ng-template #keyboardContent let-value let-clearFunction="clearFunction">
+<!-- <ng-template #keyboardContent let-value let-clearFunction="clearFunction">
   <app-product-list
     [searchValue]="value"
     (clear)="clearFunction()"
   ></app-product-list>
 </ng-template>
 
-<app-keyboard-number [itemTemplate]="keyboardContent"></app-keyboard-number>
+<app-keyboard-number [itemTemplate]="keyboardContent"></app-keyboard-number> -->
+
+<app-keyboard-literal [itemTemplate]="keyboardContent">
+  <ng-template
+    let-value
+    let-visible="visible"
+    let-clearFunction="clearFunction"
+    let-showFuntion="showKeyboardFuntion"
+    let-hideFunction="hideKeyboardFuntion"
+    #keyboardContent
+  >
+    <span
+      (click)="visible === true ? hideFunction() : showFuntion()"
+      >Нажми на меня</span
+    >
+  </ng-template>
+</app-keyboard-literal>

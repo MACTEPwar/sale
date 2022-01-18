@@ -1,1 +1,38 @@
-<p>keyboard-literal works!</p>
+<div class="keyboard_header">
+  <div>Додати товар</div>
+  <button (click)="onClose()"></button>
+</div>
+<div class="keyboard_contain">
+  <div class="content">
+    <ng-container
+      *ngTemplateOutlet="
+        itemTemplate!;
+        context: {
+          $implicit: value,
+          visible: keyboardVisible,
+          clearFunction: clearFunction,
+          showKeyboardFuntion: showKeyboard,
+          hideKeyboardFuntion: hideKeyboard
+        }
+      "
+    >
+    </ng-container>
+  </div>
+  <div class="" *ngIf="keyboardVisible === true">
+    <div class="">
+      Я - клавиатура
+      <!-- <button (click)="setValue('1')">1</button> -->
+      <!-- <button (click)="setValue('2')">2</button>
+        <button (click)="setValue('3')">3</button>
+        <button (click)="setValue('4')">4</button>
+        <button (click)="setValue('5')">5</button>
+        <button (click)="setValue('6')">6</button>
+        <button (click)="setValue('7')">7</button>
+        <button (click)="setValue('8')">8</button>
+        <button (click)="setValue('9')">9</button>
+        <button (click)="setValue('0')">0</button>
+        <button (click)="setValue('.')">.</button>
+        <button class="backspace" (click)="setValue('b')"><span></span></button> -->
+    </div>
+  </div>
+</div>
