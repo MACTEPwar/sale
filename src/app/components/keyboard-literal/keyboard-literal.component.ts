@@ -27,6 +27,7 @@ export class KeyboardLiteralComponent implements OnInit {
 
   ua_keys = true;
   ru_keys = false;
+  num_keys = false;
 
   showKeyboard = () => {
     this.keyboardVisible = true;
@@ -53,8 +54,32 @@ export class KeyboardLiteralComponent implements OnInit {
     this.close.emit();
   }
 
-  togleLang() {
-    this.ua_keys = !this.ua_keys;
-    this.ru_keys = !this.ru_keys;
+  // togleLang() {
+  //   this.ua_keys = !this.ua_keys;
+  //   this.ru_keys = !this.ru_keys;
+  // }
+
+  togleLang(key: string): void {
+    switch (key) {
+      case 'ru':
+        this.ru_keys = true;
+        this.ua_keys = false;
+        this.num_keys = false;
+        console.log('ru true');
+        break;
+      case 'ua':
+        this.ua_keys = true;
+        this.ru_keys = false;
+        this.num_keys = false;
+        console.log('ua true');
+        break;
+
+      case 'num':
+        this.num_keys = true;
+        this.ua_keys = false;
+        this.ru_keys = false;
+        console.log('num true');
+        break;
+    }
   }
 }

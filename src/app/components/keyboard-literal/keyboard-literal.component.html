@@ -14,13 +14,17 @@
     >
     </ng-container>
   </div>
-  <div class="keyboardmodal" *ngIf="keyboardVisible === true">
+  <div
+    class="keyboardmodal"
+    *ngIf="keyboardVisible === true"
+    [style]="num_keys ? 'height: 120px' : ''"
+  >
     <div class="keyboard_header">
       <div></div>
       <button (click)="onClose()"></button>
     </div>
     <div class="keyboard_contain">
-      <div class="ua_keyboard_small" *ngIf="ua_keys">
+      <div class="literal_keyboard" *ngIf="ua_keys">
         <div class="key">й</div>
         <div class="key">ц</div>
         <div class="key">у</div>
@@ -55,14 +59,14 @@
         <div class="key">ї</div>
         <div class="key backspace"></div>
         <div class="key">'</div>
-        <div class="key" (click)="togleLang()">RU</div>
-        <div class="key">123</div>
+        <div class="key" (click)="togleLang('ru')">RU</div>
+        <div class="key" (click)="togleLang('num')">123</div>
         <div class="key space"></div>
         <div class="key">,</div>
         <div class="key">.</div>
         <div class="key enter"></div>
       </div>
-      <div class="ua_keyboard_small" *ngIf="ru_keys">
+      <div class="literal_keyboard" *ngIf="ru_keys">
         <div class="key">й</div>
         <div class="key">ц</div>
         <div class="key">у</div>
@@ -97,13 +101,26 @@
         <div class="key">/</div>
         <div class="key backspace"></div>
         <div class="key">_</div>
-
-        <div class="key" (click)="togleLang()">UA</div>
-        <div class="key">123</div>
+        <div class="key" (click)="togleLang('ua')">UA</div>
+        <div class="key" (click)="togleLang('num')">123</div>
         <div class="key space"></div>
         <div class="key">,</div>
         <div class="key">.</div>
         <div class="key enter"></div>
+      </div>
+      <div class="num_keyboard" *ngIf="num_keys">
+        <div class="key">1</div>
+        <div class="key">2</div>
+        <div class="key">3</div>
+        <div class="key">4</div>
+        <div class="key">5</div>
+        <div class="key">6</div>
+        <div class="key">7</div>
+        <div class="key">8</div>
+        <div class="key">9</div>
+        <div class="key">0</div>
+
+        <div class="key" (click)="togleLang('ua')">UA</div>
       </div>
     </div>
   </div>
