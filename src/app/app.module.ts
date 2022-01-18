@@ -1,3 +1,4 @@
+import { KeyboardLiteralModule } from './components/keyboard-literal/keyboard-literal.module';
 import { ProductListModule } from './components/product-list/product-list.module';
 import { KeyboardNumberModule } from './components/keyboard-number/keyboard-number.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -53,6 +54,7 @@ import { MainMenuModule } from './components/main-menu/main-menu.module';
     KeyboardNumberModule,
     MainMenuModule,
     ProductListModule,
+    KeyboardLiteralModule,
   ],
   providers: [MessageService, Printer, HTTP],
   bootstrap: [AppComponent],
