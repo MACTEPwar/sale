@@ -1,3 +1,4 @@
+import { KeyboardLiteralModule } from './../../components/keyboard-literal/keyboard-literal.module';
 import { KeyboardNumberModule } from './../../components/keyboard-number/keyboard-number.module';
 import { PtModule } from '@common/pipes';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -36,6 +37,7 @@ import { Round10Pipe } from './round10.pipe';
     PtModule,
     InputNumberModule,
     KeyboardNumberModule,
+    KeyboardLiteralModule,
   ],
 })
 export class SaleModule {}
