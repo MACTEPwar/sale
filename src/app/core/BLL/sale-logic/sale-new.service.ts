@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Renderer2 } from '@angular/core';
 import { QueryService, PrinterService } from '@common/core';
 import { Receipt, TNullable, TProduct } from '@common/types';
 import { MessageService } from 'primeng/api';
@@ -29,7 +29,7 @@ export class SaleNewService {
   constructor(
     private messageService: MessageService,
     private queryService: QueryService,
-    private printerService: PrinterService
+    private printService: PrinterService
   ) {}
 
   addProductToReceipt(product: TProduct, amount: number): Observable<any> {
@@ -164,6 +164,29 @@ export class SaleNewService {
       .pipe(map((m) => m.data))
       .subscribe((res) => {
         this.paymentsList.next(res);
+      });
+  }
+
+  printReceipt(
+    renderer: Renderer2,
+    fiscalNumber: TNullable<number> = null
+  ): void {
+    this.getContentForPrint$(fiscalNumber)
+      .pipe(
+        map((m: any) => m.data),
+        take(1)
+      )
+      .subscribe((res) => {
+        this.printService.clearPrintBlank();
+        res.data.forEach((str: string) => {
+          this.printService.addTextToPrint(renderer, str);
+        });
+        if (res.link != null) {
+          this.printService.addQrCode(renderer, res.link);
+        }
+        this.printService.test_print();
+        // this.contentForPrint.next(res.data);
+        // this.link.next(res.link);
       });
   }
 

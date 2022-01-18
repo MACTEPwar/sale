@@ -7,6 +7,7 @@ import {
   OnInit,
   Optional,
   QueryList,
+  Renderer2,
   ViewChildren,
   ViewContainerRef,
 } from '@angular/core';
@@ -95,7 +96,8 @@ export class SaleComponent implements OnInit {
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private cdr: ChangeDetectorRef,
-    @Optional() private keyboardNumberService: KeyboardNumberService
+    @Optional() private keyboardNumberService: KeyboardNumberService,
+    private renderer: Renderer2
   ) {
     /** Подписка на товары в чеке */
     this.receiptProducts = this.saleService.receipt.products;
@@ -333,9 +335,9 @@ export class SaleComponent implements OnInit {
           this.inputCash = null;
           this.serviceService.getMoneyInKassa();
           this.payInProgress = false;
-          this.saleService.getContentForPrint(
-            this.saleService.lastReceiptNumber.getValue()
-          );
+          // this.saleService.getContentForPrint(
+          //   this.saleService.lastReceiptNumber.getValue()
+          // );
         },
         (e) => {
           this.visiblePaymantProcess = false;
@@ -362,9 +364,13 @@ export class SaleComponent implements OnInit {
     content: HTMLElement | null | string = null
   ): void {
     if (printReceipt === true) {
-      this.printerService.print(content!).subscribe((res) => {
-        this.afterFinishPay();
-      });
+      this.saleService.printReceipt(
+        this.renderer,
+        this.saleService.lastReceiptNumber.getValue()
+      );
+      // this.printerService.print(content!).subscribe((res) => {
+      //   this.afterFinishPay();
+      // });
     } else {
       this.afterFinishPay();
     }

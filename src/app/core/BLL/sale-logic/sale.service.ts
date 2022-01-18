@@ -4,11 +4,12 @@ import { TReceiptProduct } from './../../../shared/types/types/t-receipt-product
 import { environment } from './../../../../environments/environment';
 import { BehaviorSubject, from, iif, Observable, of, timer } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Injectable, Pipe } from '@angular/core';
+import { Injectable, Pipe, Renderer2 } from '@angular/core';
 import { Receipt, TNullable, TProduct } from '@common/types';
 import { filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { HTTP } from '@awesome-cordova-plugins/http/ngx';
 import { Capacitor } from '@capacitor/core';
+import { PrinterService } from '@common/core';
 
 @Injectable()
 export class SaleService {
@@ -32,7 +33,8 @@ export class SaleService {
     private httpClient: HttpClient,
     private http: HTTP,
     private messageService: MessageService,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private printService: PrinterService
   ) {
     this.getProductList();
     this.getCurrentReceipt();
@@ -161,6 +163,29 @@ export class SaleService {
       .pipe(take(1))
       .subscribe((res) => {
         this.paymentsList.next(res);
+      });
+  }
+
+  printReceipt(
+    renderer: Renderer2,
+    fiscalNumber: TNullable<number> = null
+  ): void {
+    this.getContentForPrint$(fiscalNumber)
+      .pipe(
+        map((m: any) => m.data),
+        take(1)
+      )
+      .subscribe((res) => {
+        this.printService.clearPrintBlank();
+        res.data.forEach((str: string) => {
+          this.printService.addTextToPrint(renderer, str);
+        });
+        if (res.link != null) {
+          this.printService.addQrCode(renderer, res.link);
+        }
+        this.printService.test_print();
+        // this.contentForPrint.next(res.data);
+        // this.link.next(res.link);
       });
   }
 
