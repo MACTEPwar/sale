@@ -1,7 +1,3 @@
-<div class="keyboard_header">
-  <div>Додати товар</div>
-  <button (click)="onClose()"></button>
-</div>
 <div class="keyboard_contain">
   <div class="content">
     <ng-container
@@ -18,21 +14,97 @@
     >
     </ng-container>
   </div>
-  <div class="" *ngIf="keyboardVisible === true">
-    <div class="">
-      Я - клавиатура
-      <!-- <button (click)="setValue('1')">1</button> -->
-      <!-- <button (click)="setValue('2')">2</button>
-        <button (click)="setValue('3')">3</button>
-        <button (click)="setValue('4')">4</button>
-        <button (click)="setValue('5')">5</button>
-        <button (click)="setValue('6')">6</button>
-        <button (click)="setValue('7')">7</button>
-        <button (click)="setValue('8')">8</button>
-        <button (click)="setValue('9')">9</button>
-        <button (click)="setValue('0')">0</button>
-        <button (click)="setValue('.')">.</button>
-        <button class="backspace" (click)="setValue('b')"><span></span></button> -->
+  <div class="keyboardmodal" *ngIf="keyboardVisible === true">
+    <div class="keyboard_header">
+      <div></div>
+      <button (click)="onClose()"></button>
+    </div>
+    <div class="keyboard_contain">
+      <div class="ua_keyboard_small" *ngIf="ua_keys">
+        <div class="key">й</div>
+        <div class="key">ц</div>
+        <div class="key">у</div>
+        <div class="key">к</div>
+        <div class="key">е</div>
+        <div class="key">н</div>
+        <div class="key">г</div>
+        <div class="key">ш</div>
+        <div class="key">щ</div>
+        <div class="key">з</div>
+        <div class="key">x</div>
+        <div class="key">ф</div>
+        <div class="key">і</div>
+        <div class="key">в</div>
+        <div class="key">а</div>
+        <div class="key">п</div>
+        <div class="key">р</div>
+        <div class="key">о</div>
+        <div class="key">л</div>
+        <div class="key">д</div>
+        <div class="key">ж</div>
+        <div class="key">є</div>
+        <div class="key">я</div>
+        <div class="key">ч</div>
+        <div class="key">с</div>
+        <div class="key">м</div>
+        <div class="key">и</div>
+        <div class="key">т</div>
+        <div class="key">ь</div>
+        <div class="key">б</div>
+        <div class="key">ю</div>
+        <div class="key">ї</div>
+        <div class="key backspace"></div>
+        <div class="key">'</div>
+        <div class="key" (click)="togleLang()">RU</div>
+        <div class="key">123</div>
+        <div class="key space"></div>
+        <div class="key">,</div>
+        <div class="key">.</div>
+        <div class="key enter"></div>
+      </div>
+      <div class="ua_keyboard_small" *ngIf="ru_keys">
+        <div class="key">й</div>
+        <div class="key">ц</div>
+        <div class="key">у</div>
+        <div class="key">к</div>
+        <div class="key">е</div>
+        <div class="key">н</div>
+        <div class="key">г</div>
+        <div class="key">ш</div>
+        <div class="key">щ</div>
+        <div class="key">з</div>
+        <div class="key">x</div>
+        <div class="key">ф</div>
+        <div class="key">ы</div>
+        <div class="key">в</div>
+        <div class="key">а</div>
+        <div class="key">п</div>
+        <div class="key">р</div>
+        <div class="key">о</div>
+        <div class="key">л</div>
+        <div class="key">д</div>
+        <div class="key">ж</div>
+        <div class="key">э</div>
+        <div class="key">я</div>
+        <div class="key">ч</div>
+        <div class="key">с</div>
+        <div class="key">м</div>
+        <div class="key">и</div>
+        <div class="key">т</div>
+        <div class="key">ь</div>
+        <div class="key">б</div>
+        <div class="key">ю</div>
+        <div class="key">/</div>
+        <div class="key backspace"></div>
+        <div class="key">_</div>
+
+        <div class="key" (click)="togleLang()">UA</div>
+        <div class="key">123</div>
+        <div class="key space"></div>
+        <div class="key">,</div>
+        <div class="key">.</div>
+        <div class="key enter"></div>
+      </div>
     </div>
   </div>
 </div>

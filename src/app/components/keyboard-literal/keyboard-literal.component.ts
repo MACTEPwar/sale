@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  TemplateRef,
+} from '@angular/core';
 import { TNullable } from '@common/types';
 
 @Component({
@@ -18,14 +25,16 @@ export class KeyboardLiteralComponent implements OnInit {
 
   @Input() keyboardVisible = false;
 
+  ua_keys = true;
+  ru_keys = false;
+
   showKeyboard = () => {
-    this.keyboardVisible = true
-  }
+    this.keyboardVisible = true;
+  };
 
   hideKeyboard = () => {
-    this.keyboardVisible = false
-  }
-
+    this.keyboardVisible = false;
+  };
 
   clearFunction = () => {
     this.value = this.defaultValue;
@@ -42,5 +51,10 @@ export class KeyboardLiteralComponent implements OnInit {
 
   onClose(): void {
     this.close.emit();
+  }
+
+  togleLang() {
+    this.ua_keys = !this.ua_keys;
+    this.ru_keys = !this.ru_keys;
   }
 }
