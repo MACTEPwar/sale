@@ -17,7 +17,7 @@
   <div
     class="keyboardmodal"
     *ngIf="keyboardVisible === true"
-    [style]="num_keys ? 'height: 120px' : ''"
+    [style]="num_keys ? 'min-height: 150px; height: 170px' : ''"
   >
     <div class="keyboard_header">
       <div></div>
@@ -119,8 +119,12 @@
         <div class="key">8</div>
         <div class="key">9</div>
         <div class="key">0</div>
-
-        <div class="key" (click)="togleLang('ua')">UA</div>
+        <div class="key backspace"></div>
+        <div></div>
+        <div class="key">.</div>
+        <div class="key numToLang" (click)="togleLang('ua')"></div>
+        <div class="key space"></div>
+        <div class="key enter"></div>
       </div>
     </div>
   </div>

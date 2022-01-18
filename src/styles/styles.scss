@@ -1066,11 +1066,22 @@ $btns: 37px;
   display: grid;
   grid-template-columns: repeat(11, 1fr);
   grid-gap: 4px;
-  background-color: $gray1;
   height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
+}
+.num_keyboard {
+  display: grid;
+  grid-template-columns: repeat(11, 1fr);
+  grid-column-gap: 4px;
+  grid-row-gap: 4px;
+  height: 100%;
+  width: 100%;
+}
+
+.literal_keyboard,
+.num_keyboard {
   .key {
     color: white;
     font-size: 5vh;
@@ -1084,7 +1095,8 @@ $btns: 37px;
 
     &.backspace,
     &.space,
-    &.enter {
+    &.enter,
+    &.numToLang {
       background-position: center;
       background-repeat: no-repeat;
       background-size: 5vh;
@@ -1099,16 +1111,29 @@ $btns: 37px;
     &:active {
       background-color: $blue2;
     }
-    &.space {
-      grid-column: span 4;
-    }
 
     &.enter {
       grid-column: span 2;
     }
+    &.numToLang {
+      background-image: url("../images/globe.svg");
+    }
   }
 }
-
+.literal_keyboard {
+  .key {
+    &.space {
+      grid-column: span 4;
+    }
+  }
+}
+.num_keyboard {
+  .key {
+    &.space {
+      grid-column: span 5;
+    }
+  }
+}
 .amount_line {
   display: flex;
   justify-content: flex-start;
