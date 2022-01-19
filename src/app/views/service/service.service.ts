@@ -168,7 +168,12 @@ export class ServiceService {
     formData.append('groupId', groupId);
 
     return this.queryService
-      .post(`${environment.apiUrl}/api/barPrice/import`, formData)
+      .post(
+        `${environment.apiUrl}/api/barPrice/import`,
+        formData,
+        {},
+        'multipart'
+      )
       .pipe(map((m) => m.data));
   }
 
