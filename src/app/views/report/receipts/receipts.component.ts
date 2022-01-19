@@ -22,6 +22,8 @@ export class ReceiptsComponent implements OnInit {
 
   date: Date = new Date();
 
+  oldEvent: any = null;
+
   visibleReturnDialog = false;
   stateReturn: 'none' | 'selectType' | 'finished' = 'none';
   constructor(
@@ -40,6 +42,11 @@ export class ReceiptsComponent implements OnInit {
       skip: 0,
       take: 20,
     });
+    this.oldEvent = {
+      dateTime: this.date,
+      skip: 0,
+      take: 20,
+    };
   }
 
   ngOnInit() {}
@@ -50,6 +57,11 @@ export class ReceiptsComponent implements OnInit {
       skip: event.first,
       take: event.rows,
     });
+    this.oldEvent = {
+      dateTime: this.date,
+      skip: event.first,
+      take: event.rows,
+    };
   }
 
   onDateChange(event: Date): void {
@@ -59,6 +71,11 @@ export class ReceiptsComponent implements OnInit {
       skip: 0,
       take: 20,
     });
+    this.oldEvent = {
+      dateTime: this.date,
+      skip: 0,
+      take: 20,
+    };
   }
 
   onSelectReceipt(fiscalNumber: number): void {
@@ -96,5 +113,12 @@ export class ReceiptsComponent implements OnInit {
     }
     this.stateReturn = 'none';
     this.visibleReturnDialog = false;
+    this.receiptService.getReceipts(
+      this.oldEvent ?? {
+        dateTime: this.date,
+        skip: 0,
+        take: 20,
+      }
+    );
   }
 }
