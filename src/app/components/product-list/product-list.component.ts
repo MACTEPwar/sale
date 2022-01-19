@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { TProduct, TNullable } from '@common/types';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { debounceTime, filter } from 'rxjs/operators';
+import { debounceTime, filter, tap } from 'rxjs/operators';
 import { ProductListService } from './product-list.service';
 
 @Component({
@@ -41,6 +41,9 @@ export class ProductListComponent implements OnInit {
   }
   @Output() add: EventEmitter<TProduct> = new EventEmitter<TProduct>();
   @Output() clear: EventEmitter<void> = new EventEmitter<void>();
+  @Output() search: EventEmitter<TNullable<number>> = new EventEmitter<
+    TNullable<number>
+  >();
 
   @ViewChild('searchResult') searchResultERef?: ElementRef<any>;
   @ViewChild('searchLine') searchLineERef?: ElementRef<any>;
@@ -58,6 +61,9 @@ export class ProductListComponent implements OnInit {
     this.serachStr$
       .pipe(
         filter((f: TNullable<number>) => f != null && String(f!).length > 0),
+        tap(_ => {
+          this.search.emit(_);
+        }),
         debounceTime(300)
       )
       .subscribe((str: TNullable<number>) => {

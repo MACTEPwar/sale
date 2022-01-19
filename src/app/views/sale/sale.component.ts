@@ -44,6 +44,7 @@ export class SaleComponent implements OnInit {
 
   addProductState: 'none' | 'selectProduct' | 'selectAmount' = 'none';
   lastAddedProduct: TNullable<TReceiptProduct> = null;
+  currentArticle = '0';
 
   focusAmountInput = false;
   // currentProduct: any = null;
@@ -199,6 +200,14 @@ export class SaleComponent implements OnInit {
     if (this.addProductState === 'selectProduct') {
     } else {
       this.saleService.changeAmount(event);
+    }
+  }
+
+  onSearchProduct(event: TNullable<number>): void {
+    if (event != null) {
+      this.currentArticle = event.toString();
+    } else {
+      this.currentArticle = '0';
     }
   }
   // onChangeKeyboard(event: any): void {

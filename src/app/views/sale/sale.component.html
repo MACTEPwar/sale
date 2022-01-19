@@ -115,6 +115,7 @@
       [searchValue]="value"
       (clear)="clearFunction()"
       (add)="addProductToReceipt($event)"
+      (search)="onSearchProduct($event)"
     ></app-product-list>
   </ng-template>
 
@@ -151,7 +152,7 @@
       "
       [value]="
         addProductState === 'selectProduct'
-          ? '0'
+          ? currentArticle
           : selectedProduct!.amount.toString()
       "
       [defaultValue]="0"
