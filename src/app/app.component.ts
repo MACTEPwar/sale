@@ -126,6 +126,12 @@ export class AppComponent {
                 label: 'Тест печати',
                 command: () => this.serviceComponent.testPrint(this.renderer),
               },
+              {
+                label: 'Тест возврат',
+                command: () => {
+                  this.router.navigate(['return', '182823897'])
+                },
+              },
             ],
           },
           // { routerLink: '/test', label: 'Test' },

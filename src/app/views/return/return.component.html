@@ -1,1 +1,119 @@
-<p>return works!</p>
+<div class="datasale">
+  <!-- Table section   -->
+  <div class="sale_table">
+    <div class="receiptProducts">
+      <div class="sale_table-header" *ngIf="(products | async)!.length > 0">
+        <div class="receiptProducts_addtbn"></div>
+        <div class="_name">Назва</div>
+        <div class="_amount">Кiлькiсть</div>
+        <div class="_discountSum">Цiна за од.</div>
+        <!-- <div class="_sum">Сума</div> -->
+      </div>
+      <div class="prod_list">
+        <div
+          class="receiptProducts_line"
+          *ngFor="let receiptProduct of products | async"
+        >
+          <div
+            class="receiptProducts_addtbn"
+            (click)="openWindowChangeAmount(receiptProduct)"
+          ></div>
+          <div class="receiptProducts_name">
+            {{ receiptProduct.name }}
+          </div>
+
+          <div class="receiptProducts_amount">
+            {{ receiptProduct.amount + " " }}/{{
+              " " + receiptProduct.maxReturnAmount
+            }}
+          </div>
+
+          <div class="receiptProducts_discountSum">
+            {{ receiptProduct.price }}
+          </div>
+
+          <!-- <div class="receiptProducts_sum">
+            <div class="s">
+              {{ receiptProduct.sum }}
+            </div>
+            <div
+              class="d"
+              *ngIf="
+                receiptProduct.discountSum != null &&
+                receiptProduct.discountSum > 0
+              "
+            >
+              Знижка: {{ receiptProduct.discountSum }}
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+    <div class="sale_table-footer">
+      <span
+        >Позицiй: <i>{{ (products | async)?.length ?? 0 }}</i> шт.</span
+      >
+      <!-- <span
+        >Сума: <i> {{ totalSum | async }}</i> грн</span
+      > -->
+    </div>
+  </div>
+  <!-- Buttons section -->
+  <div class="sale_buttons">
+    <div>
+      <button class="_btn" (click)="doRetrun()">
+        <span class="nal"></span>
+      </button>
+    </div>
+    <div>
+      <button class="anulation_btn" (click)="doCancelreturn()">
+        <span></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="add-prodduct" *ngIf="visibleSelectedAmount">
+  <div class="keyboarddialog">
+    <app-keyboard-number
+      [itemTemplate]="selectAmount"
+      [value]="selectedProduct!.amount.toString()"
+      [defaultValue]="0"
+      [max]="selectedProduct!.maxReturnAmount!"
+      (close)="visibleSelectedAmount = false"
+      (change)="onChangeKeyboard($event)"
+    >
+      <ng-template #selectAmount let-value let-clearFunction="clearFunction">
+        <div class="amount_line">
+          <button class="cancel" (click)="clearFunction()"></button>
+          <button class="minus" (click)="amountMinus()"></button>
+
+          <div
+            class="val"
+            style="justify-content: space-between; padding: 0 10px"
+          >
+            <span>{{ value }}</span
+            ><span>/{{ " " + selectedProduct!.maxReturnAmount }}</span>
+          </div>
+
+          <button class="plus" (click)="amountPlus()"></button>
+          <button class="apply" (click)="applyAmount()"></button>
+        </div>
+
+        <div class="datasearch">
+          <div class="amount_card">
+            <div class="art">Артикул {{ selectedProduct!.bar }}</div>
+            <div class="name">{{ selectedProduct!.name }}</div>
+            <div class="price">
+              <span>Цiна за одиницю:</span>
+              <span>{{ selectedProduct!.price }}</span>
+            </div>
+            <div class="sum">
+              <span>Сума</span><span> {{ selectedProduct!.sum }}</span>
+            </div>
+          </div>
+        </div>
+      </ng-template></app-keyboard-number
+    >
+  </div>
+</div>

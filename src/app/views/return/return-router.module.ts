@@ -5,7 +5,7 @@ import { AuthGuard } from 'src/app/core/BLL/auth.guard';
 
 const routes: Routes = [
   {
-    path: '',
+    path: ':fiscalNumber',
     component: ReturnComponent,
     canActivate: [AuthGuard],
   },
