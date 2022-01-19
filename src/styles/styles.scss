@@ -761,6 +761,12 @@ $btns: 37px;
         &.add {
           background-image: url("../images/cart.svg");
         }
+        &.nocheck {
+          background-image: url("../images/nocheck.svg");
+        }
+        &.returnal {
+          background-image: url("../images/return.svg");
+        }
       }
     }
   }
@@ -1282,4 +1288,16 @@ $btns: 37px;
 .p-confirm-dialog-reject {
   background: $red1 !important;
   border-color: $red2 !important;
+}
+
+.p-dialog .p-dialog-header {
+  padding: 4px 15px;
+}
+
+.dropdownfile .p-dropdown.p-component {
+  width: 100%;
+  margin-bottom: 15px;
+}
+.p-fileupload-row div:first-child {
+  display: none;
 }
