@@ -17,14 +17,14 @@
   <div
     class="keyboardmodal"
     *ngIf="keyboardVisible === true"
-    [style]="num_keys ? 'min-height: 150px; height: 170px' : ''"
+    [style]="key == eKeyBoardType.NUM ? 'min-height: 150px; height: 170px' : ''"
   >
     <div class="keyboard_header">
       <div></div>
       <button (click)="onClose()"></button>
     </div>
     <div class="keyboard_contain">
-      <div class="literal_keyboard" *ngIf="ua_keys">
+      <div class="literal_keyboard" *ngIf="key == eKeyBoardType.UA">
         <div class="key">й</div>
         <div class="key">ц</div>
         <div class="key">у</div>
@@ -59,14 +59,14 @@
         <div class="key">ї</div>
         <div class="key backspace"></div>
         <div class="key">'</div>
-        <div class="key" (click)="togleLang('ru')">RU</div>
-        <div class="key" (click)="togleLang('num')">123</div>
+        <div class="key" (click)="togleLang(eKeyBoardType.RU)">RU</div>
+        <div class="key" (click)="togleLang(eKeyBoardType.NUM)">123</div>
         <div class="key space"></div>
         <div class="key">,</div>
         <div class="key">.</div>
         <div class="key enter"></div>
       </div>
-      <div class="literal_keyboard" *ngIf="ru_keys">
+      <div class="literal_keyboard" *ngIf="key == eKeyBoardType.RU">
         <div class="key">й</div>
         <div class="key">ц</div>
         <div class="key">у</div>
@@ -98,17 +98,17 @@
         <div class="key">ь</div>
         <div class="key">б</div>
         <div class="key">ю</div>
-        <div class="key">/</div>
+        <div class="key">ъ</div>
         <div class="key backspace"></div>
-        <div class="key">_</div>
-        <div class="key" (click)="togleLang('ua')">UA</div>
-        <div class="key" (click)="togleLang('num')">123</div>
+        <div class="key">ё</div>
+        <div class="key" (click)="togleLang(eKeyBoardType.UA)">UA</div>
+        <div class="key" (click)="togleLang(eKeyBoardType.NUM)">123</div>
         <div class="key space"></div>
         <div class="key">,</div>
         <div class="key">.</div>
         <div class="key enter"></div>
       </div>
-      <div class="num_keyboard" *ngIf="num_keys">
+      <div class="num_keyboard" *ngIf="key == eKeyBoardType.NUM">
         <div class="key">1</div>
         <div class="key">2</div>
         <div class="key">3</div>
@@ -122,7 +122,7 @@
         <div class="key backspace"></div>
         <div></div>
         <div class="key">.</div>
-        <div class="key numToLang" (click)="togleLang('ua')"></div>
+        <div class="key numToLang" (click)="togleLang(eKeyBoardType.UA)"></div>
         <div class="key space"></div>
         <div class="key enter"></div>
       </div>

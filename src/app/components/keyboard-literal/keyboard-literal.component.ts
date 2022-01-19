@@ -1,3 +1,4 @@
+import { InputNumberModule } from 'primeng/inputnumber';
 import {
   Component,
   EventEmitter,
@@ -6,7 +7,7 @@ import {
   Output,
   TemplateRef,
 } from '@angular/core';
-import { TNullable } from '@common/types';
+import { EKeyBoardType, TNullable } from '@common/types';
 
 @Component({
   selector: 'app-keyboard-literal',
@@ -25,9 +26,8 @@ export class KeyboardLiteralComponent implements OnInit {
 
   @Input() keyboardVisible = false;
 
-  ua_keys = true;
-  ru_keys = false;
-  num_keys = false;
+  key: EKeyBoardType = EKeyBoardType.UA;
+  eKeyBoardType = EKeyBoardType;
 
   showKeyboard = () => {
     this.keyboardVisible = true;
@@ -54,32 +54,7 @@ export class KeyboardLiteralComponent implements OnInit {
     this.close.emit();
   }
 
-  // togleLang() {
-  //   this.ua_keys = !this.ua_keys;
-  //   this.ru_keys = !this.ru_keys;
-  // }
-
-  togleLang(key: string): void {
-    switch (key) {
-      case 'ru':
-        this.ru_keys = true;
-        this.ua_keys = false;
-        this.num_keys = false;
-        console.log('ru true');
-        break;
-      case 'ua':
-        this.ua_keys = true;
-        this.ru_keys = false;
-        this.num_keys = false;
-        console.log('ua true');
-        break;
-
-      case 'num':
-        this.num_keys = true;
-        this.ua_keys = false;
-        this.ru_keys = false;
-        console.log('num true');
-        break;
-    }
+  togleLang(key: EKeyBoardType): void {
+    this.key = key;
   }
 }

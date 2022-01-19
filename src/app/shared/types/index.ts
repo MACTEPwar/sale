@@ -5,3 +5,5 @@ export * from './types/t-receipt-product';
 export * from './types/t-fiscal';
 
 export * from './concrete/receipt';
+
+export * from './enums/e-keyboard-type';
