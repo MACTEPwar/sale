@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ReceiptsService, TReceipt } from './receipt.service';
 import { Title } from '@angular/platform-browser';
 import { ServiceService } from '../../service/service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-receipts',
@@ -27,7 +28,8 @@ export class ReceiptsComponent implements OnInit {
     private receiptService: ReceiptsService,
     private titleService: Title,
     private serviceService: ServiceService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private router: Router
   ) {
     this.titleService.setTitle('Список чекiв');
     this.receipts = this.receiptService.receipts;
@@ -79,7 +81,7 @@ export class ReceiptsComponent implements OnInit {
         });
     }
     if (type === 'partial') {
-      alert('В розробцi');
+      this.router.navigate(['/return', this.fiscalNumber]);
     }
     if (type === 'cancel') {
       this.stateReturn = 'none';

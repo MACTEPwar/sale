@@ -23,6 +23,8 @@ export class KeyboardNumberComponent implements OnInit {
   @Input()
   value: TNullable<string> = null;
   @Input() defaultValue: any = null;
+  @Input() max: number = 9999;
+  @Input() min: number = 0;
   @Output() change: EventEmitter<TNullable<number>> = new EventEmitter<
     TNullable<number>
   >();
@@ -58,7 +60,11 @@ export class KeyboardNumberComponent implements OnInit {
     } else {
       const temp = `${String(this.value?.toString())}${String(value)}`;
       if (/^[0-9]*[.,]{0,1}[0-9]*$/.test(temp)) {
-        this.value = temp;
+        if (+temp >= this.min && +temp <= this.max) {
+          this.value = temp;
+        } else {
+          this.value = String(Number(this.value));
+        }
       }
     }
     if (this.value == null || this.value === '' || this.value === undefined) {

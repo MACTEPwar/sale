@@ -62,6 +62,7 @@
           <i class="pi pi-eye"></i> Чек
         </button>
         <button
+          *ngIf="receipt.receiptType === 'Фіскальний чек'"
           class="receiptBtn"
           title="Повернення чеку"
           (click)="onSelectReturn(receipt.orderTaxNum)"

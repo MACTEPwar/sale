@@ -283,6 +283,19 @@ export class SaleComponent implements OnInit {
     this.visiblePaymantProcess = true;
   }
 
+  /** Когда нажал расплатиться наличкой */
+  clickDoPayCard(): void {
+    this.confirmationService.confirm({
+      message: 'Виконати оплату картою?',
+      acceptLabel: 'Так',
+      rejectLabel: 'Нi',
+      header: 'Увага',
+      accept: () => {
+        this.doPayment(0);
+      },
+    });
+  }
+
   /**
    * Уогда вводишь наличку
    * @param event Сколько денег ввел

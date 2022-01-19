@@ -6,4 +6,7 @@ export type TReceiptProduct = {
   bar: string;
   discountSum: number;
   sum: number;
+  article: number;
+  maxReturnAmount?: number;
+  isReturnPresent: boolean;
 };
