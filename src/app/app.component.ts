@@ -2,18 +2,23 @@ import {
   Component,
   Renderer2,
   ViewChild,
-  ViewContainerRef,
+  ViewContainerRef
 } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { MainMenuService, PrinterService } from '@common/core';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
-import { Observable, of } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { TNullable } from './shared/types/types/t-nullabel';
 import { TUser } from './shared/types/types/t-user';
 import { ServiceService } from './views/service/service.service';
-import { Title } from '@angular/platform-browser';
+
+
+declare function require(moduleName: string): any;
+
+const { version } = require('../../package.json');
 
 @Component({
   selector: 'app-root',
@@ -219,7 +224,10 @@ export class AppComponent {
       this.mainMenuService.setMenu(menu);
     });
 
-    this.items2 = [{ label: 'Вийти', command: () => this.logout() }];
+    this.items2 = [
+      { label: 'Вийти', command: () => this.logout() },
+      { label: version },
+    ];
   }
 
   ngAfterViewInit(): void {
