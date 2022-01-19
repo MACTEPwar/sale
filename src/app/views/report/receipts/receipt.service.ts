@@ -58,6 +58,7 @@ export type TReceipt = {
   dfsLink: string;
   sum: number;
   dateCreate: Date;
+  isReturnPresent: boolean;
 };
 
 export type TReceiptFilter = {
