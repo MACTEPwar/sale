@@ -5,6 +5,7 @@ import { TNullable } from '@common/types';
 import { PrinterService, QueryService } from '@common/core';
 import { environment } from 'src/environments/environment.prod';
 import { map, tap } from 'rxjs/operators';
+import { ServiceService } from '../service/service.service';
 
 @Injectable()
 export class ReturnService {
@@ -16,7 +17,8 @@ export class ReturnService {
 
   constructor(
     private queryService: QueryService,
-    private printService: PrinterService
+    private printService: PrinterService,
+    private serviceService: ServiceService
   ) {}
 
   getReceiptByFiscalNumber(fiscalNumber: string): void {
@@ -56,9 +58,8 @@ export class ReturnService {
   }
 
   doReturn(): Observable<any> {
-    return this.queryService.post(
-      `${environment.apiUrl}/api/Receipt/partreturn`,
-      {
+    return this.queryService
+      .post(`${environment.apiUrl}/api/Receipt/partreturn`, {
         orderTaxNumber: this.fiscalNumber,
         positions: this.products.getValue().map((m) => ({
           article: m.article,
@@ -67,8 +68,12 @@ export class ReturnService {
           amount: m.amount,
           articlePosition: m.articlePosition,
         })),
-      }
-    );
+      })
+      .pipe(
+        tap((_) => {
+          this.serviceService.getMoneyInKassa();
+        })
+      );
   }
 
   printReceipt(renderer: Renderer2, fiscalNumber: string): void {
