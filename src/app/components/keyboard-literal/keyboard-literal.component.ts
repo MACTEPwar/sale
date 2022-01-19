@@ -1,5 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
-import { TNullable } from '@common/types';
+import { InputNumberModule } from 'primeng/inputnumber';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  TemplateRef,
+} from '@angular/core';
+import { EKeyBoardType, TNullable } from '@common/types';
 
 @Component({
   selector: 'app-keyboard-literal',
@@ -18,14 +26,16 @@ export class KeyboardLiteralComponent implements OnInit {
 
   @Input() keyboardVisible = false;
 
+  key: EKeyBoardType = EKeyBoardType.UA;
+  eKeyBoardType = EKeyBoardType;
+
   showKeyboard = () => {
-    this.keyboardVisible = true
-  }
+    this.keyboardVisible = true;
+  };
 
   hideKeyboard = () => {
-    this.keyboardVisible = false
-  }
-
+    this.keyboardVisible = false;
+  };
 
   clearFunction = () => {
     this.value = this.defaultValue;
@@ -42,5 +52,9 @@ export class KeyboardLiteralComponent implements OnInit {
 
   onClose(): void {
     this.close.emit();
+  }
+
+  togleLang(key: EKeyBoardType): void {
+    this.key = key;
   }
 }
