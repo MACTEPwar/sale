@@ -129,7 +129,7 @@ export class AppComponent {
               {
                 label: 'Тест возврат',
                 command: () => {
-                  this.router.navigate(['return', '182823897'])
+                  this.router.navigate(['return', '182823897']);
                 },
               },
             ],
@@ -326,6 +326,12 @@ export class AppComponent {
     this.serviceComponent
       .importProducts$(this.fileForImport!, this.shopGroup?.id!)
       .pipe(map((m) => m.data))
-      .subscribe((res) => {});
+      .subscribe((res) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Iнфо',
+          detail: 'Виконан iмпорт товарiв',
+        });
+      });
   }
 }
