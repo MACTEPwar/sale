@@ -23,7 +23,6 @@ export class ReceiptsComponent implements OnInit {
 
   visibleReturnDialog = false;
   stateReturn: 'none' | 'selectType' | 'finished' = 'none';
-
   constructor(
     private receiptService: ReceiptsService,
     private titleService: Title,

@@ -28,34 +28,35 @@
 >
   <ng-template pTemplate="header">
     <tr class="recieptTHead">
-      <th style="min-width: 180px">Фiск. номер</th>
-      <th style="min-width: 180px">Тип</th>
-      <th style="min-width: 100px">Сума</th>
-      <th style="min-width: 140px; flex: 0">Дата створення</th>
-      <th style="min-width: 275px; flex: 1"></th>
+      <th style="max-width: 140px; min-width: 140px">Фiск. номер</th>
+      <th>Тип</th>
+      <th style="max-width: 100px; min-width: 100px">Сума</th>
+      <th style="max-width: 140px; min-width: 140px">Дата створення</th>
+      <th style="max-width: 300px; min-width: 300px"></th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-receipt>
-    <tr class="recieptTBody">
-      <td style="min-width: 180px">{{ receipt.orderTaxNum }}</td>
-      <td style="min-width: 180px">{{ receipt.receiptType }}</td>
-      <td style="min-width: 100px">{{ receipt.sum }}</td>
-      <td style="min-width: 140px; flex: 0">
+    <tr [class]="true ? 'recieptTBody returned' : 'recieptTBody'">
+      <td style="max-width: 140px; min-width: 140px">
+        {{ receipt.orderTaxNum }}
+      </td>
+      <td>{{ receipt.receiptType }}</td>
+      <td style="max-width: 100px; min-width: 100px">{{ receipt.sum }}</td>
+      <td style="max-width: 140px; min-width: 140px">
         {{ receipt.dateCreate | date: "dd.MM.YYYY" }}
       </td>
-      <td style="min-width: 275px; flex: 1">
-        <a
+      <td style="max-width: 300px; min-width: 300px">
+        <button
           class="receiptBtn"
           [attr.href]="receipt.dfsLink"
           title="Посилання на сайт"
           target="_blank"
-          style="border-radius: 4px 0 0 4px"
-          ><i class="pi pi-link"></i>Сайт</a
         >
+          <i class="pi pi-link"></i>Сайт
+        </button>
         <button
           class="receiptBtn"
           title="Перегляд чеку"
-          style="margin: 0 2px"
           (click)="onSelectReceipt(receipt.orderTaxNum)"
         >
           <i class="pi pi-eye"></i> Чек
@@ -63,10 +64,9 @@
         <button
           class="receiptBtn"
           title="Повернення чеку"
-          style="border-radius: 0 4px 4px 0"
           (click)="onSelectReturn(receipt.orderTaxNum)"
         >
-          <i class="pi pi-eye"></i> Повернення
+          <i class="pi pi-replay"></i> Повернення
         </button>
       </td>
     </tr>

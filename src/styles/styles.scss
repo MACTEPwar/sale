@@ -246,7 +246,7 @@ body {
   justify-content: space-between;
   align-items: center;
   height: 50px;
-  background: #d2d7e1;
+  background: $gray4;
   color: #444;
   padding: 10px;
 
@@ -263,15 +263,22 @@ body {
 }
 
 .receiptBtn {
+  background: $blue1;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 32px;
-  padding: 0 10px;
-  background: #89a2d0;
+  height: 50px;
+  padding: 0px 8px;
+  background: #4e8aff;
   color: #fff;
   border: none;
   text-decoration: none;
+  font-size: 17px;
+  border-radius: 4px;
+  margin-right: 4px;
+  &:active {
+    background: $blue2;
+  }
   i {
     margin-right: 5px;
   }
@@ -284,7 +291,7 @@ body {
   width: 100%;
   justify-content: center;
   .p-component.p-button {
-    border-radius: 5px;
+    border-radius: 0;
   }
   button {
     margin: 0 5px;
@@ -292,9 +299,9 @@ body {
 }
 .p-button-warning {
   .p-component.p-button {
-    background-color: $warning-color;
-    border-color: $warning-color;
-    border-radius: 5px;
+    background-color: $red1;
+    border-color: $red2;
+    border-radius: 0;
   }
 }
 .receiptProducts_amount .p-button.p-component {
@@ -1224,4 +1231,55 @@ $btns: 37px;
       font-size: 30px;
     }
   }
+}
+
+.receiptsTable {
+  .recieptTHead {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    font-size: 14px;
+    flex-direction: row;
+    border-bottom: 2px solid #e5ebf5;
+    background-color: #fff;
+    th {
+      height: 32px;
+      white-space: nowrap;
+      flex: 1;
+      border: none;
+      background-color: $gray1;
+      color: #fff;
+    }
+  }
+  tbody tr:nth-child(odd) {
+    background-color: $gray4;
+  }
+  tr.recieptTBody {
+    td {
+      flex: 1;
+      font-size: 20px;
+      height: 60px;
+      align-items: center;
+    }
+    &.returned {
+      background: $red1 !important;
+      color: #fff;
+    }
+  }
+}
+
+.p-datatable .p-datatable-thead > tr > th {
+  border: none;
+  background-color: #fff;
+  font-weight: 500;
+}
+
+.p-dialog-footer {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.p-confirm-dialog-reject {
+  background: $red1 !important;
+  border-color: $red2 !important;
 }
