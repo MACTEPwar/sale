@@ -1,5 +1,5 @@
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TReceiptProduct, TNullable } from '@common/types';
@@ -16,6 +16,8 @@ export class ReturnComponent implements OnInit {
   products: Observable<Array<TReceiptProduct>>;
   selectedProduct: TNullable<TReceiptProduct> = null;
   visibleSelectedAmount = false;
+  visibleFinishReturn = false;
+  currentReturnReceiptNumber: TNullable<string> = null;
 
   constructor(
     private titleService: Title,
@@ -23,7 +25,8 @@ export class ReturnComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private messageService: MessageService,
-    private confirmService: ConfirmationService
+    private confirmService: ConfirmationService,
+    private renderer: Renderer2
   ) {
     this.titleService.setTitle('Повернення товару');
     this.products = this.returnService.products;
@@ -73,6 +76,10 @@ export class ReturnComponent implements OnInit {
     this.returnService.changeAmount(this.selectedProduct!);
   }
 
+  maxRetrunAmount(): void {
+    this.returnService.maxRetrunAmount();
+  }
+
   applyAmount(): void {
     this.visibleSelectedAmount = false;
   }
@@ -85,15 +92,26 @@ export class ReturnComponent implements OnInit {
       message: 'Зробити повернення?',
       accept: () => {
         this.returnService.doReturn().subscribe((res) => {
-          this.messageService.add({
-            summary: 'Iнфо',
-            detail: 'Виконано повернення',
-            severity: 'success',
-          });
-          this.router.navigate(['/report/receipts']);
+          this.currentReturnReceiptNumber = res.orderTaxNum;
+          // this.messageService.add({
+          //   summary: 'Iнфо',
+          //   detail: 'Виконано повернення',
+          //   severity: 'success',
+          // });
+          this.visibleFinishReturn = true;
         });
       },
     });
+  }
+
+  finishReturn(state: boolean): void {
+    if (state === true) {
+      this.returnService.printReceipt(
+        this.renderer,
+        this.currentReturnReceiptNumber!
+      );
+    }
+    this.router.navigate(['/report/receipts']);
   }
 
   doCancelreturn(): void {

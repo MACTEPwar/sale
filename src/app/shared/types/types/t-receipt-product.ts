@@ -8,4 +8,5 @@ export type TReceiptProduct = {
   sum: number;
   article: number;
   maxReturnAmount?: number;
+  isReturnPresent: boolean;
 };
