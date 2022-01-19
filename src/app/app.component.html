@@ -119,15 +119,17 @@
 <p-dialog
   header="Iмпорт товару"
   [(visible)]="visibleImporProducts"
-  [style]="{ width: '300px' }"
+  [style]="{ width: '600px' }"
 >
   <p-dropdown
+    class="dropdownfile"
     [options]="(shopGroups$ | async)!"
     [(ngModel)]="shopGroup"
     optionLabel="name"
     appendTo="body"
   ></p-dropdown>
   <p-fileUpload
+    chooseLabel="Обрати файл"
     name="products[]"
     (onSelect)="onSelect($event)"
     [multiple]="false"
@@ -136,11 +138,19 @@
     [showCancelButton]="false"
   >
   </p-fileUpload>
+  <div class="p-grid">
+    <div class="p-col-12">
+      <button
+        class="p-button"
+        style="margin-top: 10px; float: right"
+        (click)="doImportProducts()"
+      >
+        Завантажити
+      </button>
+    </div>
+  </div>
+</p-dialog>
 
-  <button (click)="doImportProducts()">CLICK</button></p-dialog
->
-
-<p-confirmDialog icon="pi pi-exclamation-triangle">
-</p-confirmDialog>
+<p-confirmDialog icon="pi pi-exclamation-triangle"> </p-confirmDialog>
 
 <app-main-menu></app-main-menu>
