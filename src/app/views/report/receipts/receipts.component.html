@@ -46,14 +46,14 @@
         {{ receipt.dateCreate | date: "dd.MM.YYYY" }}
       </td>
       <td style="max-width: 300px; min-width: 300px">
-        <button
+        <a
           class="receiptBtn"
           [attr.href]="receipt.dfsLink"
           title="Посилання на сайт"
           target="_blank"
         >
           <i class="pi pi-link"></i>Сайт
-        </button>
+        </a>
         <button
           class="receiptBtn"
           title="Перегляд чеку"
