@@ -300,7 +300,7 @@ export class SaleComponent implements OnInit {
       rejectLabel: 'Нi',
       header: 'Увага',
       accept: () => {
-        this.doPayment(0);
+        this.doPayment(1);
       },
     });
   }
