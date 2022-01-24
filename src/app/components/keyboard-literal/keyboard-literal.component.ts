@@ -57,4 +57,26 @@ export class KeyboardLiteralComponent implements OnInit {
   togleLang(key: EKeyBoardType): void {
     this.key = key;
   }
+
+  setValue(value: string): void {
+    if (value === 'backspace') {
+      if (this.value && this.value!.toString().length >= 2) {
+        this.value = this.value
+          .toString()
+          .slice(0, this.value.toString().length - 1);
+      } else if (this.value && this.value!.toString().length === 1) {
+        this.value = this.defaultValue;
+      } else {
+        return;
+      }
+    } else if (value === 'enter') {
+    } else {
+      this.value = `${String(this.value?.toString())}${String(value)}`;
+    }
+    if (this.value == null || this.value === '' || this.value === undefined) {
+      this.change.emit(this.defaultValue);
+    } else {
+      this.change.emit(this.value);
+    }
+  }
 }

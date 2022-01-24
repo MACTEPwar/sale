@@ -17,6 +17,7 @@ import { SaleComponent } from './sale.component';
 
 import { InputNumberModule } from 'primeng/inputnumber';
 import { Round10Pipe } from './round10.pipe';
+import { KeyboardLiteralModule } from 'src/app/components/keyboard-literal/keyboard-literal.module';
 
 @NgModule({
   declarations: [SaleComponent, Round10Pipe],
@@ -36,6 +37,7 @@ import { Round10Pipe } from './round10.pipe';
     PtModule,
     InputNumberModule,
     KeyboardNumberModule,
+    KeyboardLiteralModule
   ],
 })
 export class SaleModule {}

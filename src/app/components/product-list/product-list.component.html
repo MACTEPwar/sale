@@ -15,7 +15,7 @@
 > -->
 
 <div class="product_inSearch">
-  <span class="inSearch_input">{{ searchValue }}</span>
+  <span class="inSearch_input" (click)="inputClick.emit()">{{ searchValue }}</span>
   <button (click)="clearBtn()"></button>
 </div>
 

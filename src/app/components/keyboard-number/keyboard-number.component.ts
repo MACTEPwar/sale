@@ -58,9 +58,12 @@ export class KeyboardNumberComponent implements OnInit {
         return;
       }
     } else {
-      const temp = `${String(this.value?.toString())}${String(value)}`;
+      let temp = `${String(this.value?.toString())}${String(value)}`;
       if (/^[0-9]*[.,]{0,1}[0-9]*$/.test(temp)) {
         if (+temp >= this.min && +temp <= this.max) {
+          if (+temp >=1 && temp[0] === '0'){
+            temp = temp.slice(1)
+          }
           this.value = temp;
         } else {
           this.value = String(Number(this.value));

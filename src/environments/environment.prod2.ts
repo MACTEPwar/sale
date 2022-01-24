@@ -6,7 +6,6 @@ export const environment = {
   production: false,
   apiUrl: 'http://136.243.74.250:3333',
   propductSearchType: 'string'
-  // propductSearchType: 'number'
 };
 
 /*

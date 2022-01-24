@@ -27,7 +27,7 @@ export class ProductListComponent implements OnInit {
   }
   @Input()
   public set searchValue(value) {
-    this.serachStr$.next(+value);
+    this.serachStr$.next(value);
     this._searchValue = value;
     // if (value == String(Number(value)) || value === '') {
     //   this.prevText = +value;
@@ -41,6 +41,7 @@ export class ProductListComponent implements OnInit {
   }
   @Output() add: EventEmitter<TProduct> = new EventEmitter<TProduct>();
   @Output() clear: EventEmitter<void> = new EventEmitter<void>();
+  @Output() inputClick: EventEmitter<void> = new EventEmitter<void>();
   @Output() search: EventEmitter<TNullable<number>> = new EventEmitter<
     TNullable<number>
   >();
@@ -49,18 +50,18 @@ export class ProductListComponent implements OnInit {
   @ViewChild('searchLine') searchLineERef?: ElementRef<any>;
   // @ViewChild('inp') inputERef?: ElementRef<any>;
 
-  serachStr$: BehaviorSubject<TNullable<number>> = new BehaviorSubject<
-    TNullable<number>
+  serachStr$: BehaviorSubject<TNullable<any>> = new BehaviorSubject<
+    TNullable<any>
   >(null);
   productList$: Observable<Array<TProduct>>;
-  prevText: TNullable<number> = null;
+  prevText: TNullable<any> = null;
   visibleResult = false;
 
   constructor(private productListService: ProductListService) {
     this.productList$ = this.productListService.productList$;
     this.serachStr$
       .pipe(
-        filter((f: TNullable<number>) => f != null && String(f!).length > 0),
+        filter((f: TNullable<any>) => f != null && String(f!).length > 0),
         tap(_ => {
           this.search.emit(_);
         }),
@@ -70,8 +71,6 @@ export class ProductListComponent implements OnInit {
         this.productListService.getPorducts(str);
         this.visibleResult = true;
       });
-
-    console.log('TEST');
   }
 
   ngOnInit(): void {}
@@ -81,12 +80,13 @@ export class ProductListComponent implements OnInit {
   }
 
   onInput(inp: any): void {
-    if (inp.value == +inp.value) {
-      this.prevText = inp.value;
-      this.serachStr$.next(inp.value);
-    } else {
-      inp.value = this.prevText;
-    }
+    this.serachStr$.next(inp.value);
+    // if (inp.value == +inp.value) {
+    //   this.prevText = inp.value;
+    //   this.serachStr$.next(inp.value);
+    // } else {
+    //   inp.value = this.prevText;
+    // }
   }
 
   addProductToReceipt(product: TProduct): void {

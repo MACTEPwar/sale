@@ -26,6 +26,7 @@ import { debounceTime, filter, switchMap, take, tap } from 'rxjs/operators';
 import { SaleNewService } from './../../core/BLL/sale-logic/sale-new.service';
 import { TReceiptProduct } from './../../shared/types/types/t-receipt-product';
 import { ServiceService } from './../service/service.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-sale',
@@ -42,9 +43,11 @@ export class SaleComponent implements OnInit {
   //   }
   // }
 
+  searchType = environment.propductSearchType;
+
   addProductState: 'none' | 'selectProduct' | 'selectAmount' = 'none';
   lastAddedProduct: TNullable<TReceiptProduct> = null;
-  currentArticle = '0';
+  currentArticle;
 
   focusAmountInput = false;
   // currentProduct: any = null;
@@ -110,6 +113,8 @@ export class SaleComponent implements OnInit {
     this.dataForPrint = this.saleService.contentForPrint;
     /** Подписка на ссылку для QR-кода */
     this.link = this.saleService.link;
+
+    this.currentArticle = this.searchType === 'number' ? '0' : '';
 
     /** Выполняется при изменении кол-ва в чеке */
     // this.changeProductInReceipt
@@ -181,6 +186,7 @@ export class SaleComponent implements OnInit {
   addProductToReceipt(product: TProduct): void {
     this.saleService.addProductToReceipt(product, 0).subscribe((res) => {
       this.addProductState = 'selectAmount';
+      this.currentArticle = this.searchType === 'number' ? '0' : '';
       const arr = res.positions.sort(
         (x: any, y: any) => x.articlePosition - y.articlePosition
       );
@@ -195,11 +201,11 @@ export class SaleComponent implements OnInit {
     this.addProductState = 'selectAmount';
   }
 
-  onChangeKeyboard(event: TNullable<number>): void {
+  onChangeKeyboard(event: TNullable<number | string>): void {
     // console.log('change', event);
     if (this.addProductState === 'selectProduct') {
     } else {
-      this.saleService.changeAmount(event);
+      this.saleService.changeAmount(event as TNullable<number>);
     }
   }
 
@@ -207,7 +213,7 @@ export class SaleComponent implements OnInit {
     if (event != null) {
       this.currentArticle = event.toString();
     } else {
-      this.currentArticle = '0';
+      this.currentArticle = this.searchType === 'number' ? '0' : '';
     }
   }
   // onChangeKeyboard(event: any): void {

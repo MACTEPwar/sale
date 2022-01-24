@@ -1,3 +1,7 @@
+<div class="keyboard_header">
+  <div>Додати товар</div>
+  <button (click)="onClose()"></button>
+</div>
 <div class="keyboard_contain">
   <div class="content">
     <ng-container
@@ -21,110 +25,110 @@
   >
     <div class="keyboard_header">
       <div></div>
-      <button (click)="onClose()"></button>
+      <button (click)="this.keyboardVisible = false"></button>
     </div>
     <div class="keyboard_contain">
       <div class="literal_keyboard" *ngIf="key == eKeyBoardType.UA">
-        <div class="key">й</div>
-        <div class="key">ц</div>
-        <div class="key">у</div>
-        <div class="key">к</div>
-        <div class="key">е</div>
-        <div class="key">н</div>
-        <div class="key">г</div>
-        <div class="key">ш</div>
-        <div class="key">щ</div>
-        <div class="key">з</div>
-        <div class="key">x</div>
-        <div class="key">ф</div>
-        <div class="key">і</div>
-        <div class="key">в</div>
-        <div class="key">а</div>
-        <div class="key">п</div>
-        <div class="key">р</div>
-        <div class="key">о</div>
-        <div class="key">л</div>
-        <div class="key">д</div>
-        <div class="key">ж</div>
-        <div class="key">є</div>
-        <div class="key">я</div>
-        <div class="key">ч</div>
-        <div class="key">с</div>
-        <div class="key">м</div>
-        <div class="key">и</div>
-        <div class="key">т</div>
-        <div class="key">ь</div>
-        <div class="key">б</div>
-        <div class="key">ю</div>
-        <div class="key">ї</div>
-        <div class="key backspace"></div>
-        <div class="key">'</div>
+        <div class="key" (click)="setValue('й')">й</div>
+        <div class="key" (click)="setValue('ц')">ц</div>
+        <div class="key" (click)="setValue('у')">у</div>
+        <div class="key" (click)="setValue('к')">к</div>
+        <div class="key" (click)="setValue('е')">е</div>
+        <div class="key" (click)="setValue('н')">н</div>
+        <div class="key" (click)="setValue('г')">г</div>
+        <div class="key" (click)="setValue('ш')">ш</div>
+        <div class="key" (click)="setValue('щ')">щ</div>
+        <div class="key" (click)="setValue('з')">з</div>
+        <div class="key" (click)="setValue('x')">x</div>
+        <div class="key" (click)="setValue('ф')">ф</div>
+        <div class="key" (click)="setValue('і')">і</div>
+        <div class="key" (click)="setValue('в')">в</div>
+        <div class="key" (click)="setValue('а')">а</div>
+        <div class="key" (click)="setValue('п')">п</div>
+        <div class="key" (click)="setValue('р')">р</div>
+        <div class="key" (click)="setValue('о')">о</div>
+        <div class="key" (click)="setValue('л')">л</div>
+        <div class="key" (click)="setValue('д')">д</div>
+        <div class="key" (click)="setValue('ж')">ж</div>
+        <div class="key" (click)="setValue('є')">є</div>
+        <div class="key" (click)="setValue('я')">я</div>
+        <div class="key" (click)="setValue('ч')">ч</div>
+        <div class="key" (click)="setValue('с')">с</div>
+        <div class="key" (click)="setValue('м')">м</div>
+        <div class="key" (click)="setValue('и')">и</div>
+        <div class="key" (click)="setValue('т')">т</div>
+        <div class="key" (click)="setValue('ь')">ь</div>
+        <div class="key" (click)="setValue('б')">б</div>
+        <div class="key" (click)="setValue('ю')">ю</div>
+        <div class="key" (click)="setValue('ї')">ї</div>
+        <div class="key backspace" (click)="setValue('backspace')"></div>
+        <div class="key" (click)="setValue('\'')">'</div>
         <div class="key" (click)="togleLang(eKeyBoardType.RU)">RU</div>
         <div class="key" (click)="togleLang(eKeyBoardType.NUM)">123</div>
-        <div class="key space"></div>
-        <div class="key">,</div>
-        <div class="key">.</div>
-        <div class="key enter"></div>
+        <div class="key space" (click)="setValue(' ')"></div>
+        <div class="key" (click)="setValue(',')">,</div>
+        <div class="key" (click)="setValue('.')">.</div>
+        <div class="key enter" (click)="setValue('enter')"></div>
       </div>
       <div class="literal_keyboard" *ngIf="key == eKeyBoardType.RU">
-        <div class="key">й</div>
-        <div class="key">ц</div>
-        <div class="key">у</div>
-        <div class="key">к</div>
-        <div class="key">е</div>
-        <div class="key">н</div>
-        <div class="key">г</div>
-        <div class="key">ш</div>
-        <div class="key">щ</div>
-        <div class="key">з</div>
-        <div class="key">x</div>
-        <div class="key">ф</div>
-        <div class="key">ы</div>
-        <div class="key">в</div>
-        <div class="key">а</div>
-        <div class="key">п</div>
-        <div class="key">р</div>
-        <div class="key">о</div>
-        <div class="key">л</div>
-        <div class="key">д</div>
-        <div class="key">ж</div>
-        <div class="key">э</div>
-        <div class="key">я</div>
-        <div class="key">ч</div>
-        <div class="key">с</div>
-        <div class="key">м</div>
-        <div class="key">и</div>
-        <div class="key">т</div>
-        <div class="key">ь</div>
-        <div class="key">б</div>
-        <div class="key">ю</div>
-        <div class="key">ъ</div>
-        <div class="key backspace"></div>
-        <div class="key">ё</div>
+        <div class="key" (click)="setValue('й')">й</div>
+        <div class="key" (click)="setValue('ц')">ц</div>
+        <div class="key" (click)="setValue('у')">у</div>
+        <div class="key" (click)="setValue('к')">к</div>
+        <div class="key" (click)="setValue('е')">е</div>
+        <div class="key" (click)="setValue('н')">н</div>
+        <div class="key" (click)="setValue('г')">г</div>
+        <div class="key" (click)="setValue('ш')">ш</div>
+        <div class="key" (click)="setValue('щ')">щ</div>
+        <div class="key" (click)="setValue('з')">з</div>
+        <div class="key" (click)="setValue('x')">x</div>
+        <div class="key" (click)="setValue('ф')">ф</div>
+        <div class="key" (click)="setValue('ы')">ы</div>
+        <div class="key" (click)="setValue('в')">в</div>
+        <div class="key" (click)="setValue('а')">а</div>
+        <div class="key" (click)="setValue('п')">п</div>
+        <div class="key" (click)="setValue('р')">р</div>
+        <div class="key" (click)="setValue('о')">о</div>
+        <div class="key" (click)="setValue('л')">л</div>
+        <div class="key" (click)="setValue('д')">д</div>
+        <div class="key" (click)="setValue('ж')">ж</div>
+        <div class="key" (click)="setValue('э')">э</div>
+        <div class="key" (click)="setValue('я')">я</div>
+        <div class="key" (click)="setValue('ч')">ч</div>
+        <div class="key" (click)="setValue('с')">с</div>
+        <div class="key" (click)="setValue('м')">м</div>
+        <div class="key" (click)="setValue('и')">и</div>
+        <div class="key" (click)="setValue('т')">т</div>
+        <div class="key" (click)="setValue('ь')">ь</div>
+        <div class="key" (click)="setValue('б')">б</div>
+        <div class="key" (click)="setValue('ю')">ю</div>
+        <div class="key" (click)="setValue('ъ')">ъ</div>
+        <div class="key backspace" (click)="setValue('backspace')"></div>
+        <div class="key" (click)="setValue('ё')">ё</div>
         <div class="key" (click)="togleLang(eKeyBoardType.UA)">UA</div>
         <div class="key" (click)="togleLang(eKeyBoardType.NUM)">123</div>
-        <div class="key space"></div>
-        <div class="key">,</div>
-        <div class="key">.</div>
-        <div class="key enter"></div>
+        <div class="key space" (click)="setValue(' ')"></div>
+        <div class="key" (click)="setValue(',')">,</div>
+        <div class="key" (click)="setValue('.')">.</div>
+        <div class="key enter" (click)="setValue('enter')"></div>
       </div>
       <div class="num_keyboard" *ngIf="key == eKeyBoardType.NUM">
-        <div class="key">1</div>
-        <div class="key">2</div>
-        <div class="key">3</div>
-        <div class="key">4</div>
-        <div class="key">5</div>
-        <div class="key">6</div>
-        <div class="key">7</div>
-        <div class="key">8</div>
-        <div class="key">9</div>
-        <div class="key">0</div>
-        <div class="key backspace"></div>
+        <div class="key" (click)="setValue('1')">1</div>
+        <div class="key" (click)="setValue('2')">2</div>
+        <div class="key" (click)="setValue('3')">3</div>
+        <div class="key" (click)="setValue('4')">4</div>
+        <div class="key" (click)="setValue('5')">5</div>
+        <div class="key" (click)="setValue('6')">6</div>
+        <div class="key" (click)="setValue('7')">7</div>
+        <div class="key" (click)="setValue('8')">8</div>
+        <div class="key" (click)="setValue('9')">9</div>
+        <div class="key" (click)="setValue('0')">0</div>
+        <div class="key backspace" (click)="setValue('backspace')"></div>
         <div></div>
-        <div class="key">.</div>
+        <div class="key" (click)="setValue('.')">.</div>
         <div class="key numToLang" (click)="togleLang(eKeyBoardType.UA)"></div>
-        <div class="key space"></div>
-        <div class="key enter"></div>
+        <div class="key space" (click)="setValue(' ')"></div>
+        <div class="key enter" (click)="setValue('enter')"></div>
       </div>
     </div>
   </div>
