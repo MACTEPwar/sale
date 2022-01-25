@@ -809,7 +809,8 @@ $btns: 37px;
 
 .datasearch {
   display: flex;
-  width: 100%;
+  // width: 100%;
+  width: 90%;
   padding-right: 20px;
   flex-direction: column;
   height: calc(100% - 100px);
@@ -1006,9 +1007,11 @@ $btns: 37px;
   background: $gray1;
   position: fixed;
   bottom: 50px;
-  height: 50vh;
+  height: 40vh;
+  // height: 50vh;
   width: 100%;
-  min-height: 220px;
+  min-height: 190px;
+  // min-height: 220px;
   left: 0;
   .keyboard_header {
     height: 50px;
