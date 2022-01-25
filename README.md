@@ -1,5 +1,6 @@
 # запуск на эмуляторе + билд apk
 ng build --aot
+ng build --aot -c=literal
 npx cap run android
 
 # запуск для дебага на эмуляторе
