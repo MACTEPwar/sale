@@ -12,7 +12,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { PrinterService } from '@common/core';
+import { PrinterService, AuthenticationService } from '@common/core';
 import { TNullable, TProduct } from '@common/types';
 import {
   BehaviorSubject,
@@ -43,7 +43,7 @@ export class SaleComponent implements OnInit {
   //   }
   // }
 
-  searchType = environment.propductSearchType;
+  searchType: string = '0';
 
   addProductState: 'none' | 'selectProduct' | 'selectAmount' = 'none';
   lastAddedProduct: TNullable<TReceiptProduct> = null;
@@ -101,7 +101,8 @@ export class SaleComponent implements OnInit {
     private messageService: MessageService,
     private cdr: ChangeDetectorRef,
     @Optional() private keyboardNumberService: KeyboardNumberService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private authService: AuthenticationService
   ) {
     /** Подписка на товары в чеке */
     this.receiptProducts = this.saleService.receipt.products;
@@ -114,7 +115,9 @@ export class SaleComponent implements OnInit {
     /** Подписка на ссылку для QR-кода */
     this.link = this.saleService.link;
 
-    this.currentArticle = this.searchType === 'number' ? '0' : '';
+    this.searchType = this.authService.currentUser?.settings?.keyboardType ?? '0'
+
+    this.currentArticle = this.searchType === '0' ? '0' : '';
 
     /** Выполняется при изменении кол-ва в чеке */
     // this.changeProductInReceipt
@@ -186,7 +189,7 @@ export class SaleComponent implements OnInit {
   addProductToReceipt(product: TProduct): void {
     this.saleService.addProductToReceipt(product, 0).subscribe((res) => {
       this.addProductState = 'selectAmount';
-      this.currentArticle = this.searchType === 'number' ? '0' : '';
+      this.currentArticle = this.searchType === '0' ? '0' : '';
       const arr = res.positions.sort(
         (x: any, y: any) => x.articlePosition - y.articlePosition
       );
@@ -213,7 +216,7 @@ export class SaleComponent implements OnInit {
     if (event != null) {
       this.currentArticle = event.toString();
     } else {
-      this.currentArticle = this.searchType === 'number' ? '0' : '';
+      this.currentArticle = this.searchType === '0' ? '0' : '';
     }
   }
   // onChangeKeyboard(event: any): void {

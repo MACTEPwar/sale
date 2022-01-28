@@ -5,4 +5,9 @@ export type TUser = {
   access_token?: string;
   refresh_token?: string;
   isAdmin?: boolean;
+  settings?: TSettings;
+};
+
+export type TSettings = {
+  keyboardType?: string;
 };

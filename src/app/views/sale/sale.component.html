@@ -164,7 +164,7 @@
   <div class="keyboarddialog">
     <app-keyboard-number
       *ngIf="
-        (searchType === 'number' && addProductState === 'selectProduct') ||
+        (searchType === '0' && addProductState === 'selectProduct') ||
           addProductState === 'selectAmount';
         else elseBlock
       "
@@ -183,7 +183,7 @@
     ></app-keyboard-number>
     <ng-template #elseBlock>
       <app-keyboard-literal
-        *ngIf="searchType === 'string'"
+        *ngIf="searchType === '1'"
         [itemTemplate]="selectProductLiteral"
         [value]="currentArticle"
         [defaultValue]="''"
