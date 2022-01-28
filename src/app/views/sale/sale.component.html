@@ -168,6 +168,7 @@
           addProductState === 'selectAmount';
         else elseBlock
       "
+      title="Додати товар"
       [itemTemplate]="
         addProductState === 'selectProduct' ? selectProduct : selectAmount
       "
@@ -194,17 +195,66 @@
     </ng-template>
   </div>
 </div>
+
+<ng-container *ngIf="visiblePaymantProcess && (payInStart || payInProgress)">
+  <div class="keyboarddialog">
+    <app-keyboard-number
+    title="Оплата готiвкою"
+      [itemTemplate]="dialogInputCash"
+      [value]="inputCash"
+      [defaultValue]="0"
+      [max]="99999999"
+      (close)="cancelPay()"
+      (change)="onChangeKeyboardMoney($event)"
+    >
+      <ng-template #dialogInputCash let-value let-clearFunction="clearFunction">
+        <div class="amount_line">
+          <button class="cancel" (click)="clearFunction()"></button>
+          <button class="minus" (click)="moneyMinus()"></button>
+
+          <div class="val">{{ value }}</div>
+
+          <button class="plus" (click)="moneyPlus()"></button>
+          <button class="apply" (click)="doPayment(0)"></button>
+        </div>
+
+        <div class="datasearch" *ngIf="restCash">
+          <div class="amount_card">
+            <div class="sum">
+              <span><b>Решта</b></span><span> {{ restCash | round10 }}</span>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </app-keyboard-number>
+  </div>
+</ng-container>
+
 <p-dialog
   [header]="payInProgress === false ? 'Введiть кошти' : 'Оплата'"
   [modal]="true"
-  [(visible)]="visiblePaymantProcess"
+  [(visible)]="visiblePaymantProcess  && !payInStart"
   [style]="{ width: '400px' }"
   [closeOnEscape]="false"
   [closable]="false"
   [draggable]="false"
 >
   <ng-container *ngIf="payInStart && !payInProgress">
-    <div class="p-grid">
+    <!-- <div class="keyboarddialog">
+      <app-keyboard-number
+        [itemTemplate]=""
+        [value]="inputCash"
+        [defaultValue]="0"
+        (close)="addProductState = 'none'"
+        (change)="onChangeKeyboard($event)"
+      >
+      <ng-template>
+
+      </ng-template>
+    </app-keyboard-number>
+    </div> -->
+
+    <!-- <div class="p-grid">
       <div class="p-col">
         <p-inputNumber
           class="w-100"
@@ -245,7 +295,7 @@
           (onClick)="cancelPay()"
         ></p-button>
       </div>
-    </div>
+    </div> -->
   </ng-container>
   <ng-container *ngIf="payInProgress">
     <p-progressBar

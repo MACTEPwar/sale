@@ -70,7 +70,7 @@ export class SaleComponent implements OnInit {
   link: Observable<string>;
 
   /** Введенные деньги в наличке */
-  inputCash: TNullable<number> = null;
+  inputCash: TNullable<string> = '0';
   /** Остаток */
   restCash: TNullable<number> = null;
 
@@ -292,6 +292,25 @@ export class SaleComponent implements OnInit {
     this.addProductState = 'none';
   }
 
+  moneyMinus(): void {
+    if (+this.inputCash! >= 1) {
+      this.inputCash = (+this.inputCash! - 1).toString();
+    } else {
+      this.inputCash = '0';
+    }
+    this.onInputCash(this.inputCash);
+  }
+  moneyPlus(): void {
+    this.inputCash = (+this.inputCash! + 1).toString();
+    this.onInputCash(this.inputCash);
+  }
+  selectInputCash(): void {}
+  onChangeKeyboardMoney(event: TNullable<number | string>): void {
+    //  this.restCash
+    this.inputCash = event as TNullable<string>;
+    this.onInputCash(this.inputCash);
+  }
+
   /** Когда нажал расплатиться наличкой */
   clickDoPayCash(): void {
     this.payInStart = true;
@@ -301,7 +320,7 @@ export class SaleComponent implements OnInit {
   /** Когда нажал расплатиться наличкой */
   clickDoPayCard(): void {
     this.confirmationService.confirm({
-      message: 'Виконати оплату картою?',
+      message: 'Оплата по терміналу успішна?',
       acceptLabel: 'Так',
       rejectLabel: 'Нi',
       header: 'Увага',
@@ -317,7 +336,7 @@ export class SaleComponent implements OnInit {
    */
   onInputCash(event: any): void {
     this.inputCash = event;
-    this.restCash = this.inputCash! - this.totalSum.getValue();
+    this.restCash = +this.inputCash! - this.totalSum.getValue();
   }
 
   /**
@@ -342,7 +361,7 @@ export class SaleComponent implements OnInit {
 
     switch (paymentType) {
       case 0: {
-        sum = this.inputCash ?? this.totalSum.getValue();
+        sum = +this.inputCash! ?? this.totalSum.getValue();
         break;
       }
       case 1: {
@@ -360,16 +379,24 @@ export class SaleComponent implements OnInit {
       .subscribe(
         (res) => {
           this.restCash = null;
-          this.inputCash = null;
+          this.inputCash = '0';
           this.serviceService.getMoneyInKassa();
           this.payInProgress = false;
+          // this.payInStart = false;
+          // this.visiblePaymantProcess = false;
           // this.saleService.getContentForPrint(
           //   this.saleService.lastReceiptNumber.getValue()
           // );
         },
         (e) => {
-          this.visiblePaymantProcess = false;
-          this.payInProgress = false;
+          if (paymentType === 0) {
+            this.visiblePaymantProcess = true;
+            this.payInStart = true;
+            this.payInProgress = false;
+          } else {
+            this.visiblePaymantProcess = false;
+            this.payInProgress = false;
+          }
         }
       );
   }
@@ -379,7 +406,7 @@ export class SaleComponent implements OnInit {
     this.visiblePaymantProcess = false;
     this.payInStart = false;
     this.restCash = null;
-    this.inputCash = null;
+    this.inputCash = '0';
   }
 
   /**

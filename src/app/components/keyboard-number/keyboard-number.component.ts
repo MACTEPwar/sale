@@ -22,6 +22,7 @@ export class KeyboardNumberComponent implements OnInit {
   itemTemplate?: TemplateRef<any>;
   @Input()
   value: TNullable<string> = null;
+  @Input() title: string = '';
   @Input() defaultValue: any = null;
   @Input() max: number = 9999;
   @Input() min: number = 0;
