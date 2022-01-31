@@ -2,7 +2,7 @@ import {
   Component,
   Renderer2,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef,
 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
@@ -14,7 +14,6 @@ import { AuthenticationService } from 'src/app/core/authentication/authenticatio
 import { TNullable } from './shared/types/types/t-nullabel';
 import { TUser } from './shared/types/types/t-user';
 import { ServiceService } from './views/service/service.service';
-
 
 declare function require(moduleName: string): any;
 
@@ -54,6 +53,9 @@ export class AppComponent {
   //#endregion
 
   visibleMainMenu$: Observable<boolean>;
+
+  visibleProgress = false;
+  visibleZProgress = false;
 
   constructor(
     public router: Router,
@@ -128,14 +130,8 @@ export class AppComponent {
               },
               {
                 icon: 'print',
-                label: 'Тест печати',
+                label: 'Тест друку',
                 command: () => this.serviceComponent.testPrint(this.renderer),
-              },
-              {
-                label: 'Тест возврат',
-                command: () => {
-                  this.router.navigate(['return', '182823897']);
-                },
               },
             ],
           },
@@ -249,24 +245,34 @@ export class AppComponent {
   }
 
   doZReport(): void {
+    // this.visibleConfirmDialog = true;
+    this.visibleZProgress = true;
     this.serviceComponent
       .doZReport$()
       .pipe(map((m) => m.data))
-      .subscribe((res) => {
-        /** Поулчаю статус ПРРО */
-        this.serviceService.getEcrStatus();
-        /** Поулчаю статус смены */
-        this.serviceService.getShiftStatus();
-        this.confirmationService.confirm({
-          message: 'Z-звiт зроблено. Роздрукувати?',
-          acceptLabel: 'Так',
-          rejectLabel: 'Нi',
-          header: 'Iнфо',
-          accept: () => {
-            this.serviceComponent.printZReport(this.renderer);
-          },
-        });
-      });
+      .subscribe(
+        (res) => {
+          // this.visibleConfirmDialog = false;
+          this.visibleZProgress = false;
+          /** Поулчаю статус ПРРО */
+          this.serviceService.getEcrStatus();
+          /** Поулчаю статус смены */
+          this.serviceService.getShiftStatus();
+          this.confirmationService.confirm({
+            message: 'Z-звiт зроблено. Роздрукувати?',
+            acceptLabel: 'Так',
+            rejectLabel: 'Нi',
+            header: 'Iнфо',
+            accept: () => {
+              this.serviceComponent.printZReport(this.renderer);
+            },
+          });
+        },
+        (err) => {
+          // this.visibleConfirmDialog = false;
+          this.visibleZProgress = false;
+        }
+      );
   }
 
   doXReport(): void {
@@ -281,20 +287,27 @@ export class AppComponent {
     switch (this.confirmOperation) {
       case 'cashIn': {
         if (state === true && this.confirmText != null) {
-          this.serviceComponent.doCashIn(+this.confirmText).subscribe((res) => {
-            this.serviceComponent.getMoneyInKassa();
-            this.serviceComponent.getShiftStatus();
-            this.visibleConfirmDialog = false;
-            this.confirmText = null;
-            this.messageService.add({
-              severity: 'info',
-              summary: 'Iнфо',
-              detail: 'Виконано внесення',
-            });
-            if (needPrint === true) {
-              this.serviceComponent.printLastReceipt(this.renderer);
+          this.visibleProgress = true;
+          this.serviceComponent.doCashIn(+this.confirmText).subscribe(
+            (res) => {
+              this.visibleProgress = false;
+              this.serviceComponent.getMoneyInKassa();
+              this.serviceComponent.getShiftStatus();
+              this.visibleConfirmDialog = false;
+              this.confirmText = null;
+              this.messageService.add({
+                severity: 'info',
+                summary: 'Iнфо',
+                detail: 'Виконано внесення',
+              });
+              if (needPrint === true) {
+                this.serviceComponent.printLastReceipt(this.renderer);
+              }
+            },
+            (err) => {
+              this.visibleProgress = false;
             }
-          });
+          );
         } else {
           this.visibleConfirmDialog = false;
         }
@@ -302,9 +315,10 @@ export class AppComponent {
       }
       case 'cashOut': {
         if (state === true && this.confirmText != null) {
-          this.serviceComponent
-            .doCashOut(+this.confirmText)
-            .subscribe((res) => {
+          this.visibleProgress = true;
+          this.serviceComponent.doCashOut(+this.confirmText).subscribe(
+            (res) => {
+              this.visibleProgress = false;
               this.serviceComponent.getMoneyInKassa();
               this.confirmText = null;
               this.visibleConfirmDialog = false;
@@ -316,7 +330,11 @@ export class AppComponent {
               if (needPrint === true) {
                 this.serviceComponent.printLastReceipt(this.renderer);
               }
-            });
+            },
+            (err) => {
+              this.visibleProgress = false;
+            }
+          );
         } else {
           this.visibleConfirmDialog = false;
         }

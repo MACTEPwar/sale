@@ -81,39 +81,58 @@
 </p-overlayPanel>
 
 <p-dialog
+  header="Робиться Z-звiт"
+  [(visible)]="visibleZProgress"
+  [style]="{ width: '300px' }"
+>
+  <p-progressBar
+    mode="indeterminate"
+    [style]="{ height: '6px' }"
+  ></p-progressBar
+></p-dialog>
+
+<p-dialog
   header="Введiть суму"
   [(visible)]="visibleConfirmDialog"
   [style]="{ width: '300px' }"
 >
-  <div class="p-grid">
-    <div class="p-col confirm_input">
-      <input min="0" type="number" pInputText [(ngModel)]="confirmText" />
+  <ng-container *ngIf="visibleProgress; else noProgress">
+    <p-progressBar
+      mode="indeterminate"
+      [style]="{ height: '6px' }"
+    ></p-progressBar>
+  </ng-container>
+  <ng-template #noProgress>
+    <div class="p-grid">
+      <div class="p-col confirm_input">
+        <input min="0" type="number" pInputText [(ngModel)]="confirmText" />
+      </div>
     </div>
-  </div>
-  <div class="p-grid">
-    <div class="p-col">
-      <label for="printReceipt"
-        ><input id="printReceipt" type="checkbox" #needPrint />Друкувати
-        чек</label
-      >
+    <div class="p-grid">
+      <div class="p-col">
+        <label for="printReceipt"
+          ><input id="printReceipt" type="checkbox" #needPrint />Друкувати
+          чек</label
+        >
+      </div>
     </div>
-  </div>
-  <div class="p-grid">
-    <div class="p-col p-text-center confirm_buttons">
-      <p-button
-        icon="pi pi-check"
-        label="Так"
-        class="p-button-lg"
-        (onClick)="confirm(true, needPrint.checked)"
-      ></p-button>
-      <p-button
-        icon="pi pi-times"
-        label="Нi"
-        class="p-button-lg p-button-warning"
-        (onClick)="confirm(false, needPrint.checked)"
-      ></p-button>
+    <div class="p-grid">
+      <div class="p-col p-text-center confirm_buttons">
+        <p-button
+          icon="pi pi-check"
+          label="Так"
+          class="p-button-lg"
+          (onClick)="confirm(true, needPrint.checked)"
+        ></p-button>
+        <p-button
+          icon="pi pi-times"
+          label="Нi"
+          class="p-button-lg p-button-warning"
+          (onClick)="confirm(false, needPrint.checked)"
+        ></p-button>
+      </div>
     </div>
-  </div>
+  </ng-template>
 </p-dialog>
 
 <p-dialog

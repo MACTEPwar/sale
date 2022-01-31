@@ -28,6 +28,7 @@ import { SlideMenuModule } from 'primeng/slidemenu';
 import { DropdownModule } from 'primeng/dropdown';
 import { FileUploadModule } from 'primeng/fileupload';
 import { MainMenuModule } from './components/main-menu/main-menu.module';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 @NgModule({
   declarations: [AppComponent, IsLoginPagePipe, TestComponent],
@@ -55,6 +56,7 @@ import { MainMenuModule } from './components/main-menu/main-menu.module';
     MainMenuModule,
     ProductListModule,
     KeyboardLiteralModule,
+    ProgressBarModule,
   ],
   providers: [MessageService, Printer, HTTP],
   bootstrap: [AppComponent],
