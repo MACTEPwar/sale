@@ -2,10 +2,36 @@
 @import "./variables";
 @import "./mixins";
 
-:root{
-  --coef: 2.21;
+@media (max-width: 800px) {
+  :root {
+    --coef: 1.15;
+  }
+  body,
+  .p-button {
+    font-size: 14px;
+  }
 }
 
+@media (min-width: 800px) {
+  :root {
+    --coef: 0.9;
+  }
+  body,
+  .p-button {
+    font-size: 16px;
+  }
+}
+
+// @media (-webkit-min-device-pixel-ratio: 1.1),
+//   (-o-mim-device-pixel-ratio: 1.1),
+//   (min--moz-device-pixel-ratio: 1.1),
+//   (min-device-pixel-ratio: 1.1) {
+
+//     :root{
+//       --coef: 0.9;
+//     }
+
+//   }
 
 .h-100 {
   height: 100%;
@@ -338,7 +364,8 @@ body {
     .p-slidemenu {
       padding: 0;
       border: none;
-      box-shadow: 0 calc(5px / var(--coef)) calc(10px / var(--coef)) rgb(0 0 0 / 20%);
+      box-shadow: 0 calc(5px / var(--coef)) calc(10px / var(--coef))
+        rgb(0 0 0 / 20%);
       border-radius: 0;
     }
     .p-slidemenu-wrapper {
@@ -359,7 +386,8 @@ body {
     .p-slidemenu {
       padding: 0;
       border: none;
-      box-shadow: 0 calc(5px / var(--coef)) calc(10px / var(--coef)) rgb(0 0 0 / 20%);
+      box-shadow: 0 calc(5px / var(--coef)) calc(10px / var(--coef))
+        rgb(0 0 0 / 20%);
       border-radius: 0;
       width: calc(150px / var(--coef));
     }
@@ -430,16 +458,16 @@ body {
       height: calc(25px / var(--coef));
     }
     #online_icon {
-      background-position: calc(-14px / var(--coef)) calc(-48px / var(--coef));
+      background-position: -14px -48px;
     }
     #offline_icon {
-      background-position: calc(-14px / var(--coef)) calc(-12px / var(--coef));
+      background-position: -14px -12px;
     }
     #opencashbox_icon {
-      background-position: calc(-51px / var(--coef)) calc(-48px / var(--coef));
+      background-position: -51px -48px;
     }
     #closecashbox_icon {
-      background-position: calc(-49px / var(--coef)) calc(-12px / var(--coef));
+      background-position: -49px -12px;
     }
   }
 }
@@ -472,7 +500,8 @@ body {
     display: block;
     width: 100%;
     z-index: 10;
-    box-shadow: 0 calc(12px / var(--coef)) calc(9px / var(--coef)) rgb(0 0 0 / 20%);
+    box-shadow: 0 calc(12px / var(--coef)) calc(9px / var(--coef))
+      rgb(0 0 0 / 20%);
     border-radius: 0 0 calc(10px / var(--coef)) calc(10px / var(--coef));
     overflow: auto;
     padding-bottom: calc(20px / var(--coef));
@@ -499,7 +528,7 @@ body {
     position: absolute;
     left: 0;
     background-image: url("../images/sprite_icons.png");
-    background-position: calc(-143px / var(--coef)) calc(-2px / var(--coef));
+    background-position: -143px -2px;
     background-repeat: no-repeat;
     z-index: 1;
   }
@@ -816,12 +845,11 @@ $btns: calc(37px / var(--coef));
 .datasearch {
   display: flex;
   // width: 100%;
-  width: 90%;
-  padding-right: calc(20px / var(--coef));
+  padding-right: 10px;
   flex-direction: column;
   height: calc(100% - calc(100px / var(--coef)));
   overflow: auto;
-  margin-top: calc(20px / var(--coef));
+  margin-top: 10px;
   .datasearch_tr {
     display: inline-flex;
     width: 100%;
@@ -829,7 +857,7 @@ $btns: calc(37px / var(--coef));
     justify-content: space-between;
     align-items: center;
     font-size: calc(20px / var(--coef));
-    margin: calc(2px / var(--coef)) calc(0px / var(--coef));
+    margin: 2px 0px;
     background: #fff;
     & > div {
       flex: 1;
@@ -1046,8 +1074,9 @@ $btns: calc(37px / var(--coef));
 .keyboard_btns {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-column-gap: calc(3px / var(--coef));
-  grid-row-gap: calc(3px / var(--coef));
+  grid-column-gap: 5px;
+  grid-row-gap: 5px;
+  margin-left: 10px;
   height: 100%;
   button {
     width: 100%;
@@ -1164,6 +1193,7 @@ $btns: calc(37px / var(--coef));
   align-items: center;
   height: calc(80px / var(--coef));
   width: 100%;
+  padding-right: 10px;
   button {
     height: calc(80px / var(--coef));
     width: calc(80px / var(--coef));
@@ -1208,14 +1238,14 @@ $btns: calc(37px / var(--coef));
 }
 
 .amount_card {
-  font-size: calc(30px / var(--coef));
+  font-size: calc(22px / var(--coef));
   padding: calc(20px / var(--coef));
   display: flex;
   background: #fff;
   flex-direction: column;
   width: 100%;
   .art {
-    font-size: calc(26px / var(--coef));
+    font-size: calc(20px / var(--coef));
     border-bottom: calc(2px / var(--coef)) solid;
     padding: 0 0 calc(10px / var(--coef)) 0;
     margin-bottom: calc(10px / var(--coef));
@@ -1227,25 +1257,25 @@ $btns: calc(37px / var(--coef));
   .price {
     display: flex;
     justify-content: space-between;
-    font-size: calc(26px / var(--coef));
+    font-size: calc(20px / var(--coef));
     padding: calc(10px / var(--coef)) 0;
     margin-bottom: calc(10px / var(--coef));
     border-bottom: calc(2px / var(--coef)) solid;
     & span:last-child {
       font-weight: bold;
-      font-size: calc(30px / var(--coef));
+      font-size: calc(24px / var(--coef));
     }
   }
   .sum {
     display: flex;
     justify-content: space-between;
-    font-size: calc(26px / var(--coef));
+    font-size: calc(22px / var(--coef));
     padding: calc(10px / var(--coef)) 0;
     margin-bottom: calc(10px / var(--coef));
-    border-bottom: calc(2px / var(--coef)) solid;
+    border-bottom: 2px solid;
     & span:last-child {
       font-weight: bold;
-      font-size: calc(30px / var(--coef));
+      font-size: calc(26px / var(--coef));
     }
   }
 }
@@ -1274,7 +1304,7 @@ $btns: calc(37px / var(--coef));
   tr.recieptTBody {
     td {
       flex: 1;
-      font-size: calc(20px / var(--coef));
+      font-size: calc(18px / var(--coef));
       height: calc(60px / var(--coef));
       align-items: center;
     }
