@@ -133,6 +133,11 @@ export class AppComponent {
                 label: 'Тест друку',
                 command: () => this.serviceComponent.testPrint(this.renderer),
               },
+              {
+                icon: 'info',
+                label: 'Iнфо по планшету',
+                command: () => this.getInfo(),
+              },
             ],
           },
           // { routerLink: '/test', label: 'Test' },
@@ -359,5 +364,11 @@ export class AppComponent {
           detail: 'Виконан iмпорт товарiв',
         });
       });
+  }
+
+  getInfo(): void {
+    alert(`
+       window.devicePixelRatio : ${window.devicePixelRatio}
+    `);
   }
 }

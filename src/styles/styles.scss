@@ -2,6 +2,11 @@
 @import "./variables";
 @import "./mixins";
 
+:root{
+  --coef: 2.21;
+}
+
+
 .h-100 {
   height: 100%;
 }
@@ -24,23 +29,23 @@ body {
 .pi-chevron-right:before {
   content: "\e901";
   position: absolute;
-  right: 10px;
-  font-size: 12px;
-  top: 20px;
+  right: calc(10px / var(--coef));
+  font-size: calc(12px / var(--coef));
+  top: calc(20px / var(--coef));
 }
 .pi-chevron-down:before {
   content: "\e902";
   position: absolute;
-  right: 10px;
-  font-size: 12px;
-  top: 13px;
+  right: calc(10px / var(--coef));
+  font-size: calc(12px / var(--coef));
+  top: calc(13px / var(--coef));
 }
 .p-panelmenu .p-panelmenu-panel {
   margin-bottom: 0;
-  border-bottom: 1px solid #2d3749;
+  border-bottom: calc(1px / var(--coef)) solid #2d3749;
 }
 .p-panelmenu .p-panelmenu-content {
-  border-radius: 0px;
+  border-radius: calc(0px / var(--coef));
   border: none;
   margin: 0;
 }
@@ -73,12 +78,12 @@ body {
   & > a {
     border: none;
     color: #ffffff;
-    font-size: 13px;
+    font-size: calc(13px / var(--coef));
     text-transform: uppercase;
     font-weight: 400;
     position: relative;
     background: #607292;
-    min-height: 50px;
+    min-height: calc(50px / var(--coef));
     &:active {
       background-color: #45546d;
     }
@@ -95,7 +100,7 @@ body {
       &::after {
         content: "";
         display: block;
-        width: 5px;
+        width: calc(5px / var(--coef));
         background: #89a2d0;
         height: 100%;
         position: absolute;
@@ -122,7 +127,7 @@ body {
   color: #fff;
   border-radius: 0;
   &.rounded {
-    border-radius: 3px;
+    border-radius: calc(3px / var(--coef));
   }
   &.outline {
     background-color: white;
@@ -144,7 +149,7 @@ body {
   &:hover,
   &:focus {
     box-shadow: none;
-    border: 1px solid #a6a6a6;
+    border: calc(1px / var(--coef)) solid #a6a6a6;
   }
 }
 
@@ -158,9 +163,9 @@ body {
 
 .userbtn button {
   text-align: left;
-  height: 50px;
+  height: calc(50px / var(--coef));
   font-family: "Roboto";
-  font-size: 14px;
+  font-size: calc(14px / var(--coef));
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -168,9 +173,9 @@ body {
 }
 .logOutBtn button {
   text-align: left;
-  height: 37px;
+  height: calc(37px / var(--coef));
   font-family: "Roboto";
-  font-size: 14px;
+  font-size: calc(14px / var(--coef));
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
@@ -179,24 +184,24 @@ body {
 
 @media screen and (max-height: 400px) {
   .loginpage {
-    padding: 10px 20px;
-    font-size: 12px;
+    padding: calc(10px / var(--coef)) calc(20px / var(--coef));
+    font-size: calc(12px / var(--coef));
     .p-inputtext {
-      padding: 4px;
-      font-size: 12px;
+      padding: calc(4px / var(--coef));
+      font-size: calc(12px / var(--coef));
     }
     .p-field {
-      margin-bottom: 10px !important;
+      margin-bottom: calc(10px / var(--coef)) !important;
     }
     .pi-chevron-down:before {
-      top: 5px;
+      top: calc(5px / var(--coef));
     }
   }
 }
 
 .saletable td,
 .saletable th {
-  font-size: 14px;
+  font-size: calc(14px / var(--coef));
 }
 
 .toMail {
@@ -206,38 +211,38 @@ body {
   padding: 0;
   align-items: center;
   input {
-    width: calc(100% - 124px);
+    width: calc(100% - calc(124px / var(--coef)));
   }
   button {
-    width: 50px;
-    height: 37px;
+    width: calc(50px / var(--coef));
+    height: calc(37px / var(--coef));
     display: inline-flex;
     justify-content: center;
     align-items: center;
     color: #fff;
     font-weight: 500;
-    font-size: 12px;
+    font-size: calc(12px / var(--coef));
     background-color: #89a2d0;
     border: none;
     outline: none;
-    border-radius: 3px;
+    border-radius: calc(3px / var(--coef));
     i {
-      margin-right: 5px;
+      margin-right: calc(5px / var(--coef));
     }
   }
 }
 
 .receiptsTable td,
 .receiptsTable th {
-  font-size: 14px;
+  font-size: calc(14px / var(--coef));
 }
 .receiptsTable > tbody {
-  max-height: calc(100vh - 180px);
+  max-height: calc(100vh - calc(180px / var(--coef)));
   .recieptTBody {
     td {
       border-width: 0;
-      border-bottom: 1px solid #d2d7e1;
-      padding: 5px 10px;
+      border-bottom: calc(1px / var(--coef)) solid #d2d7e1;
+      padding: calc(5px / var(--coef)) calc(10px / var(--coef));
     }
   }
 }
@@ -245,19 +250,19 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 50px;
+  height: calc(50px / var(--coef));
   background: $gray4;
   color: #444;
-  padding: 10px;
+  padding: calc(10px / var(--coef));
 
   .calendar > i {
     color: #322;
-    font-size: 15px;
+    font-size: calc(15px / var(--coef));
   }
 
   .calendar > span {
-    padding: 0 7px;
-    font-size: 15px;
+    padding: 0 calc(7px / var(--coef));
+    font-size: calc(15px / var(--coef));
     color: #322;
   }
 }
@@ -267,25 +272,25 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 50px;
-  padding: 0px 8px;
+  height: calc(50px / var(--coef));
+  padding: calc(0px / var(--coef)) calc(8px / var(--coef));
   background: #4e8aff;
   color: #fff;
   border: none;
   text-decoration: none;
-  font-size: 17px;
-  border-radius: 4px;
-  margin-right: 4px;
+  font-size: calc(17px / var(--coef));
+  border-radius: calc(4px / var(--coef));
+  margin-right: calc(4px / var(--coef));
   &:active {
     background: $blue2;
   }
   i {
-    margin-right: 5px;
+    margin-right: calc(5px / var(--coef));
   }
 }
 
 .confirm_buttons {
-  padding: 20px 0 0;
+  padding: calc(20px / var(--coef)) 0 0;
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -294,7 +299,7 @@ body {
     border-radius: 0;
   }
   button {
-    margin: 0 5px;
+    margin: 0 calc(5px / var(--coef));
   }
 }
 .p-button-warning {
@@ -305,35 +310,35 @@ body {
   }
 }
 .receiptProducts_amount .p-button.p-component {
-  height: 32px;
-  width: 32px;
-  border-radius: 4px;
-  margin: 0 7px;
+  height: calc(32px / var(--coef));
+  width: calc(32px / var(--coef));
+  border-radius: calc(4px / var(--coef));
+  margin: 0 calc(7px / var(--coef));
 }
 .confirm_input input {
   width: 100%;
-  padding: 8px;
+  padding: calc(8px / var(--coef));
 }
 
 /*--------------........................ ------------*/
 
 .header {
-  height: 50px;
+  height: calc(50px / var(--coef));
   width: 100%;
   display: flex;
   background-color: $gray2;
   justify-content: space-between;
   .topmenu {
     .p-element.p-button {
-      height: 50px;
-      width: 100px;
+      height: calc(50px / var(--coef));
+      width: calc(100px / var(--coef));
       border: none;
       background-color: $gray1;
     }
     .p-slidemenu {
       padding: 0;
       border: none;
-      box-shadow: 0 5px 10px rgb(0 0 0 / 20%);
+      box-shadow: 0 calc(5px / var(--coef)) calc(10px / var(--coef)) rgb(0 0 0 / 20%);
       border-radius: 0;
     }
     .p-slidemenu-wrapper {
@@ -342,7 +347,7 @@ body {
       .p-submenu-list {
         width: 100% !important;
         li.p-element.p-menuitem {
-          border-bottom: 1px solid $color4;
+          border-bottom: calc(1px / var(--coef)) solid $color4;
         }
       }
     }
@@ -354,13 +359,13 @@ body {
     .p-slidemenu {
       padding: 0;
       border: none;
-      box-shadow: 0 5px 10px rgb(0 0 0 / 20%);
+      box-shadow: 0 calc(5px / var(--coef)) calc(10px / var(--coef)) rgb(0 0 0 / 20%);
       border-radius: 0;
-      width: 150px;
+      width: calc(150px / var(--coef));
     }
     .p-element.p-button {
-      height: 50px;
-      width: 100px;
+      height: calc(50px / var(--coef));
+      width: calc(100px / var(--coef));
       border: none;
       background-color: $gray1;
       span {
@@ -371,12 +376,12 @@ body {
       }
     }
     .p-slidemenu-wrapper {
-      width: 150px !important;
+      width: calc(150px / var(--coef)) !important;
       ul.p-slidemenu-rootlist,
       .p-submenu-list {
         width: 100% !important;
         li.p-element.p-menuitem {
-          border-bottom: 1px solid $color4;
+          border-bottom: calc(1px / var(--coef)) solid $color4;
         }
       }
     }
@@ -390,18 +395,18 @@ body {
   .toptitle {
     flex: 1;
     display: flex;
-    font-size: 18px;
+    font-size: calc(18px / var(--coef));
     color: $font-color;
     align-items: center;
-    padding: 0 20px;
+    padding: 0 calc(20px / var(--coef));
     background-color: $gray4;
   }
   .topinfo {
-    padding: 0 20px;
+    padding: 0 calc(20px / var(--coef));
     flex: 1;
     display: flex;
     color: #fff;
-    font-size: 18px;
+    font-size: calc(18px / var(--coef));
     height: 100%;
     align-items: center;
     background-color: $gray3;
@@ -410,7 +415,7 @@ body {
     height: 100%;
     display: flex;
     flex-direction: row;
-    width: 100px;
+    width: calc(100px / var(--coef));
     justify-content: space-evenly;
     align-items: center;
     background-color: $gray3;
@@ -421,26 +426,26 @@ body {
       display: block;
       background-image: url("../images/sprite_icons.png");
       background-repeat: no-repeat;
-      width: 25px;
-      height: 25px;
+      width: calc(25px / var(--coef));
+      height: calc(25px / var(--coef));
     }
     #online_icon {
-      background-position: -14px -48px;
+      background-position: calc(-14px / var(--coef)) calc(-48px / var(--coef));
     }
     #offline_icon {
-      background-position: -14px -12px;
+      background-position: calc(-14px / var(--coef)) calc(-12px / var(--coef));
     }
     #opencashbox_icon {
-      background-position: -51px -48px;
+      background-position: calc(-51px / var(--coef)) calc(-48px / var(--coef));
     }
     #closecashbox_icon {
-      background-position: -49px -12px;
+      background-position: calc(-49px / var(--coef)) calc(-12px / var(--coef));
     }
   }
 }
 .maincontent {
   width: 100vw;
-  height: calc(100vh - 50px);
+  height: calc(100vh - calc(50px / var(--coef)));
   overflow: auto;
 }
 
@@ -456,57 +461,57 @@ body {
     top: 0;
     left: 0;
     width: 100vw;
-    height: calc(100vh - 50px);
+    height: calc(100vh - calc(50px / var(--coef)));
     z-index: 2;
   }
   .datasearch {
     position: absolute;
-    top: 49px;
+    top: calc(49px / var(--coef));
     background-color: white;
-    max-height: 200px;
+    max-height: calc(200px / var(--coef));
     display: block;
     width: 100%;
     z-index: 10;
-    box-shadow: 0 12px 9px rgb(0 0 0 / 20%);
-    border-radius: 0 0 10px 10px;
+    box-shadow: 0 calc(12px / var(--coef)) calc(9px / var(--coef)) rgb(0 0 0 / 20%);
+    border-radius: 0 0 calc(10px / var(--coef)) calc(10px / var(--coef));
     overflow: auto;
-    padding-bottom: 20px;
-    margin-bottom: 20px;
+    padding-bottom: calc(20px / var(--coef));
+    margin-bottom: calc(20px / var(--coef));
     .datasearch_tr {
-      font-size: 18px;
+      font-size: calc(18px / var(--coef));
       display: flex;
       flex-wrap: wrap;
-      border-top: 1px solid $color4;
-      min-height: 50px;
+      border-top: calc(1px / var(--coef)) solid $color4;
+      min-height: calc(50px / var(--coef));
       align-items: center;
       div {
-        padding: 0 10px;
+        padding: 0 calc(10px / var(--coef));
       }
       button.p-component.p-button {
-        border-radius: 5px;
+        border-radius: calc(5px / var(--coef));
       }
     }
   }
   span.searchIcon {
     display: block;
-    width: 50px;
-    height: 50px;
+    width: calc(50px / var(--coef));
+    height: calc(50px / var(--coef));
     position: absolute;
     left: 0;
     background-image: url("../images/sprite_icons.png");
-    background-position: -143px -2px;
+    background-position: calc(-143px / var(--coef)) calc(-2px / var(--coef));
     background-repeat: no-repeat;
     z-index: 1;
   }
   input {
     width: 100%;
-    height: 50px;
+    height: calc(50px / var(--coef));
     background: #ffffff;
-    font-size: 20px;
+    font-size: calc(20px / var(--coef));
     border: none;
-    padding: 0 0 0 60px;
+    padding: 0 0 0 calc(60px / var(--coef));
     position: relative;
-    border-bottom: 1px solid;
+    border-bottom: calc(1px / var(--coef)) solid;
 
     &:focus {
       box-shadow: none;
@@ -515,34 +520,34 @@ body {
   }
 }
 
-$titleHeight: 51px;
-$saleSearchHeight: 55px;
+$titleHeight: calc(51px / var(--coef));
+$saleSearchHeight: calc(55px / var(--coef));
 
 $tdNameWidth: auto;
-$tdCodeWidth: 110px;
-$tdPriceWidth: 110px;
-$tdAddBtnWidth: 60px;
+$tdCodeWidth: calc(110px / var(--coef));
+$tdPriceWidth: calc(110px / var(--coef));
+$tdAddBtnWidth: calc(60px / var(--coef));
 
-$sendEmailBlock: 53px;
-$btns: 37px;
+$sendEmailBlock: calc(53px / var(--coef));
+$btns: calc(37px / var(--coef));
 
 .receiptProducts {
   display: flex;
   flex-direction: column;
   width: 100%;
-  font-size: 20px;
+  font-size: calc(20px / var(--coef));
 
   .prod_list .receiptProducts_line:first-child {
-    margin-top: 34px;
+    margin-top: calc(34px / var(--coef));
   }
   .receiptProducts_line {
     display: inline-flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    border-bottom: 2px solid $gray4;
+    border-bottom: calc(2px / var(--coef)) solid $gray4;
     padding: 0;
-    min-height: 74px;
+    min-height: calc(74px / var(--coef));
     width: 100%;
 
     &:first-child {
@@ -558,7 +563,7 @@ $btns: 37px;
       border-bottom: none;
     }
     div {
-      padding: 3px;
+      padding: calc(3px / var(--coef));
     }
 
     .receiptProducts_amount {
@@ -566,14 +571,14 @@ $btns: 37px;
       white-space: nowrap;
       overflow: hidden;
       text-align: center;
-      width: 80px;
+      width: calc(80px / var(--coef));
       input {
-        padding: 4px;
-        width: 50px;
+        padding: calc(4px / var(--coef));
+        width: calc(50px / var(--coef));
       }
     }
     .receiptProducts_discountSum {
-      width: 90px;
+      width: calc(90px / var(--coef));
       text-align: center;
     }
 
@@ -588,8 +593,8 @@ $btns: 37px;
       display: flex;
       button {
         border: none;
-        height: 32px;
-        width: 32px;
+        height: calc(32px / var(--coef));
+        width: calc(32px / var(--coef));
         display: flex;
         justify-content: center;
         align-items: center;
@@ -599,32 +604,32 @@ $btns: 37px;
       }
     }
     .receiptProducts_addtbn {
-      width: 60px;
+      width: calc(60px / var(--coef));
       background-color: $blue1;
-      height: 60px;
+      height: calc(60px / var(--coef));
       background-image: url("../images/calc.svg");
       background-repeat: no-repeat;
       background-position: center;
     }
     .receiptProducts_name {
       flex: 1;
-      padding-left: 15px;
+      padding-left: calc(15px / var(--coef));
       word-break: break-all;
       text-overflow: ellipsis;
     }
 
     .receiptProducts_sum {
-      width: 160px;
+      width: calc(160px / var(--coef));
       overflow: hidden;
       text-align: right;
       flex-direction: column;
-      padding-right: 20px;
+      padding-right: calc(20px / var(--coef));
       .s {
-        font-size: 22px;
+        font-size: calc(22px / var(--coef));
         font-weight: 600;
       }
       .d {
-        font-size: 14px;
+        font-size: calc(14px / var(--coef));
         color: red;
       }
     }
@@ -640,13 +645,13 @@ $btns: 37px;
 }
 
 .datasale {
-  height: calc(100vh - 100px);
+  height: calc(100vh - calc(100px / var(--coef)));
   width: 100%;
   display: flex;
   flex-direction: row;
 
   .sale_table {
-    width: calc(100vw - 100px);
+    width: calc(100vw - calc(100px / var(--coef)));
     overflow: auto;
     height: 100%;
     justify-content: space-between;
@@ -656,29 +661,29 @@ $btns: 37px;
     .sale_table-header {
       position: fixed;
       display: flex;
-      width: calc(100% - 100px);
-      height: 32px;
+      width: calc(100% - calc(100px / var(--coef)));
+      height: calc(32px / var(--coef));
       align-items: center;
-      font-size: 14px;
+      font-size: calc(14px / var(--coef));
       flex-direction: row;
-      border-bottom: 2px solid $gray4;
+      border-bottom: calc(2px / var(--coef)) solid $gray4;
       background-color: #fff;
       ._name {
         flex: 1;
         text-align: center;
       }
       ._amount {
-        width: 80px;
+        width: calc(80px / var(--coef));
         text-align: center;
       }
       ._discountSum {
-        width: 90px;
+        width: calc(90px / var(--coef));
         text-align: center;
       }
       ._sum {
-        width: 160px;
+        width: calc(160px / var(--coef));
         text-align: right;
-        padding-right: 20px;
+        padding-right: calc(20px / var(--coef));
       }
     }
 
@@ -686,25 +691,25 @@ $btns: 37px;
       display: flex;
       flex-direction: row;
       width: 100%;
-      height: 50px;
+      height: calc(50px / var(--coef));
       align-items: center;
-      padding: 0 20px;
+      padding: 0 calc(20px / var(--coef));
       justify-content: space-between;
       background-color: $gray1;
-      font-size: 20px;
+      font-size: calc(20px / var(--coef));
       position: fixed;
       bottom: 0;
       span {
         display: flex;
-        height: 50px;
+        height: calc(50px / var(--coef));
         align-items: center;
-        font-size: 20px;
+        font-size: calc(20px / var(--coef));
         color: #fff;
         i {
           font-weight: 600;
           font-style: normal;
-          margin: 0 8px;
-          font-size: 24px;
+          margin: 0 calc(8px / var(--coef));
+          font-size: calc(24px / var(--coef));
         }
       }
     }
@@ -713,20 +718,20 @@ $btns: 37px;
     display: flex;
     height: 100%;
     flex-direction: column;
-    width: 100px;
+    width: calc(100px / var(--coef));
     justify-content: space-between;
     background-color: #fff;
     .anulation_btn {
-      // height: 100px;
-      height: 80px;
+      // height: calc(100px / var(--coef));
+      height: calc(80px / var(--coef));
       width: 100%;
       background: #ff5e71;
       display: flex;
       color: #fff;
       justify-content: center;
       align-items: center;
-      font-size: 18px;
-      letter-spacing: 0.4px;
+      font-size: calc(18px / var(--coef));
+      letter-spacing: calc(0.4px / var(--coef));
       border: none;
       span {
         width: 100%;
@@ -737,15 +742,16 @@ $btns: 37px;
       }
     }
     ._btn {
-      // height: 100px;
-      height: 80px;
+      // height: calc(100px / var(--coef));
+      height: calc(80px / var(--coef));
+      // height: 5rem;
       width: 100%;
       display: flex;
       justify-content: center;
       align-items: center;
       color: #fff;
       background-color: $blue1;
-      border-top: 1px solid #fff;
+      border-top: calc(1px / var(--coef)) solid #fff;
       border-left: none;
       border-bottom: none;
       border-right: none;
@@ -778,24 +784,24 @@ $btns: 37px;
   display: flex;
   width: 90%;
   justify-content: space-between;
-  padding-right: 20px;
-  height: 60px;
+  padding-right: calc(20px / var(--coef));
+  height: calc(60px / var(--coef));
   align-items: center;
   span.inSearch_input {
     display: flex;
     flex: 1;
     background: $gray1;
-    height: 60px;
+    height: calc(60px / var(--coef));
     color: #fff;
     align-items: center;
-    font-size: 36px;
+    font-size: calc(36px / var(--coef));
     font-weight: bold;
-    padding: 10px;
-    width: calc(100% - 100px);
+    padding: calc(10px / var(--coef));
+    width: calc(100% - calc(100px / var(--coef)));
   }
   button {
-    width: 90px;
-    height: 60px;
+    width: calc(90px / var(--coef));
+    height: calc(60px / var(--coef));
     border: none;
     background-color: $red1;
     background-position: center;
@@ -811,23 +817,23 @@ $btns: 37px;
   display: flex;
   // width: 100%;
   width: 90%;
-  padding-right: 20px;
+  padding-right: calc(20px / var(--coef));
   flex-direction: column;
-  height: calc(100% - 100px);
+  height: calc(100% - calc(100px / var(--coef)));
   overflow: auto;
-  margin-top: 20px;
+  margin-top: calc(20px / var(--coef));
   .datasearch_tr {
     display: inline-flex;
     width: 100%;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    font-size: 20px;
-    margin: 2px 0px;
+    font-size: calc(20px / var(--coef));
+    margin: calc(2px / var(--coef)) calc(0px / var(--coef));
     background: #fff;
     & > div {
       flex: 1;
-      padding: 10px;
+      padding: calc(10px / var(--coef));
     }
 
     .article {
@@ -842,16 +848,16 @@ $btns: 37px;
         flex: 1;
       }
       .price {
-        min-width: 110px;
+        min-width: calc(110px / var(--coef));
         font-weight: bold;
         text-align: right;
-        padding-right: 20px;
+        padding-right: calc(20px / var(--coef));
       }
     }
     button.prodlistadd {
       display: flex;
-      width: 90px;
-      height: 90px;
+      width: calc(90px / var(--coef));
+      height: calc(90px / var(--coef));
       background: $blue1;
       border: none;
       background-image: url("../images/cart.svg");
@@ -867,8 +873,8 @@ $btns: 37px;
 .main-menu {
   position: absolute;
   width: 100%;
-  height: calc(100% - 50px);
-  top: 50px;
+  height: calc(100% - calc(50px / var(--coef)));
+  top: calc(50px / var(--coef));
   left: 0;
   background: #1a1b1ff2;
   display: flex;
@@ -890,8 +896,8 @@ $btns: 37px;
       height: 18.5vw;
       float: left;
       display: flex;
-      margin-right: 10px;
-      margin-bottom: 10px;
+      margin-right: calc(10px / var(--coef));
+      margin-bottom: calc(10px / var(--coef));
       justify-content: center;
       align-items: center;
       color: #fff;
@@ -912,7 +918,7 @@ $btns: 37px;
       background-repeat: no-repeat;
       background-position: center;
       background-size: contain;
-      margin-bottom: 10px;
+      margin-bottom: calc(10px / var(--coef));
     }
     .back_ico {
       opacity: 0.5;
@@ -958,8 +964,8 @@ $btns: 37px;
 .keyboarddialog {
   position: fixed;
   top: 0;
-  height: calc(100% - 50px);
-  bottom: 52px;
+  height: calc(100% - calc(50px / var(--coef)));
+  bottom: calc(52px / var(--coef));
   left: 0;
   background: $gray4;
   padding: 0;
@@ -967,7 +973,7 @@ $btns: 37px;
   width: 100%;
 }
 .keyboard_header {
-  height: 50px;
+  height: calc(50px / var(--coef));
   width: 100%;
   background: $gray1;
   color: #fff;
@@ -975,12 +981,12 @@ $btns: 37px;
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
-  padding: 15px;
-  font-size: 20px;
+  padding: calc(15px / var(--coef));
+  font-size: calc(20px / var(--coef));
   button {
     display: flex;
-    height: 30px;
-    width: 30px;
+    height: calc(30px / var(--coef));
+    width: calc(30px / var(--coef));
     border: none;
     background-color: transparent;
     background-repeat: no-repeat;
@@ -993,8 +999,8 @@ $btns: 37px;
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: calc(100% - 50px);
-  padding: 15px;
+  height: calc(100% - calc(50px / var(--coef)));
+  padding: calc(15px / var(--coef));
   .content {
     flex: 4;
   }
@@ -1006,25 +1012,25 @@ $btns: 37px;
 .keyboardmodal {
   background: $gray1;
   position: fixed;
-  bottom: 50px;
+  bottom: calc(50px / var(--coef));
   height: 40vh;
   // height: 50vh;
   width: 100%;
-  min-height: 190px;
-  // min-height: 220px;
+  min-height: calc(190px / var(--coef));
+  // min-height: calc(220px / var(--coef));
   left: 0;
   .keyboard_header {
-    height: 50px;
-    width: 50px;
+    height: calc(50px / var(--coef));
+    width: calc(50px / var(--coef));
     background: $gray1;
     color: #fff;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: row;
-    padding: 15px;
-    font-size: 20px;
-    margin-top: -50px;
+    padding: calc(15px / var(--coef));
+    font-size: calc(20px / var(--coef));
+    margin-top: calc(-50px / var(--coef));
     position: absolute;
     right: 0;
   }
@@ -1033,21 +1039,21 @@ $btns: 37px;
     flex-direction: row;
     width: 100%;
     height: 100%;
-    padding: 4px;
+    padding: calc(4px / var(--coef));
   }
 }
 
 .keyboard_btns {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-column-gap: 3px;
-  grid-row-gap: 3px;
+  grid-column-gap: calc(3px / var(--coef));
+  grid-row-gap: calc(3px / var(--coef));
   height: 100%;
   button {
     width: 100%;
     height: 100%;
-    min-width: 50px;
-    min-height: 50px;
+    min-width: calc(50px / var(--coef));
+    min-height: calc(50px / var(--coef));
     background-color: $blue1;
     border: none;
     font-size: 11vh;
@@ -1083,7 +1089,7 @@ $btns: 37px;
 .literal_keyboard {
   display: grid;
   grid-template-columns: repeat(11, 1fr);
-  grid-gap: 4px;
+  grid-gap: calc(4px / var(--coef));
   height: 100%;
   width: 100%;
   margin: 0;
@@ -1092,8 +1098,8 @@ $btns: 37px;
 .num_keyboard {
   display: grid;
   grid-template-columns: repeat(11, 1fr);
-  grid-column-gap: 4px;
-  grid-row-gap: 4px;
+  grid-column-gap: calc(4px / var(--coef));
+  grid-row-gap: calc(4px / var(--coef));
   height: 100%;
   width: 100%;
 }
@@ -1156,13 +1162,13 @@ $btns: 37px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  height: 80px;
+  height: calc(80px / var(--coef));
   width: 100%;
   button {
-    height: 80px;
-    width: 80px;
+    height: calc(80px / var(--coef));
+    width: calc(80px / var(--coef));
     border: none;
-    margin-right: 1px;
+    margin-right: calc(1px / var(--coef));
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1188,11 +1194,11 @@ $btns: 37px;
   div.val {
     background-color: #272b34;
     flex: 1;
-    height: 80px;
+    height: calc(80px / var(--coef));
     color: #fff;
-    font-size: 48px;
+    font-size: calc(48px / var(--coef));
     font-weight: bold;
-    max-width: 222px;
+    max-width: calc(222px / var(--coef));
     overflow: hidden;
     text-align: center;
     align-items: center;
@@ -1202,44 +1208,44 @@ $btns: 37px;
 }
 
 .amount_card {
-  font-size: 30px;
-  padding: 20px;
+  font-size: calc(30px / var(--coef));
+  padding: calc(20px / var(--coef));
   display: flex;
   background: #fff;
   flex-direction: column;
   width: 100%;
   .art {
-    font-size: 26px;
-    border-bottom: 2px solid;
-    padding: 0 0 10px 0;
-    margin-bottom: 10px;
+    font-size: calc(26px / var(--coef));
+    border-bottom: calc(2px / var(--coef)) solid;
+    padding: 0 0 calc(10px / var(--coef)) 0;
+    margin-bottom: calc(10px / var(--coef));
   }
   .name {
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: calc(10px / var(--coef));
   }
   .price {
     display: flex;
     justify-content: space-between;
-    font-size: 26px;
-    padding: 10px 0;
-    margin-bottom: 10px;
-    border-bottom: 2px solid;
+    font-size: calc(26px / var(--coef));
+    padding: calc(10px / var(--coef)) 0;
+    margin-bottom: calc(10px / var(--coef));
+    border-bottom: calc(2px / var(--coef)) solid;
     & span:last-child {
       font-weight: bold;
-      font-size: 30px;
+      font-size: calc(30px / var(--coef));
     }
   }
   .sum {
     display: flex;
     justify-content: space-between;
-    font-size: 26px;
-    padding: 10px 0;
-    margin-bottom: 10px;
-    border-bottom: 2px solid;
+    font-size: calc(26px / var(--coef));
+    padding: calc(10px / var(--coef)) 0;
+    margin-bottom: calc(10px / var(--coef));
+    border-bottom: calc(2px / var(--coef)) solid;
     & span:last-child {
       font-weight: bold;
-      font-size: 30px;
+      font-size: calc(30px / var(--coef));
     }
   }
 }
@@ -1249,12 +1255,12 @@ $btns: 37px;
     display: flex;
     width: 100%;
     align-items: center;
-    font-size: 14px;
+    font-size: calc(14px / var(--coef));
     flex-direction: row;
-    border-bottom: 2px solid #e5ebf5;
+    border-bottom: calc(2px / var(--coef)) solid #e5ebf5;
     background-color: #fff;
     th {
-      height: 32px;
+      height: calc(32px / var(--coef));
       white-space: nowrap;
       flex: 1;
       border: none;
@@ -1268,8 +1274,8 @@ $btns: 37px;
   tr.recieptTBody {
     td {
       flex: 1;
-      font-size: 20px;
-      height: 60px;
+      font-size: calc(20px / var(--coef));
+      height: calc(60px / var(--coef));
       align-items: center;
     }
     &.returned {
@@ -1296,12 +1302,12 @@ $btns: 37px;
 }
 
 .p-dialog .p-dialog-header {
-  padding: 4px 15px;
+  padding: calc(4px / var(--coef)) calc(15px / var(--coef));
 }
 
 .dropdownfile .p-dropdown.p-component {
   width: 100%;
-  margin-bottom: 15px;
+  margin-bottom: calc(15px / var(--coef));
 }
 .p-fileupload-row div:first-child {
   display: none;
