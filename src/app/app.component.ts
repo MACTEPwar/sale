@@ -148,7 +148,7 @@ export class AppComponent {
             label: 'Звiти',
             items: [
               { routerLink: '/report/receipts', label: 'Чеки', icon: 'check' },
-              // { routerLink: '/report/z-reports', label: 'Z-звiти' },
+              { routerLink: '/report/z-reports', label: 'Змiни', icon: 'check' },
             ],
           },
           {
@@ -191,7 +191,7 @@ export class AppComponent {
             label: 'Звiти',
             items: [
               { routerLink: '/report/receipts', label: 'Чеки', icon: 'check' },
-              // { routerLink: '/report/z-reports', label: 'Z-звiти' },
+              { routerLink: '/report/z-reports', label: 'Змiни', icon: 'check' },
             ],
           },
           {

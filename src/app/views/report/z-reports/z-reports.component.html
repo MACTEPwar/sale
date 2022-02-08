@@ -1,1 +1,75 @@
-<p>z-reports works!</p>
+<div class="receiptTitleLine">
+  <div class="title">Чеки</div>
+  <div class="calendar">
+    <i class="pi pi-calendar"></i>
+    <span>Дата:</span>
+    <p-calendar
+      [ngModel]="date"
+      [yearRange]="'2021:2040'"
+      [appendTo]="'body'"
+      (ngModelChange)="onDateChange($event)"
+      [readonlyInput]="true"
+    ></p-calendar>
+  </div>
+</div>
+
+<p-table
+  [value]="(zReprots | async)!"
+  [lazy]="true"
+  (onLazyLoad)="loadZReports($event)"
+  responsiveLayout="scroll"
+  dataKey="id"
+  [paginator]="true"
+  [rows]="20"
+  [totalRecords]="(count | async)!"
+  [loading]="(loading | async)!"
+  [scrollable]="true"
+  tableStyleClass="receiptsTable"
+>
+  <ng-template pTemplate="header">
+    <tr class="recieptTHead">
+      <th style="max-width: 140px; min-width: 140px">Фiск. номер</th>
+      <th>Номер змiни</th>
+      <th style="max-width: 140px; min-width: 140px">Дата створення</th>
+      <th style="max-width: 330px; min-width: 330px"></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-receipt>
+    <!-- <tr>
+          <td>
+              {{receipt | json}}
+          </td>
+      </tr> -->
+    <tr
+      [class]="
+        receipt.isReturnPresent ? 'recieptTBody returned' : 'recieptTBody'
+      "
+    >
+      <td style="max-width: 140px; min-width: 140px">
+        {{ receipt.fiscalNumber }}
+      </td>
+      <td>{{ receipt.shiftId }}</td>
+      <td style="max-width: 140px; min-width: 140px">
+        {{ receipt.dateCreate | date: "dd.MM.YYYY" }}
+      </td>
+      <td style="max-width: 330px; min-width: 330px">
+        <button class="receiptBtn" title="Перегляд чеку" style="width: 100%;">
+          <i class="pi pi-eye"></i> Чек
+        </button>
+      </td>
+    </tr>
+    <!-- (click)="onSelectReceipt(receipt.orderTaxNum)" -->
+  </ng-template>
+</p-table>
+
+<p-dialog
+  header="Чек"
+  [(visible)]="visibleZReport"
+  [style]="{ width: '350px' }"
+>
+  <!-- <app-receipt
+    *ngIf="fiscalNumber != null"
+    [fiscalNumber]="fiscalNumber"
+    showMode="print"
+  ></app-receipt> -->
+</p-dialog>
