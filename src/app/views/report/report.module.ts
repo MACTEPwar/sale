@@ -10,6 +10,7 @@ import { ButtonModule } from 'primeng/button';
 import { CalendarModule } from 'primeng/calendar';
 import { FormsModule } from '@angular/forms';
 import { DialogModule } from 'primeng/dialog';
+import { PtModule } from '@common/pipes';
 
 @NgModule({
   declarations: [ReportComponent, ReceiptsComponent, ZReportsComponent],
@@ -22,6 +23,7 @@ import { DialogModule } from 'primeng/dialog';
     FormsModule,
     DialogModule,
     ReceiptModule,
+    PtModule,
   ],
 })
 export class ReportModule {}

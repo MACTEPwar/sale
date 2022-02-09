@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
-import { QueryService } from '@common/core';
-import { BehaviorSubject } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { TNullable } from './../../../shared/types/types/t-nullabel';
+import { Injectable, Renderer2 } from '@angular/core';
+import { PrinterService, QueryService } from '@common/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map, take, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
 @Injectable()
@@ -12,7 +13,14 @@ export class ZReportService {
   count: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  constructor(private queryService: QueryService) {}
+  contentForPrint$: BehaviorSubject<Array<string>> = new BehaviorSubject<
+    Array<string>
+  >([]);
+
+  constructor(
+    private queryService: QueryService,
+    private printerService: PrinterService
+  ) {}
 
   getReceipts(filter: TZReportFilter): void {
     this.loading.next(true);
@@ -20,7 +28,7 @@ export class ZReportService {
       .post(
         `${
           environment.apiUrl
-        }/api/reports/list?dateTime=${filter.dateTime.toISOString()}`,
+        }/api/reports/list?dateTime=${filter.dateTime.toISOString()}&toDateTime=${filter.toDateTime.toISOString()}`,
         {
           skip: filter.skip,
           take: filter.take,
@@ -36,6 +44,25 @@ export class ZReportService {
         this.loading.next(false);
       });
   }
+
+  print(renderer: Renderer2): void {
+    this.printerService.clearPrintBlank();
+    this.contentForPrint$.getValue().forEach((str: string) => {
+      this.printerService.addTextToPrint(renderer, str);
+    });
+    this.printerService.test_print();
+  }
+
+  getContentForPrint$(shiftId: TNullable<number> = null): Observable<any> {
+    return this.queryService
+      .get(`${environment.apiUrl}/api/service/zreport/${shiftId}`)
+      .pipe(
+        map((m: any) => m.data),
+        tap((_) => {
+          this.contentForPrint$.next(_.data);
+        })
+      );
+  }
 }
 
 export type TZReport = {
@@ -47,6 +74,7 @@ export type TZReport = {
 
 export type TZReportFilter = {
   dateTime: Date;
+  toDateTime: Date;
   skip: number;
   take: number;
 };

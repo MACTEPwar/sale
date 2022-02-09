@@ -364,7 +364,7 @@ export class SaleComponent implements OnInit {
 
     switch (paymentType) {
       case 0: {
-        sum = +this.inputCash! ?? this.totalSum.getValue();
+        sum = (+this.inputCash! && +this.inputCash! > 0) ? +this.inputCash! : this.totalSum.getValue();
         break;
       }
       case 1: {

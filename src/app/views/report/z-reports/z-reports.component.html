@@ -9,6 +9,7 @@
       [appendTo]="'body'"
       (ngModelChange)="onDateChange($event)"
       [readonlyInput]="true"
+      selectionMode="range"
     ></p-calendar>
   </div>
 </div>
@@ -53,8 +54,13 @@
         {{ receipt.dateCreate | date: "dd.MM.YYYY" }}
       </td>
       <td style="max-width: 330px; min-width: 330px">
-        <button class="receiptBtn" title="Перегляд чеку" style="width: 100%;">
-          <i class="pi pi-eye"></i> Чек
+        <button
+          (click)="showReceipt(receipt.shiftId)"
+          class="receiptBtn"
+          title="Перегляд чеку"
+          style="width: 100%"
+        >
+          <i class="pi pi-eye"></i> Перегляд
         </button>
       </td>
     </tr>
@@ -67,6 +73,14 @@
   [(visible)]="visibleZReport"
   [style]="{ width: '350px' }"
 >
+  <div id="print-section" #forPrint>
+    <p *ngFor="let str of printContent$ | async">
+      {{ str | pt }}
+    </p>
+  </div>
+
+  <button class="receipt_btn" (click)="print()">Друк</button>
+
   <!-- <app-receipt
     *ngIf="fiscalNumber != null"
     [fiscalNumber]="fiscalNumber"
