@@ -77,9 +77,13 @@ export class SaleNewService {
     // }
 
     temp!.amount = amount ?? 0;
-    this.selectedProduct!.next(temp);
+    //this.selectedProduct!.next(temp);
     // console.log(temp);
-    this.changeProductFromReceipt(temp!).subscribe((res) => {});
+    this.changeProductFromReceipt(temp!).subscribe((res) => {
+      temp.sum = +res.positions.find(
+        (f: any) => f.articlePosition === temp.articlePosition
+      ).sum;
+    });
   }
 
   changeProductFromReceipt(product: TReceiptProduct): Observable<any> {
