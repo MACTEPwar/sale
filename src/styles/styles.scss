@@ -1255,10 +1255,12 @@ $btns: calc(37px / var(--coef));
     border-bottom: calc(2px / var(--coef)) solid;
     padding: 0 0 calc(10px / var(--coef)) 0;
     margin-bottom: calc(10px / var(--coef));
+    line-height: 1;
   }
   .name {
     font-weight: bold;
     margin-bottom: calc(10px / var(--coef));
+    line-height: 1;
   }
   .price {
     display: flex;
@@ -1267,6 +1269,7 @@ $btns: calc(37px / var(--coef));
     padding: calc(10px / var(--coef)) 0;
     margin-bottom: calc(10px / var(--coef));
     border-bottom: calc(2px / var(--coef)) solid;
+    line-height: 1;
     & span:last-child {
       font-weight: bold;
       font-size: calc(24px / var(--coef));
@@ -1279,6 +1282,7 @@ $btns: calc(37px / var(--coef));
     padding: calc(10px / var(--coef)) 0;
     margin-bottom: calc(10px / var(--coef));
     border-bottom: 2px solid;
+    line-height: 1;
     & span:last-child {
       font-weight: bold;
       font-size: calc(26px / var(--coef));
