@@ -74,6 +74,15 @@
             >
               Знижка: {{ receiptProduct.discountSum }}
             </div>
+            <div
+              class="succ"
+              *ngIf="
+                receiptProduct.discountSum != null &&
+                receiptProduct.discountSum < 0
+              "
+            >
+              Надбавка: {{ receiptProduct.discountSum }}
+            </div>
           </div>
         </div>
       </div>

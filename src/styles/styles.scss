@@ -661,6 +661,10 @@ $btns: calc(37px / var(--coef));
         font-size: calc(14px / var(--coef));
         color: red;
       }
+      .succ {
+        font-size: calc(14px / var(--coef));
+        color: rgb(26, 183, 19);
+      }
     }
   }
 }
