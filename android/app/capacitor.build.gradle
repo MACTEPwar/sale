@@ -11,8 +11,9 @@ apply from: "../capacitor-cordova-android-plugins/cordova.variables.gradle"
 dependencies {
     implementation project(':capacitor-plugin-bluetooth-print')
     implementation "com.android.support:support-v4:28.+"
+    implementation "com.android.support:support-v4:28.+"
 }
-
+apply from: "../../node_modules/phonegap-plugin-barcodescanner/src/android/barcodescanner.gradle"
 
 if (hasProperty('postBuildExtras')) {
   postBuildExtras()

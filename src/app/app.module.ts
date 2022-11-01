@@ -29,6 +29,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FileUploadModule } from 'primeng/fileupload';
 import { MainMenuModule } from './components/main-menu/main-menu.module';
 import { ProgressBarModule } from 'primeng/progressbar';
+import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 
 @NgModule({
   declarations: [AppComponent, IsLoginPagePipe, TestComponent],
@@ -58,7 +59,7 @@ import { ProgressBarModule } from 'primeng/progressbar';
     KeyboardLiteralModule,
     ProgressBarModule,
   ],
-  providers: [MessageService, Printer, HTTP],
+  providers: [MessageService, Printer, HTTP, BarcodeScanner],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

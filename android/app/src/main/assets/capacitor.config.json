@@ -4,6 +4,8 @@
 	"webDir": "dist",
 	"bundledWebRuntime": false,
 	"server": {
-		"cleartext": true
+		"cleartext": true,
+		"androidScheme": "http",
+		"url": "http://192.168.14.26:4200"
 	}
 }

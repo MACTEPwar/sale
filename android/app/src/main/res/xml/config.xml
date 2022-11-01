@@ -15,5 +15,9 @@
     <param name="android-package" value="de.appplant.cordova.plugin.printer.Printer"/>
   </feature>
 
+  <feature name="BarcodeScanner">
+    <param name="android-package" value="com.phonegap.plugins.barcodescanner.BarcodeScanner"/>
+  </feature>
+
   
 </widget>

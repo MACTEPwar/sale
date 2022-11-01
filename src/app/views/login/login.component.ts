@@ -5,6 +5,7 @@ import { TFiscal } from '@common/types';
 import { ConfirmationService } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
+import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 
 @Component({
   selector: 'app-login',
@@ -23,14 +24,24 @@ export class LoginComponent implements OnInit {
   constructor(
     private authenticationService: AuthenticationService,
     private router: Router,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private barcodeScanner: BarcodeScanner
   ) {
     this.isAuthinticate = this.authenticationService.isAuthinticate;
   }
 
   listFiscals: Array<TFiscal> = new Array<TFiscal>();
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // this.barcodeScanner
+    //   .scan()
+    //   .then((barcodeData) => {
+    //     console.log('Barcode data', barcodeData);
+    //   })
+    //   .catch((err) => {
+    //     console.log('Error', err);
+    //   });
+  }
 
   clickBtnLogin(): void {
     if (this.profileForm.valid) {
