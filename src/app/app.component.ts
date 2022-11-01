@@ -2,11 +2,12 @@ import {
   Component,
   Renderer2,
   ViewChild,
-  ViewContainerRef,
+  ViewContainerRef
 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { MainMenuService, PrinterService } from '@common/core';
+import { CardIO } from '@ionic-native/card-io';
 import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
@@ -16,7 +17,6 @@ import { TUser } from './shared/types/types/t-user';
 import { ServiceService } from './views/service/service.service';
 
 declare function require(moduleName: string): any;
-
 const { version } = require('../../package.json');
 
 @Component({
@@ -86,6 +86,19 @@ export class AppComponent {
   }
 
   ngOnInit(): void {
+    
+    // CardIO.canScan().then((res: boolean) => {
+    //   if (res) {
+    //     let options = {
+    //       requireExpiry: true,
+    //       requireCVV: false,
+    //       requirePostalCode: false,
+    //     };
+    //     CardIO.scan(options);
+    //   }
+    // });
+
+
     // this.items = [
     //   // { routerLink: '/test', label: 'Test' },
     //   { routerLink: '/sale', label: 'Продаж' },
@@ -148,7 +161,11 @@ export class AppComponent {
             label: 'Звiти',
             items: [
               { routerLink: '/report/receipts', label: 'Чеки', icon: 'check' },
-              { routerLink: '/report/z-reports', label: 'Змiни', icon: 'z-list' },
+              {
+                routerLink: '/report/z-reports',
+                label: 'Змiни',
+                icon: 'z-list',
+              },
             ],
           },
           {
@@ -191,7 +208,11 @@ export class AppComponent {
             label: 'Звiти',
             items: [
               { routerLink: '/report/receipts', label: 'Чеки', icon: 'check' },
-              { routerLink: '/report/z-reports', label: 'Змiни', icon: 'z-list' },
+              {
+                routerLink: '/report/z-reports',
+                label: 'Змiни',
+                icon: 'z-list',
+              },
             ],
           },
           {
