@@ -6,7 +6,11 @@ import {
 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
-import { MainMenuService, PrinterService } from '@common/core';
+import {
+  MainMenuService,
+  PreloaderService,
+  PrinterService,
+} from '@common/core';
 import { CardIO } from '@ionic-native/card-io';
 import {
   ConfirmationService,
@@ -60,6 +64,8 @@ export class AppComponent {
 
   visibleMainMenu$: Observable<boolean>;
 
+  loader$: Observable<boolean>;
+
   visibleProgress = false;
   visibleZProgress = false;
 
@@ -75,7 +81,8 @@ export class AppComponent {
     private serviceService: ServiceService,
     private mainMenuService: MainMenuService,
     private config: PrimeNGConfig,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private preloaderService: PreloaderService
   ) {
     this.currentUser = this.authenticationService._currentUser$;
     /** Подписка на сумму денег в кассе */
@@ -91,6 +98,7 @@ export class AppComponent {
     this.shiftStatus = this.serviceService.shiftStatus$;
     this.shopGroups$ = this.serviceComponent.shopGroups$;
     this.visibleMainMenu$ = this.mainMenuService.visible$;
+    this.loader$ = this.preloaderService.loader$;
   }
 
   ngOnInit(): void {

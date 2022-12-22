@@ -11,6 +11,7 @@ import { MainMenuModule } from './main-menu/main-menu.module';
 import { PrinterModule } from './printer/printer.module';
 import { QueryModule } from './query/query.module';
 import { ConfigService } from './config/config.service';
+import { PreloaderModule } from './preloader/preloader.module';
 
 @NgModule({
   declarations: [],
@@ -22,6 +23,7 @@ import { ConfigService } from './config/config.service';
     QueryModule,
     MainMenuModule,
     ConfigModule,
+    PreloaderModule
   ],
   providers: [
     {
@@ -55,7 +57,8 @@ import { ConfigService } from './config/config.service';
     PrinterModule,
     QueryModule,
     MainMenuModule,
-    ConfigModule
+    ConfigModule,
+    PreloaderModule
   ],
 })
 export class CoreModule {}

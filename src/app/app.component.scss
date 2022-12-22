@@ -17,3 +17,17 @@
 #printContainer {
   display: none;
 }
+
+
+.loader-bg {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  background-color: #ffffffd6;
+  z-index: 999999;
+  .loader {
+    height: 2rem;
+    margin: auto;
+  }
+}

@@ -1,6 +1,6 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Injectable, Pipe, Renderer2 } from '@angular/core';
-import { PrinterService, QueryService } from '@common/core';
+import { PreloaderService, PrinterService, QueryService } from '@common/core';
 import { environment } from 'src/environments/environment';
 import { map, take, tap } from 'rxjs/operators';
 @Injectable()
@@ -11,7 +11,8 @@ export class PeriodReportService {
 
   constructor(
     private queryService: QueryService,
-    private printerService: PrinterService
+    private printerService: PrinterService,
+    private preloaderService: PreloaderService
   ) {}
 
   getEcrsList$(): Observable<any> {
@@ -24,6 +25,7 @@ export class PeriodReportService {
   }
 
   getPeriodReport$(filter: any): Observable<any> {
+    this.preloaderService.setLoader(true);
     return this.queryService
       .get(
         `${
@@ -35,9 +37,15 @@ export class PeriodReportService {
       .pipe(
         take(1),
         map((m: any) => m.data),
-        tap((_) => {
-          this.contentForPrint$.next(_.data);
-        })
+        tap(
+          (_) => {
+            this.contentForPrint$.next(_.data);
+          },
+          () => {},
+          () => {
+            this.preloaderService.setLoader(false);
+          }
+        )
       );
   }
 
