@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://136.243.74.250:9999',
+  // apiUrl: 'http://136.243.74.250:9999',
   // apiUrl: 'http://136.243.74.250:3333',
-  // apiUrl: 'http://192.168.14.32:3333',
+  apiUrl: 'http://192.168.14.32:3333',
 };
 
 /*
