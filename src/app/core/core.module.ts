@@ -1,6 +1,7 @@
+import { ConfigModule } from './config/config.module';
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { AuthenticationService } from './authentication/authentication.service';
 import { SaleLogicModule } from './BLL/sale-logic/sale-logic.module';
@@ -9,6 +10,7 @@ import { JwtInterceptor } from './interceptors/jwt.iterceptor';
 import { MainMenuModule } from './main-menu/main-menu.module';
 import { PrinterModule } from './printer/printer.module';
 import { QueryModule } from './query/query.module';
+import { ConfigService } from './config/config.service';
 
 @NgModule({
   declarations: [],
@@ -19,6 +21,7 @@ import { QueryModule } from './query/query.module';
     PrinterModule,
     QueryModule,
     MainMenuModule,
+    ConfigModule,
   ],
   providers: [
     {
@@ -34,6 +37,17 @@ import { QueryModule } from './query/query.module';
       multi: true,
       useClass: ErrorInterceptor,
     },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (configService: ConfigService) => {
+        return () =>
+          configService
+            .load()
+            .toPromise();
+      },
+      multi: true,
+      deps: [ConfigService],
+    },
   ],
   exports: [
     AuthenticationModule,
@@ -41,6 +55,7 @@ import { QueryModule } from './query/query.module';
     PrinterModule,
     QueryModule,
     MainMenuModule,
+    ConfigModule
   ],
 })
 export class CoreModule {}

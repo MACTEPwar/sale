@@ -1,3 +1,4 @@
+import { PeriodReportComponent } from './period-report/period-report.component';
 import { AuthGuard } from 'src/app/core/BLL/auth.guard';
 import { ReportComponent } from './report.component';
 import { ReceiptsComponent } from './receipts/receipts.component';
@@ -19,6 +20,11 @@ const routes: Routes = [
       {
         path: 'z-reports',
         component: ZReportsComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'period-report',
+        component: PeriodReportComponent,
         canActivate: [AuthGuard],
       },
     ],

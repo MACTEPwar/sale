@@ -1,0 +1,56 @@
+<div class="receiptTitleLine" [formGroup]="profileForm">
+  <div class="title">Звiт за перiод</div>
+  <div class="calendar">
+    <i class="pi pi-calendar"></i>
+    <span>Перiод:</span>
+    <p-calendar
+      [ngModel]="date"
+      [yearRange]="'2021:2040'"
+      [appendTo]="'body'"
+      (ngModelChange)="onDateChange($event)"
+      [ngModelOptions]="{ standalone: true }"
+      [readonlyInput]="true"
+      selectionMode="range"
+      dateFormat="dd.mm.yy"
+    ></p-calendar>
+  </div>
+
+  <div class="calendar">
+    <i class="pi pi-inbox"></i>
+    <span>РРО:</span>
+    <p-dropdown
+      optionValue="value"
+      formControlName="fiscalNumber"
+      [options]="(listEcrs$ | async)!"
+      optionLabel="label"
+      [filter]="true"
+    ></p-dropdown>
+  </div>
+
+  <div class="calendar">
+    <button (click)="execute()" class="receiptBtn" title="Сформувати" style="padding: .5rem;height: auto;">
+      <i class="pi pi-eye"></i> Сформувати
+    </button>
+  </div>
+</div>
+
+
+<p-dialog
+  header="Чек"
+  [(visible)]="visibleReport"
+  [style]="{ width: '350px' }"
+>
+  <div id="print-section" #forPrint>
+    <p *ngFor="let str of printContent$ | async">
+      {{ str | pt }}
+    </p>
+  </div>
+
+  <button class="receipt_btn" (click)="print()">Друк</button>
+
+  <!-- <app-receipt
+    *ngIf="fiscalNumber != null"
+    [fiscalNumber]="fiscalNumber"
+    showMode="print"
+  ></app-receipt> -->
+</p-dialog>

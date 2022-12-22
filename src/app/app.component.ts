@@ -2,16 +2,22 @@ import {
   Component,
   Renderer2,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef,
 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { NavigationEnd, Router } from '@angular/router';
 import { MainMenuService, PrinterService } from '@common/core';
 import { CardIO } from '@ionic-native/card-io';
-import { ConfirmationService, MenuItem, MessageService } from 'primeng/api';
+import {
+  ConfirmationService,
+  MenuItem,
+  MessageService,
+  PrimeNGConfig,
+} from 'primeng/api';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
+import { ConfigService } from './core/config/config.service';
 import { TNullable } from './shared/types/types/t-nullabel';
 import { TUser } from './shared/types/types/t-user';
 import { ServiceService } from './views/service/service.service';
@@ -67,7 +73,9 @@ export class AppComponent {
     private renderer: Renderer2,
     private titleService: Title,
     private serviceService: ServiceService,
-    private mainMenuService: MainMenuService
+    private mainMenuService: MainMenuService,
+    private config: PrimeNGConfig,
+    private configService: ConfigService
   ) {
     this.currentUser = this.authenticationService._currentUser$;
     /** Подписка на сумму денег в кассе */
@@ -86,7 +94,7 @@ export class AppComponent {
   }
 
   ngOnInit(): void {
-    
+    this.config.setTranslation(this.configService.getValue('locales')!);
     // CardIO.canScan().then((res: boolean) => {
     //   if (res) {
     //     let options = {
@@ -97,7 +105,6 @@ export class AppComponent {
     //     CardIO.scan(options);
     //   }
     // });
-
 
     // this.items = [
     //   // { routerLink: '/test', label: 'Test' },
@@ -166,6 +173,11 @@ export class AppComponent {
                 label: 'Змiни',
                 icon: 'z-list',
               },
+              {
+                routerLink: '/report/period-report',
+                label: 'Звiт за перiод',
+                icon: 'period-report',
+              },
             ],
           },
           {
@@ -212,6 +224,11 @@ export class AppComponent {
                 routerLink: '/report/z-reports',
                 label: 'Змiни',
                 icon: 'z-list',
+              },
+              {
+                routerLink: '/report/period-report',
+                label: 'Звiт за перiод',
+                icon: 'period-report',
               },
             ],
           },
