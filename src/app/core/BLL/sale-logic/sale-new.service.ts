@@ -112,6 +112,7 @@ export class SaleNewService {
       .pipe(map((m) => m.data))
       .subscribe(
         (result) => {
+          console.log('CURRENT RECEIPT', result);
           if (result != null) {
             this.receipt.totalSum.next(+result.sum);
             this.receipt.products.next(
@@ -154,8 +155,8 @@ export class SaleNewService {
       tap((p) => {
         this.lastReceiptNumber.next(p.orderTaxNum);
       }),
-      map((m) => m.data),
-      filter((f) => f === true),
+      // map((m) => m.data),
+      filter((f) => f.data === true),
       tap((t) => {
         this.receipt.products.next([]);
         this.receipt.totalSum.next(0);
@@ -258,6 +259,16 @@ export class SaleNewService {
   private cancelReceipt$(): Observable<any> {
     return this.queryService.post(
       `${environment.apiUrl}/api/Receipt/cancel`,
+      {}
+    );
+  }
+
+  public sendReceiptToEmail$(
+    fiscalNumber: string,
+    email: string
+  ): Observable<any> {
+    return this.queryService.post(
+      `${environment.apiUrl}/api/Receipt/fiscal/send?number=${fiscalNumber}&email=${email}`,
       {}
     );
   }

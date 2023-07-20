@@ -45,6 +45,8 @@ export class SaleComponent implements OnInit {
 
   searchType: string = '0';
 
+  currentOrderTaxNumber: string = '';
+
   addProductState: 'none' | 'selectProduct' | 'selectAmount' = 'none';
   lastAddedProduct: TNullable<TReceiptProduct> = null;
   currentArticle;
@@ -115,7 +117,8 @@ export class SaleComponent implements OnInit {
     /** Подписка на ссылку для QR-кода */
     this.link = this.saleService.link;
 
-    this.searchType = this.authService.currentUser?.settings?.keyboardType ?? '0'
+    this.searchType =
+      this.authService.currentUser?.settings?.keyboardType ?? '0';
 
     this.currentArticle = this.searchType === '0' ? '0' : '';
 
@@ -364,7 +367,10 @@ export class SaleComponent implements OnInit {
 
     switch (paymentType) {
       case 0: {
-        sum = (+this.inputCash! && +this.inputCash! > 0) ? +this.inputCash! : this.totalSum.getValue();
+        sum =
+          +this.inputCash! && +this.inputCash! > 0
+            ? +this.inputCash!
+            : this.totalSum.getValue();
         break;
       }
       case 1: {
@@ -385,6 +391,10 @@ export class SaleComponent implements OnInit {
           this.inputCash = '0';
           this.serviceService.getMoneyInKassa();
           this.payInProgress = false;
+
+          console.log('AFTER DO PAYMENT', res);
+
+          this.currentOrderTaxNumber = res.orderTaxNum;
           // this.payInStart = false;
           // this.visiblePaymantProcess = false;
           // this.saleService.getContentForPrint(
@@ -436,6 +446,7 @@ export class SaleComponent implements OnInit {
 
   /** Поусл того как продажа полностью завершена */
   private afterFinishPay() {
+    this.currentOrderTaxNumber = '';
     this.visiblePaymantProcess = false;
     /** Поулчаю статус ПРРО */
     this.serviceService.getEcrStatus();
@@ -454,6 +465,40 @@ export class SaleComponent implements OnInit {
         this.saleService.doCancelReceipt();
       },
     });
+  }
+
+  sendReceiptToEmail(email: string): void {
+    if (this.isEmail(email)) {
+      this.saleService
+        .sendReceiptToEmail$(this.currentOrderTaxNumber, email)
+        .subscribe((res) => {
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Iнфо',
+            detail: `Чек вiдправлено за адресою ${email}`,
+          });
+        }, (err)=> {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Помилка',
+            detail: ``,
+          });
+        });
+    } else {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Помилка',
+        detail: `Email не валiдний. Перевiрте його, та спробуйте ще раз.`,
+      });
+    }
+  }
+
+  private isEmail(email: string) {
+    // Регулярное выражение для проверки email-адреса
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Проверяем, соответствует ли строка регулярному выражению
+    return emailRegex.test(email);
   }
 }
 
