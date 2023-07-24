@@ -1,3 +1,5 @@
+import { SaleNewService } from './../../../core/BLL/sale-logic/sale-new.service';
+import { SaleService } from './../../../core/BLL/sale-logic/sale.service';
 import { TNullable } from './../../../shared/types/types/t-nullabel';
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -5,6 +7,7 @@ import { ReceiptsService, TReceipt } from './receipt.service';
 import { Title } from '@angular/platform-browser';
 import { ServiceService } from '../../service/service.service';
 import { Router } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-receipts',
@@ -31,7 +34,9 @@ export class ReceiptsComponent implements OnInit {
     private titleService: Title,
     private serviceService: ServiceService,
     private renderer: Renderer2,
-    private router: Router
+    private router: Router,
+    private saleService: SaleNewService,
+    private messageService: MessageService,
   ) {
     this.titleService.setTitle('Список чекiв');
     this.receipts = this.receiptService.receipts;
@@ -121,4 +126,40 @@ export class ReceiptsComponent implements OnInit {
       }
     );
   }
+
+  sendReceiptToEmail(email: string): void {
+    if (this.isEmail(email)) {
+      this.saleService
+        .sendReceiptToEmail$(String(this.fiscalNumber), email)
+        .subscribe((res) => {
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Iнфо',
+            detail: `Чек вiдправлено за адресою ${email}`,
+          });
+        }, (err)=> {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Помилка',
+            detail: ``,
+          });
+        });
+    } else {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Помилка',
+        detail: `Email не валiдний. Перевiрте його, та спробуйте ще раз.`,
+      });
+    }
+  }
+
+  private isEmail(email: string) {
+    // Регулярное выражение для проверки email-адреса
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Проверяем, соответствует ли строка регулярному выражению
+    return emailRegex.test(email);
+  }
+
+
 }

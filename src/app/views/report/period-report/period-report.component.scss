@@ -1,6 +1,10 @@
 #print-section {
     font-family: monospace;
     width: auto;
+    p {
+      margin-top:4px;
+      margin-bottom:4px;
+    }
   }
   .receipt_btn {
     margin-top: 50px;

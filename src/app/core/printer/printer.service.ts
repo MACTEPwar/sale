@@ -8,7 +8,7 @@ import { Printer, PrintOptions } from '@awesome-cordova-plugins/printer/ngx';
 import { Capacitor } from '@capacitor/core';
 import { TNullable } from '@common/types';
 import { QRCodeComponent } from 'angularx-qrcode';
-import { from, iif, Observable, throwError, timer } from 'rxjs';
+import { from, iif, Observable, of, throwError, timer } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
 
 @Injectable()
@@ -44,8 +44,12 @@ export class PrinterService {
     //   str.replace(/ /g, String.fromCharCode(160))
     // );
     const child = renderer.createElement('p');
+    
     renderer.appendChild(child, text);
     renderer.appendChild(this._container?.element.nativeElement, child);
+
+    renderer.setStyle(child, 'margin-top','4px');
+    renderer.setStyle(child, 'margin-bottom','4px');
     return this;
   }
 
@@ -87,29 +91,34 @@ export class PrinterService {
 
   print(content: string | HTMLElement): Observable<any> {
     return this._isAvailable$().pipe(
-      switchMap((_) =>
-        iif(
-          () => _ === true && Capacitor.getPlatform() === 'android',
-          this._print$(content, this.options),
-          throwError('printer not available or this not android')
-        )
+      switchMap(
+        (_) => {
+          if (_ === true) {
+            switch (Capacitor.getPlatform()) {
+              case 'android': {
+                return this._print$(content, this.options);
+              }
+              case 'web': {
+                return this._print_web$(content, this.options);
+              }
+              default: {
+                return throwError('not available type');
+              }
+            }
+          } else {
+            return throwError('printer not available');
+          }
+        }
       )
     );
-    // return from();
-    // this.printer
-    //   .isAvailable()
-    //   .then((p) => {
-    //     alert('availible');
-    //     this.printer.print(content, this.options).then(
-    //       (s) => alert('success'),
-    //       (e) => alert(JSON.stringify(e, null, 4))
-    //     );
-    //   })
-    //   .catch((e) => alert(JSON.stringify(e, null, 4)));
   }
 
   private _isAvailable$(): Observable<any> {
-    return from(this.printer.isAvailable()).pipe(take(1));
+    if (Capacitor.getPlatform() === 'android') {
+      return from(this.printer.isAvailable()).pipe(take(1));
+    } else {
+      return of(true);
+    }
   }
 
   private _print$(
@@ -117,5 +126,38 @@ export class PrinterService {
     options?: PrintOptions | undefined
   ): Observable<any> {
     return from(this.printer.print(content, options)).pipe(take(1));
+  }
+
+  private _print_web$(
+    content?: string | HTMLElement | undefined,
+    options?: PrintOptions | undefined
+  ): Observable<any> {
+    const printWindow = window.open('', '_blank', 'width=800,height=600');
+
+    if (typeof content === 'string') {
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = content;
+      content = tempDiv;
+    }
+
+    printWindow!.document.write(`
+    <html>
+      <head>
+      </head>
+      <body>
+        ${content!.outerHTML}
+      </body>
+    </html>
+  `);
+
+    printWindow!.document.close();
+
+    printWindow!.onload = () => {
+      printWindow!.focus();
+      printWindow!.print();
+      printWindow!.close();
+    };
+
+    return of(true);
   }
 }

@@ -1,3 +1,4 @@
+import { SaleNewService } from './../../core/BLL/sale-logic/sale-new.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
@@ -26,7 +27,8 @@ export class ReturnComponent implements OnInit {
     private router: Router,
     private messageService: MessageService,
     private confirmService: ConfirmationService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private saleService: SaleNewService
   ) {
     this.titleService.setTitle('Повернення товару');
     this.products = this.returnService.products;
@@ -124,5 +126,39 @@ export class ReturnComponent implements OnInit {
         this.router.navigate(['/report/receipts']);
       },
     });
+  }
+
+  sendReceiptToEmail(email: string): void {
+    if (this.isEmail(email)) {
+      this.saleService
+        .sendReceiptToEmail$(this.currentReturnReceiptNumber!, email)
+        .subscribe((res) => {
+          this.messageService.add({
+            severity: 'info',
+            summary: 'Iнфо',
+            detail: `Чек вiдправлено за адресою ${email}`,
+          });
+        }, (err)=> {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Помилка',
+            detail: ``,
+          });
+        });
+    } else {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Помилка',
+        detail: `Email не валiдний. Перевiрте його, та спробуйте ще раз.`,
+      });
+    }
+  }
+
+  private isEmail(email: string) {
+    // Регулярное выражение для проверки email-адреса
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    // Проверяем, соответствует ли строка регулярному выражению
+    return emailRegex.test(email);
   }
 }
