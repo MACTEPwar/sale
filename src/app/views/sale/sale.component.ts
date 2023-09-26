@@ -50,6 +50,7 @@ export class SaleComponent implements OnInit {
   addProductState: 'none' | 'selectProduct' | 'selectAmount' = 'none';
   lastAddedProduct: TNullable<TReceiptProduct> = null;
   currentArticle;
+  defaultAmount;
 
   focusAmountInput = false;
   // currentProduct: any = null;
@@ -119,6 +120,9 @@ export class SaleComponent implements OnInit {
 
     this.searchType =
       this.authService.currentUser?.settings?.keyboardType ?? '0';
+
+    this.defaultAmount =
+      this.authService.currentUser?.settings?.defaultAmount ?? 0;
 
     this.currentArticle = this.searchType === '0' ? '0' : '';
 
@@ -192,7 +196,8 @@ export class SaleComponent implements OnInit {
   addProductToReceipt(product: TProduct): void {
     this.saleService.addProductToReceipt(product, 0).subscribe((res) => {
       this.addProductState = 'selectAmount';
-      this.currentArticle = this.searchType === '0' ? '0' : '';
+      // this.currentArticle = this.searchType === '0' ? '0' : '';
+      this.currentArticle = this.defaultAmount.toString();
       const arr = res.positions.sort(
         (x: any, y: any) => x.articlePosition - y.articlePosition
       );
@@ -471,19 +476,22 @@ export class SaleComponent implements OnInit {
     if (this.isEmail(email)) {
       this.saleService
         .sendReceiptToEmail$(this.currentOrderTaxNumber, email)
-        .subscribe((res) => {
-          this.messageService.add({
-            severity: 'info',
-            summary: 'Iнфо',
-            detail: `Чек вiдправлено за адресою ${email}`,
-          });
-        }, (err)=> {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Помилка',
-            detail: ``,
-          });
-        });
+        .subscribe(
+          (res) => {
+            this.messageService.add({
+              severity: 'info',
+              summary: 'Iнфо',
+              detail: `Чек вiдправлено за адресою ${email}`,
+            });
+          },
+          (err) => {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Помилка',
+              detail: ``,
+            });
+          }
+        );
     } else {
       this.messageService.add({
         severity: 'warn',

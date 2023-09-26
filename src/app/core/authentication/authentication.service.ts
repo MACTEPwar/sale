@@ -99,7 +99,10 @@ export class AuthenticationService {
               _.username = user?.username;
               _.isAdmin = user?.isAdmin;
               if (user?.settings?.data?.KeyboardType != null) {
-                _.settings = { keyboardType: user?.settings?.data?.KeyboardType };
+                _.settings = {
+                  keyboardType: user?.settings?.data?.KeyboardType,
+                  defaultAmount: user?.settings?.data?.DefaultAmount ?? 0,
+                };
               }
               return _;
             })

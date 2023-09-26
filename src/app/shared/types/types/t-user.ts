@@ -10,4 +10,5 @@ export type TUser = {
 
 export type TSettings = {
   keyboardType?: string;
+  defaultAmount?: number
 };
