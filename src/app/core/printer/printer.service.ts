@@ -44,12 +44,12 @@ export class PrinterService {
     //   str.replace(/ /g, String.fromCharCode(160))
     // );
     const child = renderer.createElement('p');
-    
+
     renderer.appendChild(child, text);
     renderer.appendChild(this._container?.element.nativeElement, child);
 
-    renderer.setStyle(child, 'margin-top','4px');
-    renderer.setStyle(child, 'margin-bottom','4px');
+    renderer.setStyle(child, 'margin-top', '4px');
+    renderer.setStyle(child, 'margin-bottom', '4px');
     return this;
   }
 
@@ -91,25 +91,23 @@ export class PrinterService {
 
   print(content: string | HTMLElement): Observable<any> {
     return this._isAvailable$().pipe(
-      switchMap(
-        (_) => {
-          if (_ === true) {
-            switch (Capacitor.getPlatform()) {
-              case 'android': {
-                return this._print$(content, this.options);
-              }
-              case 'web': {
-                return this._print_web$(content, this.options);
-              }
-              default: {
-                return throwError('not available type');
-              }
+      switchMap((_) => {
+        if (_ === true) {
+          switch (Capacitor.getPlatform()) {
+            case 'android': {
+              return this._print$(content, this.options);
             }
-          } else {
-            return throwError('printer not available');
+            case 'web': {
+              return this._print_web$(content, this.options);
+            }
+            default: {
+              return throwError('not available type');
+            }
           }
+        } else {
+          return throwError('printer not available');
         }
-      )
+      })
     );
   }
 
@@ -128,7 +126,7 @@ export class PrinterService {
     return from(this.printer.print(content, options)).pipe(take(1));
   }
 
-  private _print_web$(
+  private _print_web2$(
     content?: string | HTMLElement | undefined,
     options?: PrintOptions | undefined
   ): Observable<any> {
@@ -139,6 +137,10 @@ export class PrinterService {
       tempDiv.innerHTML = content;
       content = tempDiv;
     }
+
+    setTimeout(() => {
+      
+    }, 1000);
 
     printWindow!.document.write(`
     <html>
@@ -159,5 +161,51 @@ export class PrinterService {
     };
 
     return of(true);
+  }
+
+  private _print_web$(
+    content?: string | HTMLElement,
+    options?: PrintOptions
+  ): Observable<boolean> {
+    return new Observable(observer => {
+      if (!content) {
+        observer.error(new Error('Content is undefined or null'));
+        return;
+      }
+  
+      const printWindow = window.open('', '_blank', 'width=800,height=600');
+      if (!printWindow) {
+        observer.error(new Error('Unable to open print window'));
+        return;
+      }
+  
+      if (typeof content === 'string') {
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = content;
+        content = tempDiv;
+      }
+  
+      printWindow.document.write(`
+        <html>
+          <head>
+          </head>
+          <body>
+            ${content.outerHTML}
+          </body>
+        </html>
+      `);
+
+      
+      printWindow.onload = () => {
+        printWindow.focus();
+        printWindow.print();
+        printWindow.close();
+        observer.next(true);
+        observer.complete();
+      };
+  
+      printWindow.document.close();
+  
+    });
   }
 }
