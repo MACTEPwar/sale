@@ -196,13 +196,16 @@ export class SaleComponent implements OnInit {
   addProductToReceipt(product: TProduct): void {
     this.saleService.addProductToReceipt(product, 0).subscribe((res) => {
       this.addProductState = 'selectAmount';
-      // this.currentArticle = this.searchType === '0' ? '0' : '';
-      this.currentArticle = this.defaultAmount.toString();
+      this.currentArticle = this.searchType === '0' ? '0' : '';
+      // alert(this.defaultAmount)
+      // this.currentArticle = this.defaultAmount.toString();
       const arr = res.positions.sort(
         (x: any, y: any) => x.articlePosition - y.articlePosition
       );
       // this.saleService.selectedProduct = arr[arr.length - 1];
-      this.saleService.selectedProduct.next(arr[arr.length - 1]);
+      const prod = arr[arr.length - 1];
+      prod.amount = this.defaultAmount;
+      this.saleService.selectedProduct.next(prod);
     });
   }
 
