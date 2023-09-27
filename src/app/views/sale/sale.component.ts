@@ -194,7 +194,7 @@ export class SaleComponent implements OnInit {
    * @param product Товар
    */
   addProductToReceipt(product: TProduct): void {
-    this.saleService.addProductToReceipt(product, 0).subscribe((res) => {
+    this.saleService.addProductToReceipt(product, Number(this.defaultAmount)).subscribe((res) => {
       this.addProductState = 'selectAmount';
       this.currentArticle = this.searchType === '0' ? '0' : '';
       // alert(this.defaultAmount)
@@ -204,7 +204,9 @@ export class SaleComponent implements OnInit {
       );
       // this.saleService.selectedProduct = arr[arr.length - 1];
       const prod = arr[arr.length - 1];
-      prod.amount = this.defaultAmount;
+      // prod.amount = Number(this.defaultAmount);
+      // this.saleService.changeAmount(Number(this.defaultAmount))
+      // alert(JSON.stringify(prod, null, 4))
       this.saleService.selectedProduct.next(prod);
     });
   }
