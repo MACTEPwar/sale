@@ -223,6 +223,7 @@ export class SaleNewService {
         articlePosition: 0,
         discountSum: 0,
         amount,
+        price: product.price
       }
     );
   }
