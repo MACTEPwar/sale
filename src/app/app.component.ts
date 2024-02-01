@@ -18,13 +18,15 @@ import {
   MessageService,
   PrimeNGConfig,
 } from 'primeng/api';
-import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
 import { AuthenticationService } from 'src/app/core/authentication/authentication.service';
 import { ConfigService } from './core/config/config.service';
 import { TNullable } from './shared/types/types/t-nullabel';
 import { TUser } from './shared/types/types/t-user';
 import { ServiceService } from './views/service/service.service';
+import { DialogService } from 'primeng/dynamicdialog';
+import { SelectTerminalComponent } from './components/select-terminal/select-terminal.component';
 
 declare function require(moduleName: string): any;
 const { version } = require('../../package.json');
@@ -33,7 +35,7 @@ const { version } = require('../../package.json');
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [ServiceService, ConfirmationService],
+  providers: [ServiceService, ConfirmationService, DialogService],
 })
 export class AppComponent {
   @ViewChild('printContainer', { read: ViewContainerRef })
@@ -82,7 +84,8 @@ export class AppComponent {
     private mainMenuService: MainMenuService,
     private config: PrimeNGConfig,
     private configService: ConfigService,
-    private preloaderService: PreloaderService
+    private preloaderService: PreloaderService,
+    private dialogService: DialogService
   ) {
     this.currentUser = this.authenticationService._currentUser$;
     /** Подписка на сумму денег в кассе */
@@ -212,6 +215,16 @@ export class AppComponent {
                 label: 'Z-звiт',
                 command: () => this.doZReport(),
               },
+              {
+                icon: 'x-report',
+                label: 'X-звiт за термiналом',
+                command: () => this.doXReportTerminal(),
+              },
+              {
+                icon: 'z-report',
+                label: 'Z-звiт за термiналом',
+                command: () => this.doZReportTerminal(),
+              },
             ],
           },
         ];
@@ -263,6 +276,16 @@ export class AppComponent {
                 icon: 'z-report',
                 label: 'Z-звiт',
                 command: () => this.doZReport(),
+              },
+              {
+                icon: 'x-report',
+                label: 'X-звiт за термiналом',
+                command: () => this.doXReportTerminal(),
+              },
+              {
+                icon: 'z-report',
+                label: 'Z-звiт за термiналом',
+                command: () => this.doZReportTerminal(),
               },
             ],
           },
@@ -328,6 +351,118 @@ export class AppComponent {
 
   doXReport(): void {
     this.serviceComponent.doXReport(this.renderer);
+  }
+
+  doXReportTerminal(): void {
+    this.serviceService
+      .getListTerminals$()
+      .pipe(
+        catchError((er) =>
+          throwError({
+            code: 'getListTerminals.error',
+            message: `Помилка отримання листа термiналiв`,
+          })
+        ),
+        switchMap((sw) => {
+          if (sw.data.length === 0) {
+            return throwError({
+              code: 'getListTerminals.emptyList',
+              message: `Список термiналiв порожнiй`,
+            });
+          } else if (sw.data.length === 1) {
+            return of(sw.data[0].key);
+          } else {
+            return this.dialogService.open(SelectTerminalComponent, {
+              header: 'Оберiть термiнал',
+              width: '400px',
+              data: {
+                terminals: sw.data,
+              },
+            }).onClose;
+          }
+        }),
+        switchMap((sw) => this.serviceComponent.xReportTreminal(sw)),
+        switchMap((sw) =>
+          sw.data === null
+            ? throwError({
+                code: 'xreport.error',
+                message: sw.message,
+              })
+            : of(sw)
+        )
+      )
+      .subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Iнфо',
+            detail: `Операцiя успiшна`,
+          });
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Помилка',
+            detail: err.message,
+          });
+        },
+      });
+  }
+
+  doZReportTerminal(): void {
+    this.serviceService
+      .getListTerminals$()
+      .pipe(
+        catchError((er) =>
+          throwError({
+            code: 'getListTerminals.error',
+            message: `Помилка отримання листа термiналiв`,
+          })
+        ),
+        switchMap((sw) => {
+          if (sw.data.length === 0) {
+            return throwError({
+              code: 'getListTerminals.emptyList',
+              message: `Список термiналiв порожнiй`,
+            });
+          } else if (sw.data.length === 1) {
+            return of(sw.data[0].key);
+          } else {
+            return this.dialogService.open(SelectTerminalComponent, {
+              header: 'Оберiть термiнал',
+              width: '400px',
+              data: {
+                terminals: sw.data,
+              },
+            }).onClose;
+          }
+        }),
+        switchMap((sw) => this.serviceComponent.zReportTreminal(sw)),
+        switchMap((sw) =>
+          sw.data === null
+            ? throwError({
+                code: 'xreport.error',
+                message: sw.message,
+              })
+            : of(sw)
+        )
+      )
+      .subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Iнфо',
+            detail: `Операцiя успiшна`,
+          });
+        },
+        error: (err) => {
+          this.messageService.add({
+            severity: 'warn',
+            summary: 'Помилка',
+            detail: err.message,
+          });
+        },
+      });
   }
 
   logout(): void {

@@ -79,7 +79,7 @@ export class QueryService {
       take(1)
     );
   }
-  private sendRequestAndroid<T>(
+  private sendRequestAndroid<T = any>(
     method: EQueryMethod,
     url: string,
     body: any,
@@ -114,8 +114,12 @@ export class QueryService {
         return result;
       }),
       catchError((_) => {
-        // console.log(_);
-        _.error = JSON.parse(_.error);
+        try{
+          _.error = JSON.parse(_.error);
+        }
+        catch {
+          _.error =_.error;
+        }
         return throwError(_);
       })
     );

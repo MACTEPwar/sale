@@ -149,7 +149,7 @@ export class SaleNewService {
   }
 
   doPayment(
-    array: Array<{ sum: number; paymentType: number }>
+    array: Array<{ sum: number; paymentType: number; terminalData: any }>
   ): Observable<any> {
     return this.doPayment$(array).pipe(
       tap((p) => {
@@ -223,7 +223,7 @@ export class SaleNewService {
         articlePosition: 0,
         discountSum: 0,
         amount,
-        price: product.price
+        price: product.price,
       }
     );
   }
@@ -245,11 +245,15 @@ export class SaleNewService {
   }
 
   private doPayment$(
-    array: Array<{ sum: number; paymentType: number }>
+    array: Array<{ sum: number; paymentType: number; terminalData: any }>
   ): Observable<any> {
     return this.queryService.post(
       `${environment.apiUrl}/api/Receipt/fiscal/payment`,
-      array.map((m) => ({ amount: m.sum, paymentType: m.paymentType }))
+      array.map((m) => ({
+        amount: m.sum,
+        paymentType: m.paymentType,
+        terminalData: m.terminalData ?? null,
+      }))
     );
   }
 

@@ -30,6 +30,7 @@ import { CoreModule } from './core/core.module';
 import { IsLoginPagePipe } from './is-login-page.pipe';
 import { ServiceModule } from './views/service/service.module';
 import { TestComponent } from './views/test/test.component';
+import { SelectTerminalModule } from './components/select-terminal/select-terminal.module';
 
 @NgModule({
   declarations: [AppComponent, IsLoginPagePipe, TestComponent],
@@ -58,6 +59,7 @@ import { TestComponent } from './views/test/test.component';
     ProductListModule,
     KeyboardLiteralModule,
     ProgressBarModule,
+    SelectTerminalModule
   ],
   providers: [MessageService, Printer, HTTP, BarcodeScanner],
   bootstrap: [AppComponent],

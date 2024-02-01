@@ -19,18 +19,31 @@ import {
   combineLatest,
   concat,
   EMPTY,
+  iif,
   Observable,
+  of,
   Subject,
+  throwError,
 } from 'rxjs';
-import { debounceTime, filter, switchMap, take, tap } from 'rxjs/operators';
+import {
+  catchError,
+  debounceTime,
+  filter,
+  switchMap,
+  take,
+  tap,
+} from 'rxjs/operators';
 import { SaleNewService } from './../../core/BLL/sale-logic/sale-new.service';
 import { TReceiptProduct } from './../../shared/types/types/t-receipt-product';
 import { ServiceService } from './../service/service.service';
 import { environment } from 'src/environments/environment';
+import { DialogService } from 'primeng/dynamicdialog';
+import { SelectTerminalComponent } from 'src/app/components/select-terminal/select-terminal.component';
 
 @Component({
   selector: 'app-sale',
   templateUrl: './sale.component.html',
+  providers: [DialogService],
 })
 export class SaleComponent implements OnInit {
   // @HostListener('document:keypress', ['$event'])
@@ -105,7 +118,8 @@ export class SaleComponent implements OnInit {
     private cdr: ChangeDetectorRef,
     @Optional() private keyboardNumberService: KeyboardNumberService,
     private renderer: Renderer2,
-    private authService: AuthenticationService
+    private authService: AuthenticationService,
+    private dialogService: DialogService
   ) {
     /** Подписка на товары в чеке */
     this.receiptProducts = this.saleService.receipt.products;
@@ -194,21 +208,23 @@ export class SaleComponent implements OnInit {
    * @param product Товар
    */
   addProductToReceipt(product: TProduct): void {
-    this.saleService.addProductToReceipt(product, Number(this.defaultAmount)).subscribe((res) => {
-      this.addProductState = 'selectAmount';
-      this.currentArticle = this.searchType === '0' ? '0' : '';
-      // alert(this.defaultAmount)
-      // this.currentArticle = this.defaultAmount.toString();
-      const arr = res.positions.sort(
-        (x: any, y: any) => x.articlePosition - y.articlePosition
-      );
-      // this.saleService.selectedProduct = arr[arr.length - 1];
-      const prod = arr[arr.length - 1];
-      // prod.amount = Number(this.defaultAmount);
-      // this.saleService.changeAmount(Number(this.defaultAmount))
-      // alert(JSON.stringify(prod, null, 4))
-      this.saleService.selectedProduct.next(prod);
-    });
+    this.saleService
+      .addProductToReceipt(product, Number(this.defaultAmount))
+      .subscribe((res) => {
+        this.addProductState = 'selectAmount';
+        this.currentArticle = this.searchType === '0' ? '0' : '';
+        // alert(this.defaultAmount)
+        // this.currentArticle = this.defaultAmount.toString();
+        const arr = res.positions.sort(
+          (x: any, y: any) => x.articlePosition - y.articlePosition
+        );
+        // this.saleService.selectedProduct = arr[arr.length - 1];
+        const prod = arr[arr.length - 1];
+        // prod.amount = Number(this.defaultAmount);
+        // this.saleService.changeAmount(Number(this.defaultAmount))
+        // alert(JSON.stringify(prod, null, 4))
+        this.saleService.selectedProduct.next(prod);
+      });
   }
 
   openWindowChangeAmount(product: TReceiptProduct): void {
@@ -333,17 +349,76 @@ export class SaleComponent implements OnInit {
     this.visiblePaymantProcess = true;
   }
 
+  selectedTerminalIndex: null | number = null;
+
   /** Когда нажал расплатиться наличкой */
   clickDoPayCard(): void {
-    this.confirmationService.confirm({
-      message: 'Оплата по терміналу успішна?',
-      acceptLabel: 'Так',
-      rejectLabel: 'Нi',
-      header: 'Увага',
-      accept: () => {
-        this.doPayment(1);
-      },
-    });
+    this.serviceService
+      .getListTerminals$()
+      .pipe(
+        catchError((er) =>
+          throwError({
+            code: 'getListTerminals.error',
+          })
+        ),
+        switchMap((sw) => {
+          if (sw.data.length === 0) {
+            return throwError({
+              code: 'getListTerminals.emptyList',
+            });
+          } else if (sw.data.length === 1) {
+            return of(sw.data[0].key);
+          } else {
+            return this.dialogService.open(SelectTerminalComponent, {
+              header: 'Оберiть термiнал',
+              width: '400px',
+              data: {
+                terminals: sw.data,
+              },
+            }).onClose;
+          }
+        }),
+        switchMap((terminalIndex: any) => {
+          this.selectedTerminalIndex = terminalIndex;
+          return this.serviceService
+            .purchase$(Number(terminalIndex), this.totalSum.getValue())
+            .pipe(
+              catchError((er) =>
+                throwError({
+                  code: 'purchase.error',
+                })
+              )
+            );
+        })
+      )
+      .subscribe({
+        next: (res) => {
+          // alert(JSON.stringify(res, null, 4));
+          this.doPayment(1, res.data, () => {
+            this.serviceService
+              .void$(this.selectedTerminalIndex!, res.data.invoiceNumber)
+              .subscribe();
+          });
+        },
+        error: (error) => {
+          if ((error.code as string).startsWith('getListTerminals')) {
+            this.confirmationService.confirm({
+              message: 'Оплата по терміналу успішна?',
+              acceptLabel: 'Так',
+              rejectLabel: 'Нi',
+              header: 'Увага',
+              accept: () => {
+                this.doPayment(1);
+              },
+            });
+          }
+          if ((error.code as string).startsWith('purchase')) {
+          }
+        },
+        complete: () => {
+          // this.selectedTerminalIndex = null;
+        },
+      });
   }
 
   /**
@@ -359,7 +434,11 @@ export class SaleComponent implements OnInit {
    * Оплата
    * @param paymentType Тип оплаты (может быть null)
    */
-  doPayment(paymentType: TNullable<number> = null): void {
+  doPayment(
+    paymentType: TNullable<number> = null,
+    terminalData = null,
+    onError: () => void = () => {}
+  ): void {
     if (this.totalSum.getValue() === 0) {
       this.messageService.add({
         severity: 'warn',
@@ -393,6 +472,7 @@ export class SaleComponent implements OnInit {
         {
           paymentType: paymentType as number,
           sum,
+          terminalData,
         },
       ])
       .subscribe(
@@ -402,7 +482,7 @@ export class SaleComponent implements OnInit {
           this.serviceService.getMoneyInKassa();
           this.payInProgress = false;
 
-          console.log('AFTER DO PAYMENT', res);
+          // console.log('AFTER DO PAYMENT', res);
 
           this.currentOrderTaxNumber = res.orderTaxNum;
           // this.payInStart = false;
@@ -419,6 +499,7 @@ export class SaleComponent implements OnInit {
           } else {
             this.visiblePaymantProcess = false;
             this.payInProgress = false;
+            onError();
           }
         }
       );

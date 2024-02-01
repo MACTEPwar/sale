@@ -10,7 +10,7 @@
     </div>
     <div *ngFor="let item of items$ | async" (click)="executeCommand(item)">
       <div [class]="'menuicon m_' + item.icon"></div>
-      <span>{{ item.label }}</span>
+      <span class="menulabel">{{ item.label }}</span>
     </div>
   </div>
 </div>

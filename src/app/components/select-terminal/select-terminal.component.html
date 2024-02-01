@@ -1,0 +1,15 @@
+<div class="container p-fluid">
+  <div class="p-field">
+    <!-- <label for="password">Оберiть термiнал</label> -->
+    <p-dropdown
+      optionValue="key"
+      [(ngModel)]="selectedTerminal"
+      [options]="terminals"
+      optionLabel="value"
+      appendTo="body"
+    ></p-dropdown>
+  </div>
+  <div class="p-field">
+    <p-button label="Обрати" (onClick)="select()"></p-button>
+  </div>
+</div>
