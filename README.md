@@ -13,3 +13,9 @@ npx cap run android --external --source-map -l
 
 npx cap copy android
 npx cap open android
+
+# Дебаг версия - sale\android\app\build\outputs\apk\debug
+
+
+ng build --aot
+npx cap sync
