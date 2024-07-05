@@ -6,6 +6,7 @@ import { Capacitor } from '@capacitor/core';
 import { MessageService } from 'primeng/api';
 import { from, iif, Observable, of, throwError } from 'rxjs';
 import { map, switchMap, take, tap, catchError } from 'rxjs/operators';
+import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
 
 @Injectable()
 export class QueryService {
@@ -17,6 +18,42 @@ export class QueryService {
     private httpClient: HttpClient,
     private messageService: MessageService
   ) {}
+
+  getFile$(path: string): Observable<any> {
+    return from(
+      Filesystem.getUri({
+        directory: Directory.Documents,
+        path: path,
+      })
+    ).pipe(
+      switchMap((fileUri) => {
+        alert(fileUri.uri);
+
+        return Filesystem.readFile({
+          // path: path,
+          path: 'assets/ua.json',
+          directory: Directory.Documents,
+          encoding: Encoding.UTF8,
+        });
+
+        // return from(this.http.get(fileUri.uri, {}, {}));
+      }),
+      catchError((err) => {
+        return throwError(err);
+      }),
+      map((m: any) => {
+        alert(JSON.stringify(m, null, 4));
+        // console.log('m', m);
+        let result: any = null;
+        try {
+          result = JSON.parse(m.data);
+        } catch {
+          result = m.data;
+        }
+        return result;
+      })
+    );
+  }
 
   get<T = any>(
     url: string,
@@ -114,11 +151,10 @@ export class QueryService {
         return result;
       }),
       catchError((_) => {
-        try{
+        try {
           _.error = JSON.parse(_.error);
-        }
-        catch {
-          _.error =_.error;
+        } catch {
+          _.error = _.error;
         }
         return throwError(_);
       })

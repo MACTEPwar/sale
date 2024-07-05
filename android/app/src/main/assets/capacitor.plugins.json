@@ -1,5 +1,9 @@
 [
 	{
+		"pkg": "@capacitor/filesystem",
+		"classpath": "com.capacitorjs.plugins.filesystem.FilesystemPlugin"
+	},
+	{
 		"pkg": "capacitor-plugin-bluetooth-print",
 		"classpath": "com.raulsalitrero.plugins.btprint.BTPrinter"
 	}

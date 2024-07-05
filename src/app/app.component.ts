@@ -11,7 +11,6 @@ import {
   PreloaderService,
   PrinterService,
 } from '@common/core';
-import { CardIO } from '@ionic-native/card-io';
 import {
   ConfirmationService,
   MenuItem,
