@@ -1,3 +1,5 @@
+28 версия android api
+
 # запуск на эмуляторе + билд apk
 
 npm version patch
