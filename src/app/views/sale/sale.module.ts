@@ -19,9 +19,11 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { Round10Pipe } from './round10.pipe';
 import { KeyboardLiteralModule } from 'src/app/components/keyboard-literal/keyboard-literal.module';
 import { SelectTerminalModule } from 'src/app/components/select-terminal/select-terminal.module';
+import { ReplacePipe } from './replace.pipe';
+import { ToFixedNoRoundPipe } from './substr.pipe';
 
 @NgModule({
-  declarations: [SaleComponent, Round10Pipe],
+  declarations: [SaleComponent, Round10Pipe, ReplacePipe, ToFixedNoRoundPipe],
   imports: [
     CommonModule,
     SaleRoutingModule,

@@ -4,7 +4,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   name: 'round10',
 })
 export class Round10Pipe implements PipeTransform {
-  transform(value: number): string {
-    return value.toFixed(2);
+  transform(value: number, fixedDigits: number = 2): string {
+    return value.toFixed(fixedDigits);
   }
 }

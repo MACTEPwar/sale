@@ -237,7 +237,11 @@ export class SaleComponent implements OnInit {
     // console.log('change', event);
     if (this.addProductState === 'selectProduct') {
     } else {
-      this.saleService.changeAmount(event as TNullable<number>);
+      // this.saleService.changeAmount(event as TNullable<number>);
+      // this.saleService.changeAmount(event as TNullable<number>);
+      if ((event as TNullable<number>) !== null) {
+        this.selectedProduct!.amount = event as number;
+      }
     }
   }
 
@@ -288,13 +292,12 @@ export class SaleComponent implements OnInit {
    * @param product Товар
    */
   amountPlus(): void {
-    // this.lastAddedProduct!.amount = this.lastAddedProduct!.amount + 1;
-    // this.currentInputValue = String(this.lastAddedProduct!.amount + 1);
-    // this.changeProductInReceipt.next(this.lastAddedProduct);
     if (this.addProductState === 'selectProduct') {
     } else {
-      if (this.selectedProduct!.amount != null)
-        this.saleService.changeAmount(this.selectedProduct!.amount + 1);
+      if (this.selectedProduct!.amount != null) {
+        // this.saleService.changeAmount(this.selectedProduct!.amount + 1);
+        this.selectedProduct!.amount += 1;
+      }
     }
   }
 
@@ -312,14 +315,17 @@ export class SaleComponent implements OnInit {
     } else {
       if (this.selectedProduct!.amount != null)
         if (this.selectedProduct!.amount >= 1) {
-          this.saleService.changeAmount(this.selectedProduct!.amount - 1);
+          // this.saleService.changeAmount(this.selectedProduct!.amount - 1);
+          this.selectedProduct!.amount -= 1;
         } else {
-          this.saleService.changeAmount(0);
+          // this.saleService.changeAmount(0);
+          this.selectedProduct!.amount = 0;
         }
     }
   }
 
-  applyAmount(): void {
+  applyAmount(amount: any): void {
+    this.saleService.changeAmount(Number(amount));
     this.lastAddedProduct = null;
     this.addProductState = 'none';
   }
